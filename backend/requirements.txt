@@ -1,2 +1,7 @@
 Flask~=3.0.2
 python-dotenv~=1.0.1
+flask-restful
+flask_sqlalchemy
+flask_migrate
+flask_jwt_extended
+flask-mail
