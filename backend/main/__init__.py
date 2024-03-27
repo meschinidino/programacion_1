@@ -1,7 +1,13 @@
 from flask import Flask
 from dotenv import load_dotenv
+# Importamos nuevas librerias
 from flask_restful import Api
+
+# importamos directorio de recursos
 import main.resources as resources
+
+# inicio restful
+api = Api()
 
 
 def create_app():
@@ -12,5 +18,11 @@ def create_app():
     load_dotenv()
 
     # espacio para modulos de la app
+
+    # cargar a la API el recurso usuarios (users) y especificar la ruta
+    api.add_resource(resources.UsersResource, '/users')
+    # cargar a la API el recurso usuario (user) y especificar la ruta
+    api.add_resource(resources.UserResource, '/user/<id>')
+    api.init_app(app)
 
     return app
