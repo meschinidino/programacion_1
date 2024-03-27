@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask import request
 
-# Sample data for users (can be replaced with database operations)
+# ejemplo de datos que van  ser cambiados por una DB eventualmente
 USERS = {
     1: {'name': 'Alicia', 'email': 'alicia@example.com'},
     2: {'name': 'Roberto', 'email': 'roberto@example.com'}
