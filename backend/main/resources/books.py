@@ -23,26 +23,26 @@ class Book(Resource):
     #obtener recurso
     def get(self, id):
         #Verifico que exista el libro
-        if int(id) in Books:
+        if int(id) in BOOKS:
             #retorno libro
-            return Books[int(id)]
+            return BOOKS[int(id)]
         #Si no existe 404
         return '', 404
     
     #Eliminar recurso
     def delete(self, id):
         #Verifico que exista el libro
-        if int(id) in Books:
+        if int(id) in BOOKS:
             #elimino libro
-            del Books[int(id)]
+            del BOOKS[int(id)]
             return '', 204
         #Si no existe 404
         return '', 404
     
     #Modificar el recurso libro
     def put(self, id):
-        if int(id) in Books:
-            book = Books[int(id)]
+        if int(id) in BOOKS:
+            book = BOOKS[int(id)]
             data = request.get_json()
             book.update(data)
             return '', 201
