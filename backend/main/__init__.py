@@ -26,6 +26,7 @@ def create_app():
     api.add_resource(resources.BooksResource, '/books')
     api.add_resource(resources.BookResource, '/book/<id>')
     api.add_resource(resources.NotificationsResource, '/notifications')
+
     api.init_app(app)
 
     return app
