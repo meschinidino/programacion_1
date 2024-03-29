@@ -9,7 +9,7 @@ NOTIFICATIONS = {
 class Notifications(Resource):
     #insertar recurso
     def post(self):
-        animal = request.get_json()
+        new_not = request.get_json()
         id = int(max(NOTIFICATIONS.keys()))+1
-        NOTIFICATIONS[id] = animal
+        NOTIFICATIONS[id] = new_not
         return NOTIFICATIONS[id], 201

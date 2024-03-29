@@ -3,7 +3,7 @@ from flask import request
 
 BOOKS = {
     1:{'name':'book1', 'author':'author1'},
-    2:{'name':'book2','author':'autho2'},
+    2:{'name':'book2','author':'author2'},
 }
 
 
@@ -14,9 +14,9 @@ class Books(Resource):
 
     #insertar recurso
     def post(self):
-        animal = request.get_json()
+        new_book = request.get_json()
         id = int(max(BOOKS.keys()))+1
-        BOOKS[id] = animal
+        BOOKS[id] = new_book
         return BOOKS[id], 201
     
 class Book(Resource):
