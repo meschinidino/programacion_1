@@ -27,7 +27,7 @@ class Book(Resource):
             #retorno libro
             return BOOKS[int(id)]
         #Si no existe 404
-        return '', 404
+        return 'Libro no encontrado', 404
     
     #Eliminar recurso
     def delete(self, id):
@@ -37,7 +37,7 @@ class Book(Resource):
             del BOOKS[int(id)]
             return '', 204
         #Si no existe 404
-        return '', 404
+        return 'Libro no encontrado', 404
     
     #Modificar el recurso libro
     def put(self, id):
@@ -46,4 +46,4 @@ class Book(Resource):
             data = request.get_json()
             book.update(data)
             return '', 201
-        return '', 404
+        return 'Libro no encontrado', 404

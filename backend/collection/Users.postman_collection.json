@@ -1,19 +1,19 @@
 {
 	"info": {
-		"_postman_id": "2e3d24ba-8ed4-4468-a382-991800589b6f",
-		"name": "Books",
+		"_postman_id": "f5d135ce-b4e4-4153-a838-2e94fea37255",
+		"name": "Users",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "33777848",
-		"_collection_link": "https://grupob.postman.co/workspace/Team-Workspace~6d6dc8a1-94b2-4127-8040-e1c8df09e4bb/collection/33777848-2e3d24ba-8ed4-4468-a382-991800589b6f?action=share&source=collection_link&creator=33777848"
+		"_collection_link": "https://grupob.postman.co/workspace/Team-Workspace~6d6dc8a1-94b2-4127-8040-e1c8df09e4bb/collection/33777848-f5d135ce-b4e4-4153-a838-2e94fea37255?action=share&source=collection_link&creator=33777848"
 	},
 	"item": [
 		{
-			"name": "Lista de libros",
+			"name": "Lista de usuarios",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/books",
+					"raw": "http://127.0.0.1:5000/users",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -23,14 +23,14 @@
 					],
 					"port": "5000",
 					"path": [
-						"books"
+						"users"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Agregar libros",
+			"name": "Agregar usuarios",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -42,7 +42,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\":\"book3\",\n    \"author\":\"author3\"\n}",
+					"raw": "{\n    \"name\": \"Emilia\",\n    \"email\": \"emilia@example.com\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -50,7 +50,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:5000/books",
+					"raw": "http://127.0.0.1:5000/users",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -60,26 +60,19 @@
 					],
 					"port": "5000",
 					"path": [
-						"books"
-					],
-					"query": [
-						{
-							"key": "",
-							"value": null,
-							"disabled": true
-						}
+						"users"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Ver un libro",
+			"name": "Ver usuario",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:5000/book/1",
+					"raw": "http://127.0.0.1:5000/user/1",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -89,7 +82,7 @@
 					],
 					"port": "5000",
 					"path": [
-						"book",
+						"user",
 						"1"
 					]
 				}
@@ -97,30 +90,7 @@
 			"response": []
 		},
 		{
-			"name": "Eliminar libro",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:5000/book/1",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "5000",
-					"path": [
-						"book",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Actualizar libro",
+			"name": "Modificar usuario",
 			"request": {
 				"method": "PUT",
 				"header": [
@@ -132,7 +102,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\":\"book2\",\n    \"author\":\"author2\"\n}",
+					"raw": "{\n    \"name\": \"Alisia\",\n    \"email\": \"alisia@example.com\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -140,7 +110,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:5000/book/2",
+					"raw": "http://127.0.0.1:5000/user/1",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -150,8 +120,31 @@
 					],
 					"port": "5000",
 					"path": [
-						"book",
-						"2"
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar usuario",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/user/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"user",
+						"1"
 					]
 				}
 			},
