@@ -4,3 +4,8 @@ from .books import Book as BookResource
 from .books import Books as BooksResource
 from .notifications import Notifications as NotificationsResource
 from .comments import Comments as CommentsResource
+from .comments import Comment as CommentResource
+from .configuration import Configuration as ConfigurationResource
+from .configuration import Configurations as ConfigurationsResource
+from .signin import Signin as SigninResource
+from .login import Login as LoginResource

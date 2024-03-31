@@ -7,8 +7,13 @@ COMMENTS = {
 }
 
 class Comments(Resource):
+    def post(self):
+        new_comment = request.get_json()
+        id = int(max(COMMENTS.keys()))+1
+        COMMENTS[id] = new_comment
+        return COMMENTS[id], 201
 
-    #uno general
+class Comment(Resource):
     def get(self, id):
         if int(id) in COMMENTS:
             return COMMENTS[int(id)]
@@ -33,8 +38,3 @@ class Comments(Resource):
         else:
             return {"No existe este comentario"}, 404
 
-    def post(self):
-        new_comment = request.get_json()
-        id = int(max(COMMENTS.keys()))+1
-        COMMENTS[id] = new_comment
-        return COMMENTS[id], 201
