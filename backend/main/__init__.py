@@ -26,7 +26,12 @@ def create_app():
     api.add_resource(resources.BooksResource, '/books')
     api.add_resource(resources.BookResource, '/book/<id>')
     api.add_resource(resources.NotificationsResource, '/notifications')
+    api.add_resource(resources.LoansResource, '/loans')
+    api.add_resource(resources.LoanResource, '/loan/<id>')
+    api.add_resource(resources.RatingsResource, '/ratings')
+    api.add_resource(resources.RatingResource, '/rating/<id>')
 
     api.init_app(app)
 
     return app
+
