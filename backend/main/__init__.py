@@ -9,14 +9,13 @@ import main.resources as resources
 # inicio restful
 api = Api()
 
-
 def create_app():
     # inicio flask
     app = Flask(__name__)
 
     # variables de entorno
     load_dotenv()
-
+    
     # espacio para modulos de la app
 
     # cargar a la API el recurso usuarios (users) y especificar la ruta
