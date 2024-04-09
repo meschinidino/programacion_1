@@ -35,6 +35,7 @@ class User(db.Model):
             "address": self.address,
             "role": self.role
         }
+        return user_json
 
     @staticmethod
     def from_json(user_json):
