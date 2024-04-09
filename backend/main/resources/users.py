@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask import request
 
-# ejemplo de datos que van  ser cambiados por una DB eventualmente
+# ejemplo de datos que van  ser cambiados por una DB eventualmenteg
 USERS = {
     1: {'name': 'Alicia', 'email': 'alicia@example.com'},
     2: {'name': 'Roberto', 'email': 'roberto@example.com'}
