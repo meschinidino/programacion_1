@@ -5,9 +5,6 @@ from flask_restful import Api
 import os
 
 
-# importamos directorio de recursos
-import main.resources as resources
-
 # importamos SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
 
@@ -15,22 +12,23 @@ from flask_sqlalchemy import SQLAlchemy
 api = Api()
 
 # inicio SQLAlchemy
+
 db = SQLAlchemy()
 
 def create_app():
     # inicio flask
     app = Flask(__name__)
+    
+    # importamos directorio de recursos
+    import main.resources as resources
 
     # variables de entorno
     load_dotenv()
-
-    #cargamos las variables del archivo .env
-    load_dotenv()
-    
+        
     #Si no existe el archivo de base de datos crearlo (solo válido si se utiliza SQLite)
     if not os.path.exists(os.getenv('DATABASE_PATH')+os.getenv('DATABASE_NAME')):
         os.mknod(os.getenv('DATABASE_PATH')+os.getenv('DATABASE_NAME'))
-        
+
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     #Url de configuración de base de datos
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////'+os.getenv('DATABASE_PATH')+os.getenv('DATABASE_NAME')
