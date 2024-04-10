@@ -1,5 +1,7 @@
 from flask_restful import Resource
 from flask import request
+from main.modules import BooksModel
+from .. import db
 
 BOOKS = {
     1:{'name':'book1', 'author':'author1'},
@@ -22,12 +24,14 @@ class Books(Resource):
 class Book(Resource):
     #obtener recurso
     def get(self, id):
-        #Verifico que exista el libro
+        book = db.session.query(BooksModel).get_or_404(id)
+        return book.to_json
+        """#Verifico que exista el libro
         if int(id) in BOOKS:
             #retorno libro
             return BOOKS[int(id)]
         #Si no existe 404
-        return 'Libro no encontrado', 404
+        return 'Libro no encontrado', 404"""
     
     #Eliminar recurso
     def delete(self, id):

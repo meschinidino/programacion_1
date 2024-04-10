@@ -4,14 +4,12 @@ from dotenv import load_dotenv
 from flask_restful import Api
 import os
 
+# importamos directorio de recursos
 
-# importamos SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
 
 # inicio restful
 api = Api()
-
-# inicio SQLAlchemy
 
 db = SQLAlchemy()
 
@@ -24,8 +22,8 @@ def create_app():
 
     # variables de entorno
     load_dotenv()
-        
-    #Si no existe el archivo de base de datos crearlo (solo válido si se utiliza SQLite)
+
+#Si no existe el archivo de base de datos crearlo (solo válido si se utiliza SQLite)
     if not os.path.exists(os.getenv('DATABASE_PATH')+os.getenv('DATABASE_NAME')):
         os.mknod(os.getenv('DATABASE_PATH')+os.getenv('DATABASE_NAME'))
 
@@ -33,9 +31,8 @@ def create_app():
     #Url de configuración de base de datos
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////'+os.getenv('DATABASE_PATH')+os.getenv('DATABASE_NAME')
     db.init_app(app)
-
     # espacio para modulos de la app
-
+    import main.resources as resource
     # cargar a la API el recurso usuarios (users) y especificar la ruta
     api.add_resource(resources.UsersResource, '/users')
     # cargar a la API el recurso usuario (user) y especificar la ruta
