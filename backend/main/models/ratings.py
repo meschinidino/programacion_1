@@ -1,15 +1,7 @@
 from .. import db
 
-# rating_id INT (clave primaria)
-# user_id INT
-# book_id INT
-# assessment INT
-# valuation_date DATE
-# book_idbook INT
-# comment VACHAR(45)
-
-
 class Ratings(db.Model):
+    __tablename__ = 'ratings'
     rating_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer) # Foreign Key
     book_id = db.Column(db.Integer) # Foreign Key

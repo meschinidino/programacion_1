@@ -1,6 +1,6 @@
 from flask_restful import Resource
 from flask import request
-from main.modules import BooksModel
+from main.models import BooksModel
 from .. import db
 
 BOOKS = {

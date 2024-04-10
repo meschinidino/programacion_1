@@ -1,8 +1,9 @@
 from .. import db
 
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+class Users(db.Model):
+    __tablename__ = 'users'
+    user_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     last_name = db.Column(db.String(80), nullable=False)
     email = db.Column(db.Integer, nullable=False)
@@ -29,7 +30,7 @@ class User(db.Model):
             "id": self.id,
             "name": self.name,
             "last_name": self.last_name,
-            "email": self.email
+            "email": self.email,
             "password": self.password,
             "phone_number": self.phone_number,
             "address": self.address,
@@ -48,6 +49,6 @@ class User(db.Model):
         address = user_json["address"]
         role = user_json["role"]
 
-        return User(id=id, name=name, last_name=last_name, email=email,
+        return Users(id=id, name=name, last_name=last_name, email=email,
                     password=password, phone_number=phone_number,
                     address=address, role=role)
