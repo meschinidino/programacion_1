@@ -14,7 +14,7 @@ class Users(db.Model):
 
     def to_json(self):
         user_json = {
-            "id": self.id,
+            "user_id": self.user_id,
             "name": self.name,
             "last_name": self.last_name,
             "email": self.email,
@@ -27,7 +27,7 @@ class Users(db.Model):
 
     def to_json_short(self):
         user_json = {
-            "id": self.id,
+            "user_id": self.user_id,
             "name": self.name,
             "last_name": self.last_name,
             "email": self.email,
@@ -40,15 +40,22 @@ class Users(db.Model):
 
     @staticmethod
     def from_json(user_json):
-        id = user_json["id"]
-        name = user_json["name"]
-        last_name = user_json["last_name"]
-        email = user_json["email"]
-        password = user_json["password"]
-        phone_number = user_json["phone_number"]
-        address = user_json["address"]
-        role = user_json["role"]
+        user_id = user_json.get("user_id")
+        name = user_json.get("name")
+        last_name = user_json.get("last_name")
+        email = user_json.get("email")
+        password = user_json.get("password")
+        phone_number = user_json.get("phone_number")
+        address = user_json.get("address")
+        role = user_json.get("role")
 
-        return Users(id=id, name=name, last_name=last_name, email=email,
-                    password=password, phone_number=phone_number,
-                    address=address, role=role)
+        return Users(
+            user_id=user_id,
+            name=name,
+            last_name=last_name,
+            email=email,
+            password=password,
+            phone_number=phone_number,
+            address=address,
+            role=role
+        )
