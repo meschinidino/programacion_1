@@ -25,7 +25,6 @@ class Book(Resource):
 
     #Modificar el recurso libro
     def put(self, book_id):
-        book_id = int(book_id)
         book = db.session.query(BooksModel).get_or_404(book_id)
         data = request.get_json().items()
         for key, value in data:
@@ -36,9 +35,8 @@ class Book(Resource):
 
 
     #Eliminar recurso
-    def delete(self, id):
+    def delete(self, book_id):
         #Verifico que exista el libro
-        book_id = int(id)
         book = db.session.query(BooksModel).get_or_404(book_id)
         db.session.delete(book)
         db.session.commit()

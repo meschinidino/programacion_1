@@ -40,4 +40,5 @@ class User(Resource):
         user_id = int(user_id)
         user = db.session.query(UsersModel).get_or_404(user_id)
         db.session.delete(user)
+        db.session.commit()
         return 'Deleted', 204
