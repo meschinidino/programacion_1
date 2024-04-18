@@ -38,7 +38,7 @@ def create_app():
     # cargar a la API el recurso usuario (user) y especificar la ruta
     api.add_resource(resources.UserResource, '/user/<user_id>')
     api.add_resource(resources.BooksResource, '/books')
-    api.add_resource(resources.BookResource, '/book/<id>')
+    api.add_resource(resources.BookResource, '/book/<book_id>')
     api.add_resource(resources.NotificationsResource, '/notifications')
     api.add_resource(resources.ConfigurationsResource, '/configurations')
     api.add_resource(resources.ConfigurationResource, '/configuration/<id>')

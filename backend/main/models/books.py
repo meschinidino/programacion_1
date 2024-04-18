@@ -9,7 +9,7 @@ class Books(db.Model):
     year = db.Column(db.Integer, nullable=False)
     editorial = db.Column(db.String(50), nullable=False)
     isbn = db.Column(db.Integer, nullable=False)
-    available = db.Column(db.Integer, nullable=False)
+    available = db.Column(db.Enum("Yes", "No"), nullable=False)
 
     def to_json(self):
         book_json = {

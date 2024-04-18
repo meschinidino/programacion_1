@@ -1,53 +1,46 @@
 from flask_restful import Resource
-from flask import request
+from flask import request, jsonify
 from main.models import BooksModel
 from .. import db
-
-BOOKS = {
-    1:{'name':'book1', 'author':'author1'},
-    2:{'name':'book2','author':'author2'},
-}
-
 
 class Books(Resource):
     #obtener lista de los libros
     def get(self):
-        return BOOKS
+        books = db.session.query(BooksModel).all()
+        return jsonify([books.to_json() for books in books])
 
     #insertar recurso
     def post(self):
-        new_book = request.get_json()
-        id = int(max(BOOKS.keys()))+1
-        BOOKS[id] = new_book
-        return BOOKS[id], 201
-    
+        new_book = BooksModel.from_json(request.get_json())
+        db.session.add(new_book)
+        db.session.commit()
+        return new_book.to_json(), 201
+
+
 class Book(Resource):
     #obtener recurso
-    def get(self, id):
-        book = db.session.query(BooksModel).get_or_404(id)
-        return book.to_json
-        """#Verifico que exista el libro
-        if int(id) in BOOKS:
-            #retorno libro
-            return BOOKS[int(id)]
-        #Si no existe 404
-        return 'Libro no encontrado', 404"""
-    
+    def get(self, book_id):
+        book = db.session.query(BooksModel).get_or_404(book_id)
+        return book.to_json()
+
+    #Modificar el recurso libro
+    def put(self, book_id):
+        book_id = int(book_id)
+        book = db.session.query(BooksModel).get_or_404(book_id)
+        data = request.get_json().items()
+        for key, value in data:
+            setattr(book, key, value)
+        db.session.add(book)
+        db.session.commit()
+        return book.to_json(), 201
+
+
     #Eliminar recurso
     def delete(self, id):
         #Verifico que exista el libro
-        if int(id) in BOOKS:
-            #elimino libro
-            del BOOKS[int(id)]
-            return '', 204
-        #Si no existe 404
-        return 'Libro no encontrado', 404
-    
-    #Modificar el recurso libro
-    def put(self, id):
-        if int(id) in BOOKS:
-            book = BOOKS[int(id)]
-            data = request.get_json()
-            book.update(data)
-            return '', 201
-        return 'Libro no encontrado', 404
+        book_id = int(id)
+        book = db.session.query(BooksModel).get_or_404(book_id)
+        db.session.delete(book)
+        return 'Deleted', 204
+
+
