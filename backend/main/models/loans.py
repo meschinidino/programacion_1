@@ -5,8 +5,8 @@ class Loans(db.Model):
     loan_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer) #db.ForeignKey('users.user_id'))
     book_id = db.Column(db.Integer) #db.ForeignKey('books.book_id'))
-    loan_date = db.Column(db.Date, nullable=False)
-    finish_date = db.Column(db.Date, nullable=False)
+    loan_date = db.Column(db.String, nullable=False)
+    finish_date = db.Column(db.String, nullable=False)
 
 
     def to_json(self):

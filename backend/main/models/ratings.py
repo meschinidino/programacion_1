@@ -6,7 +6,7 @@ class Ratings(db.Model):
     user_id = db.Column(db.Integer, nullable = False) # Foreign Key
     book_id = db.Column(db.Integer, nullable = False) # Foreign Key
     assessment = db.Column(db.Integer, nullable = False)
-    valuation_date = db.Column(db.Date, nullable = False)
+    valuation_date = db.Column(db.String, nullable = False)
     comment = db.Column(db.String(45), nullable = False)
 
     def to_json(self):
@@ -15,7 +15,7 @@ class Ratings(db.Model):
             "user_id": self.user_id,
             "book_id": self.book_id,
             "assessment": self.assessment,
-            "valuation_date": self.valuation_date.isoformat(),
+            "valuation_date": self.valuation_date,
             "comment": self.comment
         }
         return rating_json
@@ -26,7 +26,7 @@ class Ratings(db.Model):
             "user_id": self.user_id,
             "book_id": self.book_id,
             "assessment": self.assessment,
-            "valuation_date": self.valuation_date.isoformat(),
+            "valuation_date": self.valuation_date,
             "comment": self.comment
         }
         return rating_json

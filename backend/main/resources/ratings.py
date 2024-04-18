@@ -34,4 +34,5 @@ class Rating(Resource):
         rating_id = int(rating_id)
         rating = db.session.query(RatingsModel).get_or_404(rating_id)
         db.session.delete(rating)
+        db.session.commit()
         return 'Deleted', 204
