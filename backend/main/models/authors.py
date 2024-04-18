@@ -13,3 +13,22 @@ class Authors(db.Model):
             "last_name": self.last_name,
         }
         return author_json
+
+    def to_json_short(self):
+        author_json = {
+            "author_id": self.author_id,
+            "name": self.name,
+            "last_name": self.last_name,
+        }
+        return author_json
+
+    @staticmethod
+    def from_json(author_json):
+        author_id = author_json.get("author_id")
+        name = author_json.get("name")
+        last_name = author_json.get("last_name")
+        return Authors(
+            author_id = author_id,
+            name = name,
+            last_name = last_name,
+        )
