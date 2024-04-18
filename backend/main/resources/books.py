@@ -41,6 +41,7 @@ class Book(Resource):
         book_id = int(id)
         book = db.session.query(BooksModel).get_or_404(book_id)
         db.session.delete(book)
+        db.session.commit()
         return 'Deleted', 204
 
 
