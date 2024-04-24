@@ -1,10 +1,14 @@
 from .. import db
 import json
 
+books_authors = db.Table("books_authors",
+    db.Column("book_id", db.Integer, db.ForeignKey("book_id"),primary_key=True),
+    db.Column("author_id", db.Integer,db.ForeignKey("author_id"),primary_key=True)
+    )
+
 class Books(db.Model):
     __tablename__ = 'books'
     book_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    author_id = db.Column(db.Integer) #db.ForeignKey('authors.author_id')
     title = db.Column(db.String(50), nullable=False)
     genre = db.Column(db.String(50), nullable=False)
     year = db.Column(db.Integer, nullable=False)
@@ -18,6 +22,7 @@ class Books(db.Model):
 
     def __repr__(self):
         return '<Book %r>' % self.title
+    author_id = db.relationship('Author', secondary=books_authors, backref=db.backref('books', lazy='dynamic'))
 
     def to_json(self):
         ratings = [rating.to_json_short() for rating in self.ratings]
