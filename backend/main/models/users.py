@@ -11,6 +11,7 @@ class Users(db.Model):
     phone_number = db.Column(db.Integer, nullable=False)
     address = db.Column(db.String(80), nullable=False)
     role = db.Column(db.Enum("Admin", "User"), nullable=False)
+    loan = db.relationship('Loans', back_populates='user', cascade = 'all, delete-orphan') #relacion con loans
 
     def to_json(self):
         user_json = {
@@ -22,6 +23,21 @@ class Users(db.Model):
             "phone_number": self.phone_number,
             "address": self.address,
             "role": self.role
+        }
+        return user_json
+
+    def to_json_complete(self):
+        loan = [loan.to_json() for loan in self.loans]
+        user_json = {
+            "user_id": self.user_id,
+            "name": self.name,
+            "last_name": self.last_name,
+            "email": self.email,
+            "password": self.password,
+            "phone_number": self.phone_number,
+            "address": self.address,
+            "role": self.role,
+            "loans": loan
         }
         return user_json
 
