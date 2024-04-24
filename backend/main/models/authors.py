@@ -5,6 +5,9 @@ class Authors(db.Model):
     author_id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(80), nullable=False)
     last_name = db.Column(db.String(80), nullable=False)
+    author_books = db.relationship('AuthorBooks', back_populates='author')
+    #books = db.relationship('Books', secondary="author_books", back_populates='authors',cascade='all, delete-orphan')
+    
 
     def to_json(self):
         author_json = {

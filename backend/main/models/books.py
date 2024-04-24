@@ -15,13 +15,6 @@ class Books(db.Model):
     editorial = db.Column(db.String(50), nullable=False)
     isbn = db.Column(db.Integer, nullable=False)
     available = db.Column(db.Integer, nullable=False)
-    #relations
-    ratings = db.relationship("Ratings", back_populates="book", cascade="all, delete-orphan")
-
-
-
-    def __repr__(self):
-        return '<Book %r>' % self.title
     author_id = db.relationship('Author', secondary=books_authors, backref=db.backref('books', lazy='dynamic'))
 
     def to_json(self):
