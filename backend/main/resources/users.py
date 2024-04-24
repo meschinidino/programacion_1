@@ -8,7 +8,7 @@ class Users(Resource):
     # obtener lista de usuarios
     def get(self):
         users = db.session.query(UsersModel).all()
-        return jsonify([user.to_json()for user in users])
+        return jsonify([user.to_json_complete()for user in users])
     # instertar recurso
     def post(self):
         new_user = UsersModel.from_json(request.get_json())
