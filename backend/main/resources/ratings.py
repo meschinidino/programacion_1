@@ -3,6 +3,7 @@ from flask import request, jsonify
 from .. import db
 from main.models import RatingsModel
 
+
 class Ratings(Resource):
     def get(self):
         ratings = db.session.query(RatingsModel).all()
@@ -13,6 +14,7 @@ class Ratings(Resource):
         db.session.add(new_rating)
         db.session.commit()
         return new_rating.to_json(), 201
+
 
 class Rating(Resource):
     def get(self, rating_id):
