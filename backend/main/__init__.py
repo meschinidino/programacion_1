@@ -48,6 +48,8 @@ def create_app():
     api.add_resource(resources.LoanResource, '/loan/<loan_id>')
     api.add_resource(resources.RatingsResource, '/ratings')
     api.add_resource(resources.RatingResource, '/rating/<rating_id>')
+    api.add_resource(resource.AuthorsResource, '/authors')
+    api.add_resource(resource.AuthorResource, '/author/<author_id>')
 
     api.init_app(app)
 

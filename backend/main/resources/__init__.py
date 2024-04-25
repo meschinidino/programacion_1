@@ -11,3 +11,5 @@ from .loans import Loans as LoansResource
 from .loans import Loan as LoanResource
 from .ratings import Ratings as RatingsResource
 from .ratings import Rating as RatingResource
+from .authors import Author as AuthorResource
+from .authors import Authors as AuthorsResource

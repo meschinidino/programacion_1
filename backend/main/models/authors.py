@@ -13,7 +13,6 @@ class Authors(db.Model):
     last_name = db.Column(db.String(80), nullable=False)
     books = db.relationship('Books', secondary=author_books,backref=db.backref('authors', lazy='dynamic'))
 
-
     def to_json(self):
         author_json = {
             "author_id": self.author_id,
@@ -22,7 +21,7 @@ class Authors(db.Model):
         }
         return author_json
 
-    def to_json_short(self):
+    def to_json_complete(self):
         books = [book.to_json() for book in self.books]
         author_json = {
             "author_id": self.author_id,
