@@ -1,17 +1,26 @@
 from .. import db
+import json
 
 class Books(db.Model):
     __tablename__ = 'books'
     book_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    author_id = db.Column(db.Integer) #db.ForeignKey('authors.author_id'
+    author_id = db.Column(db.Integer) #db.ForeignKey('authors.author_id')
     title = db.Column(db.String(50), nullable=False)
     genre = db.Column(db.String(50), nullable=False)
     year = db.Column(db.Integer, nullable=False)
     editorial = db.Column(db.String(50), nullable=False)
     isbn = db.Column(db.Integer, nullable=False)
     available = db.Column(db.Integer, nullable=False)
+    #relations
+    ratings = db.relationship("Ratings", back_populates="book", cascade="all, delete-orphan")
+
+
+
+    def __repr__(self):
+        return '<Book %r>' % self.title
 
     def to_json(self):
+        ratings = [rating.to_json_short() for rating in self.ratings]
         book_json = {
             'book_id': self.book_id,
             'author_id': self.author_id,
@@ -20,7 +29,22 @@ class Books(db.Model):
             'year': self.year,
             'editorial': str(self.editorial),
             'isbn': self.isbn,
-            'available': self.available
+            'available': self.available,
+            'ratings': ratings
+        }
+        return book_json
+
+    def to_json_complete(self):
+        book_json = {
+            'book_id': self.book_id,
+            'author_id': self.author_id,
+            'title': str(self.title),
+            'genre': str(self.genre),
+            'year': self.year,
+            'editorial': str(self.editorial),
+            'isbn': self.isbn,
+            'available': self.available,
+            'ratings': self.ratings
         }
         return book_json
 
