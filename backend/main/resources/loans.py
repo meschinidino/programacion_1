@@ -8,7 +8,7 @@ class Loans(Resource):
 
     def get(self):
         loans = db.session.query(LoansModel).all()
-        return jsonify([loan.to_json_short() for loan in loans])
+        return jsonify([loan.to_json() for loan in loans])
 
     def post(self):
         new_loan = LoansModel.from_json(request.get_json())

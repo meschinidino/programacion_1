@@ -14,14 +14,14 @@ class Loans(db.Model):
         return '<Loan %r>' % self.loan_id
 
     def to_json(self):
-        user = db.session.query(UsersModel).get_or_404(self.user_id)
+        #user = db.session.query(UsersModel).get_or_404(self.user_id)
         loan_json = {
             'loan_id': self.loan_id,
             'user_id': self.user_id,
             'book_id': self.book_id,
             'loan_date': self.loan_date,
             'finish_date': self.finish_date,
-            'user': user
+            #'user': user
         }
         return loan_json
 
