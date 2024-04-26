@@ -9,4 +9,5 @@
 
 ## ADDED
 - Relations between loans and users
+- All relations created and working
 
