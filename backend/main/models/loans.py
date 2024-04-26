@@ -1,6 +1,12 @@
 from .. import db
 from . import UsersModel
 
+loans_books = db.Table(
+    'loans_books',
+    db.Column('loan_id', db.Integer, db.ForeignKey('loans.loan.id'), primary_key=True),
+    db.Column('book_id', db.Integer, db.ForeignKey('books.book.id'), primary_key=True)
+)
+
 class Loans(db.Model):
     __tablename__ = 'loans'
     loan_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
