@@ -14,13 +14,13 @@ class Loans(Resource):
         new_loan = LoansModel.from_json(request.get_json())
         db.session.add(new_loan)
         db.session.commit()
-        return new_loan.to_json(), 201
+        return new_loan.to_json_short(), 201
 
 
 class Loan(Resource):
     def get(self, loan_id):
         loan = db.session.query(LoansModel).get_or_404(loan_id)
-        return loan.to_json()
+        return loan.to_json_short()
 
     def put(self, loan_id):
         loan_id = int(loan_id)
@@ -30,7 +30,7 @@ class Loan(Resource):
             setattr(loan, key, value)
         db.session.add(loan)
         db.session.commit()
-        return loan.to_json(), 201
+        return loan.to_json_short(), 201
 
     def delete(self, loan_id):
         loan = db.session.query(LoansModel).get_or_404(loan_id)
