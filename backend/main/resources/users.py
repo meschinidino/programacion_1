@@ -21,7 +21,7 @@ class User(Resource):
     #obtener recurso
     def get(self, user_id):
         user = db.session.query(UsersModel).get_or_404(user_id)
-        return user.to_json()
+        return user.to_json_complete()
 
 
     # Modificar el recurso usuario
