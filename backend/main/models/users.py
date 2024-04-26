@@ -11,7 +11,7 @@ class Users(db.Model):
     phone_number = db.Column(db.Integer, nullable=False)
     address = db.Column(db.String(80), nullable=False)
     role = db.Column(db.Enum("Admin", "User"), nullable=False)
-    loans = db.relationship('Loans', back_populates='user', cascade = 'all, delete-orphan') #relacion con loans
+    loans = db.relationship('Loans', back_populates='users', cascade = 'all, delete-orphan') #relacion con loans
 
     def __repr__(self):
         return '<User %r>' % self.user_id
