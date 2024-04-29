@@ -11,18 +11,22 @@ class Loans(Resource):
 
         per_page = 10
 
-        loans = db.session.query(LoansModel).all()
+        loans = db.session.query(LoansModel)
 
         if request.args.get("page"):
             page = int(request.args.get("page"))
         if request.args.get("per_page"):
             per_page = int(request.args.get("per_page"))
 
-        # aca van las relatciones
-
         loans = loans.paginate(page=page, per_page=per_page, error_out=True)
 
-        return jsonify(loans.to_json()for loans in loans)
+        return jsonify({'loans':[loan.to_json() for loan in loans],
+                'total': loans.total,
+                'pages': loans.pages,
+                'page': page
+        })
+
+
 
     def post(self):
         new_loan = LoansModel.from_json(request.get_json)
