@@ -3,10 +3,25 @@ from flask import request, jsonify
 from main.models import AuthorsModel
 from .. import db
 
+
 class Authors(Resource):
     #obtener lista de los libros
     def get(self):
+        page = 1
+
+        per_page = 10
+
         authors = db.session.query(AuthorsModel).all()
+
+        if request.args.get('page'):
+            page = int(request.args.get('page'))
+        if request.args.get('per_page'):
+            per_page = int(request.args.get('per_page'))
+
+        # acá van las relaciones
+
+        authors = authors.paginate(page=page, per_page=per_page, error_out=True)
+
         return jsonify([authors.to_json() for authors in authors])
 
     #insertar recurso
@@ -33,7 +48,6 @@ class Author(Resource):
         db.session.commit()
         return author.to_json(), 201
 
-
     #Eliminar recurso
     def delete(self, author_id):
         #Verifico que exista el libro
@@ -41,5 +55,3 @@ class Author(Resource):
         db.session.delete(author)
         db.session.commit()
         return 'Deleted', 204
-
-

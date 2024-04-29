@@ -7,8 +7,23 @@ from .. import db
 class Users(Resource):
     # obtener lista de usuarios
     def get(self):
+        page = 1
+
+        per_page = 10
+
         users = db.session.query(UsersModel).all()
+
+        if request.args.get('page'):
+            page = int(request.args.get('page'))
+        if request.args.get('per_page'):
+            per_page = int(request.args.get('per_page'))
+
+        #acá van las relaciones
+
+
+        users = users.paginate(page=page, per_page=per_page, error_out=True)
         return jsonify([user.to_json_complete()for user in users])
+
     # instertar recurso
     def post(self):
         new_user = UsersModel.from_json(request.get_json())
