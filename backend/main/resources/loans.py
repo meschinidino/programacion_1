@@ -7,14 +7,28 @@ from .. import db
 class Loans(Resource):
 
     def get(self):
+        page = 1
+
+        per_page = 10
+
         loans = db.session.query(LoansModel).all()
-        return jsonify([loan.to_json() for loan in loans])
+
+        if request.args.get("page"):
+            page = int(request.args.get("page"))
+        if request.args.get("per_page"):
+            per_page = int(request.args.get("per_page"))
+
+        # aca van las relatciones
+
+        loans = loans.paginate(page=page, per_page=per_page, error_out=True)
+
+        return jsonify(loans.to_json()for loans in loans)
 
     def post(self):
-        new_loan = LoansModel.from_json(request.get_json())
+        new_loan = LoansModel.from_json(request.get_json)
         db.session.add(new_loan)
         db.session.commit()
-        return new_loan.to_json_short(), 201
+        return new_loan.to_json(), 201
 
 
 class Loan(Resource):
