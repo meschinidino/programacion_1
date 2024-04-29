@@ -1,50 +1,44 @@
 from flask_restful import Resource
-from flask import request
-
-# Sample data for users (can be replaced with database operations)
-USERS = {
-    1: {'name': 'Alicia', 'email': 'alicia@example.com'},
-    2: {'name': 'Roberto', 'email': 'roberto@example.com'}
-}
+from flask import request, jsonify
+from main.models import UsersModel
+from .. import db
 
 
 class Users(Resource):
     # obtener lista de usuarios
     def get(self):
-        return USERS
-
+        users = db.session.query(UsersModel).all()
+        return jsonify([user.to_json_complete()for user in users])
     # instertar recurso
     def post(self):
-        new_user = request.get_json()
-        user_id = max(USERS.keys()) + 1
-        USERS[user_id] = new_user
-        return USERS[user_id], 201
+        new_user = UsersModel.from_json(request.get_json())
+        db.session.add(new_user)
+        db.session.commit()
+        return new_user.to_json(), 201
 
 
 class User(Resource):
     #obtener recurso
     def get(self, user_id):
-        user_id = int(user_id)
-        if user_id in USERS:
-            return USERS[user_id]
-        else:
-            return {'error': 'Usuario no encontrado'}, 404
+        user = db.session.query(UsersModel).get_or_404(user_id)
+        return user.to_json_complete()
+
 
     # Modificar el recurso usuario
     def put(self, user_id):
         user_id = int(user_id)
-        if user_id in USERS:
-            user_data = request.get_json()
-            USERS[user_id].update(user_data)
-            return USERS[user_id], 200
-        else:
-            return {'error': 'Usuario no encontrado'}, 404
+        user = db.session.query(UsersModel).get_or_404(user_id)
+        data = request.get_json().items()
+        for key, value in data:
+            setattr(user, key, value)
+        db.session.add(user)
+        db.session.commit()
+        return user.to_json(), 201
 
     # Eliminar recurso
     def delete(self, user_id):
         user_id = int(user_id)
-        if user_id in USERS:
-            del USERS[user_id]
-            return '', 204
-        else:
-            return {'error': 'Usuario no encontrado'}, 404
+        user = db.session.query(UsersModel).get_or_404(user_id)
+        db.session.delete(user)
+        db.session.commit()
+        return 'Deleted', 204

@@ -3,8 +3,6 @@ from .users import Users as UsersResource
 from .books import Book as BookResource
 from .books import Books as BooksResource
 from .notifications import Notifications as NotificationsResource
-from .comments import Comments as CommentsResource
-from .comments import Comment as CommentResource
 from .configuration import Configuration as ConfigurationResource
 from .configuration import Configurations as ConfigurationsResource
 from .signin import Signin as SigninResource
@@ -13,3 +11,5 @@ from .loans import Loans as LoansResource
 from .loans import Loan as LoanResource
 from .ratings import Ratings as RatingsResource
 from .ratings import Rating as RatingResource
+from .authors import Author as AuthorResource
+from .authors import Authors as AuthorsResource

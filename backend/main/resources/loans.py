@@ -1,47 +1,41 @@
 from flask_restful import Resource
-from flask import request
-
-LOANS = {
-    1: {'book_id': 1, 'user_id': 1, 'loan_date': '2021-01-01', 'return_date': '2021-01-15'},
-    2: {'book_id': 2, 'user_id': 2, 'loan_date': '2021-01-02', 'return_date': '2021-01-16'}
-
-}
+from flask import request, jsonify
+from main.models import LoansModel
+from .. import db
 
 
 class Loans(Resource):
+
     def get(self):
-        return LOANS
+        loans = db.session.query(LoansModel).all()
+        return jsonify([loan.to_json() for loan in loans])
 
     def post(self):
-        new_loan = request.get_json()
-        loan_id = max(LOANS.keys()) + 1
-        LOANS[loan_id] = new_loan
-        return LOANS[loan_id], 201
+        new_loan = LoansModel.from_json(request.get_json())
+        db.session.add(new_loan)
+        db.session.commit()
+        return new_loan.to_json_short(), 201
 
 
 class Loan(Resource):
     def get(self, loan_id):
-
-        if int(loan_id) in LOANS:
-            return LOANS[int(loan_id)]
-        else:
-            return {'error': 'Préstamo no encontrado'}, 404
+        loan = db.session.query(LoansModel).get_or_404(loan_id)
+        return loan.to_json_short()
 
     def put(self, loan_id):
         loan_id = int(loan_id)
-        if loan_id in LOANS:
-            loan_data = request.get_json()
-            LOANS[loan_id].update(loan_data)
-            return LOANS[loan_id], 200
-        else:
-            return {'error': 'Préstamo no encontrado'}, 404
+        loan = db.session.query(LoansModel).get_or_404(loan_id)
+        data = request.get_json().items()
+        for key, value in data:
+            setattr(loan, key, value)
+        db.session.add(loan)
+        db.session.commit()
+        return loan.to_json_short(), 201
 
     def delete(self, loan_id):
-        loan_id = int(loan_id)
-        if loan_id in LOANS:
-            del LOANS[loan_id]
-            return '', 204
-        else:
-            return {'error': 'Préstamo no encontrado'}, 404
+        loan = db.session.query(LoansModel).get_or_404(loan_id)
+        db.session.delete(loan)
+        db.session.commit()
+        return 'Delete', 200
 
-# jma
+# jma 2024

@@ -1,44 +1,40 @@
 from flask_restful import Resource
-from flask import request
+from flask import request, jsonify
+from .. import db
+from main.models import RatingsModel
 
-RATINGS = {
-    1: {'book_id': 1, 'user_id': 1, 'rating': 5},
-    2: {'book_id': 2, 'user_id': 2, 'rating': 4}
-
-}
 
 class Ratings(Resource):
     def get(self):
-        return RATINGS
+        ratings = db.session.query(RatingsModel).all()
+        return jsonify([rating.to_json() for rating in ratings])
 
     def post(self):
-        new_rating = request.get_json()
-        rating_id = max(RATINGS.keys()) + 1
-        RATINGS[rating_id] = new_rating
-        return RATINGS[rating_id], 201
+        new_rating = RatingsModel.from_json(request.get_json())
+        db.session.add(new_rating)
+        db.session.commit()
+        return new_rating.to_json(), 201
 
 
 class Rating(Resource):
     def get(self, rating_id):
-        rating_id = int(rating_id)
-        if rating_id in RATINGS:
-            return RATINGS[rating_id]
-        else:
-            return {'error': 'Rating no encontrado'}, 404
+        #rating_id = int(rating_id)
+        rating = db.session.query(RatingsModel).get_or_404(rating_id)
+        return rating.to_json()
 
     def put(self, rating_id):
         rating_id = int(rating_id)
-        if rating_id in RATINGS:
-            rating_data = request.get_json()
-            RATINGS[rating_id].update(rating_data)
-            return RATINGS[rating_id], 200
-        else:
-            return {'error': 'Rating no encontrado'}, 404
+        rating = db.session.query(RatingsModel).get_or_404(rating_id)
+        data = request.get_json().items()
+        for key, value in data:
+            setattr(rating, key, value)
+        db.session.add(rating)
+        db.session.commit()
+        return rating.to_json(), 201
 
     def delete(self, rating_id):
         rating_id = int(rating_id)
-        if rating_id in RATINGS:
-            del RATINGS[rating_id]
-            return '', 204
-        else:
-            return {'error': 'Rating no encontrado'}, 404
+        rating = db.session.query(RatingsModel).get_or_404(rating_id)
+        db.session.delete(rating)
+        db.session.commit()
+        return 'Deleted', 204

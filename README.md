@@ -1,12 +1,14 @@
-# Proyecto final de programación 1
+# Programacion I
+
+Universidad De Mendoza
+
+2024
 
 ### Grupo B
 ### Integrantes:
-- Dino Meschini
-- Juan Manuel Aidar
-- Alma Quinteros
-- Lucas Crosta
+- Dino Meschini # 62323
+- Juan Manuel Aidar # 62005
+- Alma Quinteros # 62016
+- Lucas Crosta  # 62003
 
-### Descripción del proyecto:
 
-(acá ponemos la descripción)

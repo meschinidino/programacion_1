@@ -5,3 +5,9 @@
 - Boot e install para configurar venv + requirements
 
 
+### Version 0.0.2 - 24/04/2024 @lucas
+
+## ADDED
+- Relations between loans and users
+- All relations created and working
+
