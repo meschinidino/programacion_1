@@ -17,23 +17,27 @@ class Ratings(db.Model):
         return '<Ratings %r>' % self.rating_id
 
     def to_json(self):
+        # books = [book.to_json_short() for book in self.book]
         rating_json = {
             "rating_id": self.rating_id,
             "user_id": self.user_id,
             "book_id": self.book_id,
             "assessment": self.assessment,
             "valuation_date": self.valuation_date,
-            "comment": self.comment
+            "comment": self.comment,
+            "books" : self.book.to_json(),
         }
         return rating_json
 
     def to_json_complete(self):
+        # books = [book.to_json() for book in self.book]
         rating_json = {
             "rating_id": self.rating_id,
             "user_id": self.user_id,
             "book_id": self.book_id,
             "assessment": self.assessment,
             "comment": self.comment,
+            # "books" : books,
         }
         return rating_json
 
