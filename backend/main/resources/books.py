@@ -7,8 +7,24 @@ from .. import db
 class Books(Resource):
     #obtener lista de los libros
     def get(self):
-        books = db.session.query(BooksModel).all()
-        return jsonify([books.to_json_short() for books in books])
+
+        page = 1
+
+        per_page = 10
+
+        books = db.session.query(BooksModel)
+
+        if request.args.get('page'):
+            page = int(request.args.get('page'))
+        if request.args.get('per_page'):
+            per_page = int(request.args.get('per_page'))
+
+        books = books.paginate(page=page, per_page=per_page, error_out=True, max_per_page=30)
+
+        return jsonify({'books': [book.to_json() for book in books],
+                        'total':books.total,
+                        'pages':books.pages,
+                        'page': page})
 
     #insertar recurso
     def post(self):

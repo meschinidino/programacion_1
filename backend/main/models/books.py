@@ -40,7 +40,6 @@ class Books(db.Model):
             'editorial': str(self.editorial),
             'isbn': self.isbn,
             'available': self.available,
-            'ratings': self.ratings
         }
         return book_json
 
