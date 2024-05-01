@@ -1,18 +1,39 @@
 from flask_restful import Resource
 from flask import request, jsonify
 from .. import db
-from main.models import RatingsModel
+from main.models import RatingsModel,UsersModel,BooksModel
+from sqlalchemy import func, desc, or_
 
 
 class Ratings(Resource):
     def get(self):
-        ratings = db.session.query(RatingsModel).all()
-        return jsonify([rating.to_json() for rating in ratings])
+        ratings = db.session.query(RatingsModel)
+
+        ##FILTERS
+        if request.args.get('assessment'):
+            assessment_value = request.args.get('assessment')
+            ratings = ratings.filter(RatingsModel.assessment == assessment_value)
+        if request.args.get('sort_descending'):
+            ratings = ratings.order_by(desc(RatingsModel.assessment))
+        if request.args.get('valuation_date'):
+            valuation_date_value = request.args.get('valuation_date')
+            ratings = ratings.filter(RatingsModel.valuation_date == valuation_date_value)
+        if request.args.get('user_id'):
+            user_name = request.args.get('user_id')
+            ratings = ratings.filter(RatingsModel.users.any(or_(UsersModel.name.like(f"%{user_name}%"), UsersModel.last_name.like(f"%{user_name}%"))))
+        if request.args.get('book_id'):
+            book = request.args.get('book_id')
+            ratings = ratings.filter(RatingsModel.books.any(or_(BooksModel.name.like(f"%{book}%"))))
+        return jsonify([rating.to_json() for rating in ratings])   
 
     def post(self):
         new_rating = RatingsModel.from_json(request.get_json())
-        db.session.add(new_rating)
-        db.session.commit()
+        print(new_rating)
+        try:
+            db.session.add(new_rating)
+            db.session.commit()
+        except:
+            return 'Formato no correcto',400
         return new_rating.to_json(), 201
 
 
