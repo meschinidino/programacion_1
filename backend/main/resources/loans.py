@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request, jsonify
-from main.models import LoansModel
+from main.models import LoansModel, BooksModel
+from sqlalchemy import func, desc
 from .. import db
 
 
@@ -20,19 +21,25 @@ class Loans(Resource):
 
         loans = loans.paginate(page=page, per_page=per_page, error_out=True)
 
-        return jsonify({'loans':[loan.to_json() for loan in loans],
-                'total': loans.total,
-                'pages': loans.pages,
-                'page': page
-        })
-
-
+        return jsonify({'loans': [loan.to_json() for loan in loans],
+                        'total': loans.total,
+                        'pages': loans.pages,
+                        'page': page})
 
     def post(self):
-        new_loan = LoansModel.from_json(request.get_json)
-        db.session.add(new_loan)
+        book_ids = request.json().get('book_id')
+        loan = LoansModel.from_json(request.get_json())
+
+        if book_ids:
+
+            books = BooksModel.query.filter(BooksModel.loan_id.in_(book_ids)).all()
+
+            loan.books.extend(books)
+
+        db.session.add(loan)
         db.session.commit()
-        return new_loan.to_json(), 201
+        return loan.to_json(), 201
+
 
 
 class Loan(Resource):
@@ -56,4 +63,3 @@ class Loan(Resource):
         db.session.commit()
         return 'Delete', 200
 
-# jma 2024
