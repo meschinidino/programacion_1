@@ -12,12 +12,12 @@
 			"name": "Books",
 			"item": [
 				{
-					"name": "get_book_db",
+					"name": "get_book_db_with_pagin",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/books",
+							"raw": "http://127.0.0.1:5000/books?page=2&per_page=1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -28,6 +28,44 @@
 							"port": "5000",
 							"path": [
 								"books"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "per_page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_book_with_filters_and_pag",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/books?author=frank",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"books"
+							],
+							"query": [
+								{
+									"key": "author",
+									"value": "frank"
+								}
 							]
 						}
 					},
@@ -46,7 +84,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"book_id\": 1,\n    \"title\" : \"Dune part two\",\n    \"genre\": \"Sci-Fi\",\n    \"year\" : 1967,\n    \"editorial\" : \"Editorial\",\n    \"isbn\" : 1231231,\n    \"available\" : 10\n}\n",
+							"raw": "{\n    \"title\" : \"Dune part three\",\n    \"genre\": \"Sci-Fi\",\n    \"year\" : 1967,\n    \"editorial\" : \"Editorial\",\n    \"isbn\" : 1231231,\n    \"available\" : 10,\n    \"author_id\": [1,2]\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -76,7 +114,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/book/2",
+							"raw": "http://127.0.0.1:5000/book/5",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -87,7 +125,7 @@
 							"port": "5000",
 							"path": [
 								"book",
-								"2"
+								"5"
 							]
 						}
 					},
@@ -509,7 +547,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n        \"loan_id\" : 4,\n        \"user_id\": 1,\n        \"loan_date\": \"2021-01-02\",\n        \"finish_date\": \"2021-01-16\"\n}\n",
+							"raw": "{\n        \"user_id\": 1,\n        \"loan_date\": \"2021-01-02\",\n        \"finish_date\": \"2021-01-16\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -539,7 +577,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/loan/2",
+							"raw": "http://127.0.0.1:5000/loan/1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -550,7 +588,7 @@
 							"port": "5000",
 							"path": [
 								"loan",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -622,7 +660,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/ratings",
+							"raw": "http://127.0.0.1:5000/ratings?assessment=4",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -633,6 +671,12 @@
 							"port": "5000",
 							"path": [
 								"ratings"
+							],
+							"query": [
+								{
+									"key": "assessment",
+									"value": "4"
+								}
 							]
 						}
 					},
@@ -642,10 +686,16 @@
 					"name": "Agregar rating",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n        \"rating_id\":8,\n        \"assessment\": 4,\n        \"book_id\": 4,\n        \"user_id\": 1,\n        \"comment\": \"very good\",\n        \"valuation_date\": \"20/04/2024\"\n    }",
+							"raw": "{\n        \"rating_id\":7,\n        \"assessment\":4,\n        \"book_id\": 4,\n        \"user_id\": 1,\n        \"comment\": \"very good\",\n        \"valuation_date\": \"20/04/2024\"\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -675,7 +725,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/rating/1",
+							"raw": "http://127.0.0.1:5000/rating/7",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -686,7 +736,7 @@
 							"port": "5000",
 							"path": [
 								"rating",
-								"1"
+								"7"
 							]
 						}
 					},
@@ -730,7 +780,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/rating/1",
+							"raw": "http://127.0.0.1:5000/rating/7",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -741,7 +791,7 @@
 							"port": "5000",
 							"path": [
 								"rating",
-								"1"
+								"7"
 							]
 						}
 					},
@@ -787,7 +837,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"author_id\": 2,\n    \"last_name\": \"Herbert\",\n    \"name\": \"Frank\"\n}",
+							"raw": "{\n    \"last_name\": \"Herbert\",\n    \"name\": \"Franjkjj\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
