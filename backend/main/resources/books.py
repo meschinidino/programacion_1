@@ -1,6 +1,6 @@
 from flask_restful import Resource
 from flask import request, jsonify
-from main.models import BooksModel, AuthorsModel
+from main.models import BooksModel, AuthorsModel, RatingsModel
 from sqlalchemy import func, desc
 from .. import db
 
@@ -18,6 +18,15 @@ class Books(Resource):
             page = int(request.args.get('page'))
         if request.args.get('per_page'):
             per_page = int(request.args.get('per_page'))
+
+        #FILTROS POR AUTOR, GENERO, TITULO, ORDENAR POR RATING
+
+        if request.args.get('genre'):
+            books = books.filter(BooksModel.genre.like("%"+request.args.get('genre')+"%"))
+        if request.args.get('title'):
+            books = books.filter(BooksModel.title.like("%"+request.args.get('title')+"%"))
+        if request.args.get('sortby_rating'):
+            books = books.outerjoin(BooksModel.ratings)
 
         books = books.paginate(page=page, per_page=per_page, error_out=True, max_per_page=30)
 
@@ -41,10 +50,6 @@ class Books(Resource):
         db.session.add(book)
         db.session.commit()
         return book.to_json(), 201
-        """new_book = BooksModel.from_json(request.get_json())
-        db.session.add(new_book)
-        db.session.commit()
-        return new_book.to_json(), 201"""
 
 
 class Book(Resource):
