@@ -21,13 +21,13 @@ class Loans(db.Model):
         return '<Loan %r>' % self.loan_id
 
     def to_json(self):
-        #user = [user.to_json_short() for user in self.users]
         loan_json = {
             'loan_id': self.loan_id,
             'user_id': self.user_id,
             'loan_date': self.loan_date,
             'finish_date': self.finish_date,
-            #'user': user
+            'user': self.users.to_json(), #muestra el user de ese loan
+            'books': [book.to_json() for book in self.books] #muestra el book de ese loan
         }
         return loan_json
 
