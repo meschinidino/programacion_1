@@ -20,14 +20,14 @@ class Loans(Resource):
 
 
 
-        # if request.args.get("user_id"):
-        #     loans = loans.filter(LoansModel.user_id.like('%' + request.args.get("user_id") + '%'))
-        # if request.args.get("book_id"):
-        #     loans = loans.filter(LoansModel.book_id.like('%' + request.args.get("book_id") + '%'))
-        # if request.args.get("loan_date"):
-        #     loans = loans.filter(LoansModel.loan_date.like('%' + request.args.get("loan_date") + '%'))
-        # if request.args.get("sorting_by_finish_date"):
-        #     loans = loans.outerjoin(BooksModel).order_by(desc(BooksModel.finish_date))
+        if request.args.get("user_id"):
+            loans = loans.filter(LoansModel.user_id.like('%' + request.args.get("user_id") + '%'))
+        if request.args.get("book_id"):
+            loans = loans.filter(LoansModel.book_id.like('%' + request.args.get("book_id") + '%'))
+        if request.args.get("loan_date"):
+            loans = loans.filter(LoansModel.loan_date.like('%' + request.args.get("loan_date") + '%'))
+        if request.args.get("sorting_by_finish_date"):
+            loans = loans.outerjoin(BooksModel).order_by(desc(BooksModel.finish_date))
 
 
         loans = loans.paginate(page=page, per_page=per_page, error_out=True)
