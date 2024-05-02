@@ -7,7 +7,14 @@ from sqlalchemy import func, desc, or_
 
 class Ratings(Resource):
     def get(self):
+        page = 1
+        per_page = 10
         ratings = db.session.query(RatingsModel)
+
+        if request.args.get('page'):
+            page = int(request.args.get('page'))
+        if request.args.get('per_page'):
+            per_page = int(request.args.get('per_page'))
 
         ##FILTERS
         if request.args.get('assessment'):
@@ -21,21 +28,22 @@ class Ratings(Resource):
         if request.args.get('user_id'):
             user_name = request.args.get('user_id')
             ratings = ratings.filter(RatingsModel.users.any(or_(UsersModel.name.like(f"%{user_name}%"), UsersModel.last_name.like(f"%{user_name}%"))))
-        if request.args.get('book_id'):
-            book = request.args.get('book_id')
-            ratings = ratings.filter(RatingsModel.books.any(or_(BooksModel.name.like(f"%{book}%"))))
-        return jsonify([rating.to_json() for rating in ratings])   
+        # if request.args.get('book_id'):
+        #     book = request.args.get('book_id')
+        #     ratings = ratings.filter(RatingsModel.books.any(or_(BooksModel.title.like(f"%{book}%"))))
+        ratings = ratings.paginate(page=page, per_page=per_page, error_out=True, max_per_page=30)
 
+        return jsonify({'ratings':[rating.to_json() for rating in ratings],
+                    'total':ratings.total,
+                    'pages':ratings.pages,
+                    'page':page})   
+    
     def post(self):
         new_rating = RatingsModel.from_json(request.get_json())
-        print(new_rating)
-        try:
-            db.session.add(new_rating)
-            db.session.commit()
-        except:
-            return 'Formato no correcto',400
+        db.session.add(new_rating)
+        db.session.commit()
         return new_rating.to_json(), 201
-
+    
 
 class Rating(Resource):
     def get(self, rating_id):
