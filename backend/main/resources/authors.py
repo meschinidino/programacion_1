@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request, jsonify
 from main.models import AuthorsModel
+from sqlalchemy import or_
 from .. import db
 
 
@@ -11,18 +12,29 @@ class Authors(Resource):
 
         per_page = 10
 
-        authors = db.session.query(AuthorsModel).all()
+        authors = db.session.query(AuthorsModel)
 
         if request.args.get('page'):
             page = int(request.args.get('page'))
         if request.args.get('per_page'):
             per_page = int(request.args.get('per_page'))
 
-        # acá van las relaciones
+        # acá van los filtros
+        
+        if request.args.get('last_name'):
+            authors = authors.filter(AuthorsModel.last_name.like("%"+request.args.get('last_name')+"%"))
+        if request.args.get('author'):
+            author_name = request.args.get('author')
+            authors = authors.filter(AuthorsModel.authors.any(or_(AuthorsModel.name.like(f"%{author_name}%"), AuthorsModel.last_name.like(f"%{author_name}%"))))
 
         authors = authors.paginate(page=page, per_page=per_page, error_out=True)
 
-        return jsonify([authors.to_json() for authors in authors])
+        return jsonify({
+            'authors': [author.to_json_complete() for author in authors.items],
+            'total': authors.total,
+            'pages': authors.pages,
+            'page': page
+        })
 
     #insertar recurso
     def post(self):

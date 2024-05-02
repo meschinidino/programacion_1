@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import request, jsonify
 from main.models import UsersModel
+from sqlalchemy import or_
 from .. import db
 
 
@@ -11,18 +12,31 @@ class Users(Resource):
 
         per_page = 10
 
-        users = db.session.query(UsersModel).all()
+        users = db.session.query(UsersModel)
 
         if request.args.get('page'):
             page = int(request.args.get('page'))
         if request.args.get('per_page'):
             per_page = int(request.args.get('per_page'))
 
-        #acá van las relaciones
+        #acá van los filtros
 
+        if request.args.get('role'):
+            users = users.filter(UsersModel.role.like("%" + request.args.get('role') + "%"))
+        if request.args.get('email'):
+            users = users.filter(UsersModel.email.like("%" + request.args.get('email') + "%"))
+        if request.args.get('user'):
+            user_name = request.args.get('user')
+            users = users.filter(UsersModel.users.any(or_(UsersModel.name.like(f"%{user_name}%"), UsersModel.last_name.like(f"%{user_name}%"))))
 
         users = users.paginate(page=page, per_page=per_page, error_out=True)
-        return jsonify([user.to_json_complete()for user in users])
+        
+        return jsonify({
+            'users': [user.to_json_complete() for user in users.items],
+            'total': users.total,
+            'pages': users.pages,
+            'page': page
+        })
 
     # instertar recurso
     def post(self):
