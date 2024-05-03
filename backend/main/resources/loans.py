@@ -38,8 +38,6 @@ class Loans(Resource):
                         'page': page})
 
 
-
-
     def post(self):
         book_ids = request.get_json().get('book_id')
         loan = LoansModel.from_json(request.get_json())
@@ -75,3 +73,5 @@ class Loan(Resource):
         db.session.commit()
         return 'Delete', 200
 
+#jma2
+#jma2
