@@ -31,6 +31,7 @@ class Ratings(Resource):
         # if request.args.get('book_id'):
         #     book = request.args.get('book_id')
         #     ratings = ratings.filter(RatingsModel.books.any(or_(BooksModel.title.like(f"%{book}%"))))
+
         ratings = ratings.paginate(page=page, per_page=per_page, error_out=True, max_per_page=30)
 
         return jsonify({'ratings':[rating.to_json() for rating in ratings],
