@@ -75,3 +75,4 @@ class Loan(Resource):
         db.session.commit()
         return 'Delete', 200
 
+#jma2
