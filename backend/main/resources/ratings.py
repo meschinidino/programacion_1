@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask import request, jsonify
 from .. import db
-from main.models import RatingsModel,UsersModel,BooksModel
+from main.models import RatingsModel, UsersModel, BooksModel
 from sqlalchemy import func, desc, or_
 
 
@@ -27,24 +27,25 @@ class Ratings(Resource):
             ratings = ratings.filter(RatingsModel.valuation_date == valuation_date_value)
         if request.args.get('user_id'):
             user_name = request.args.get('user_id')
-            ratings = ratings.filter(RatingsModel.users.any(or_(UsersModel.name.like(f"%{user_name}%"), UsersModel.last_name.like(f"%{user_name}%"))))
+            ratings = ratings.filter(RatingsModel.users.any(
+                or_(UsersModel.name.like(f"%{user_name}%"), UsersModel.last_name.like(f"%{user_name}%"))))
         # if request.args.get('book_id'):
         #     book = request.args.get('book_id')
         #     ratings = ratings.filter(RatingsModel.books.any(or_(BooksModel.title.like(f"%{book}%"))))
 
         ratings = ratings.paginate(page=page, per_page=per_page, error_out=True, max_per_page=30)
 
-        return jsonify({'ratings':[rating.to_json() for rating in ratings],
-                    'total':ratings.total,
-                    'pages':ratings.pages,
-                    'page':page})   
-    
+        return jsonify({'ratings': [rating.to_json() for rating in ratings],
+                        'total': ratings.total,
+                        'pages': ratings.pages,
+                        'page': page})
+
     def post(self):
         new_rating = RatingsModel.from_json(request.get_json())
         db.session.add(new_rating)
         db.session.commit()
         return new_rating.to_json(), 201
-    
+
 
 class Rating(Resource):
     def get(self, rating_id):

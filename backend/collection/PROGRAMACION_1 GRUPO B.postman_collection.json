@@ -4,8 +4,8 @@
 		"name": "PROGRAMACION_1 GRUPO B",
 		"description": "INTEGRANTES **GRUPO B:**\n\nMESCHINI DINO\n\nAIDAR JUAN MANUEL\n\nCROSTA LUCAS\n\nQUINTEROS ALMA",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "33777583",
-		"_collection_link": "https://grupob.postman.co/workspace/Team-Workspace~6d6dc8a1-94b2-4127-8040-e1c8df09e4bb/collection/33777583-27f730c6-9627-42cb-9bcc-f3c07e6a3b6a?action=share&source=collection_link&creator=33777583"
+		"_exporter_id": "33778086",
+		"_collection_link": "https://grupob.postman.co/workspace/Team-Workspace~6d6dc8a1-94b2-4127-8040-e1c8df09e4bb/collection/33777583-27f730c6-9627-42cb-9bcc-f3c07e6a3b6a?action=share&source=collection_link&creator=33778086"
 	},
 	"item": [
 		{
@@ -398,6 +398,34 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "get_users_filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/users?role=User",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "User"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -655,10 +683,16 @@
 			"name": "Ratings",
 			"item": [
 				{
-					"name": "Lista de ratings",
+					"name": "get_ratings_filter",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "assessment",
+								"value": "4",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://127.0.0.1:5000/ratings?assessment=4",
 							"protocol": "http",
@@ -683,7 +717,39 @@
 					"response": []
 				},
 				{
-					"name": "Agregar rating",
+					"name": "get_ratings_with_pagin",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/ratings?page=2&per_page=1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"ratings"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "per_page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post_ratings",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -695,7 +761,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n        \"rating_id\":7,\n        \"assessment\":4,\n        \"book_id\": 4,\n        \"user_id\": 1,\n        \"comment\": \"very good\",\n        \"valuation_date\": \"20/04/2024\"\n    }",
+							"raw": "{\n        \"rating_id\":8,\n        \"assessment\":3,\n        \"book_id\": 5,\n        \"user_id\": 1,\n        \"comment\": \"very good\",\n        \"valuation_date\": \"21/04/2024\"\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -720,12 +786,12 @@
 					"response": []
 				},
 				{
-					"name": "Ver un rating",
+					"name": "get_rating",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/rating/7",
+							"raw": "http://127.0.0.1:5000/rating/8",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -736,14 +802,14 @@
 							"port": "5000",
 							"path": [
 								"rating",
-								"7"
+								"8"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Actualizar rating",
+					"name": "put_rating",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -775,7 +841,7 @@
 					"response": []
 				},
 				{
-					"name": "Borrar un rating",
+					"name": "delete_rating",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -940,6 +1006,34 @@
 							"path": [
 								"author",
 								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_author_filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/authors?last_name=herbert",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"authors"
+							],
+							"query": [
+								{
+									"key": "last_name",
+									"value": "herbert"
+								}
 							]
 						}
 					},
