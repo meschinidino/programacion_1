@@ -30,7 +30,7 @@ class Authors(Resource):
         authors = authors.paginate(page=page, per_page=per_page, error_out=True)
 
         return jsonify({
-            'authors': [author.to_json_complete() for author in authors.items],
+            'authors': [author.to_json_short() for author in authors.items],
             'total': authors.total,
             'pages': authors.pages,
             'page': page
@@ -41,7 +41,7 @@ class Authors(Resource):
         new_author = AuthorsModel.from_json(request.get_json())
         db.session.add(new_author)
         db.session.commit()
-        return new_author.to_json(), 201
+        return new_author.to_json_short(), 201
 
 
 class Author(Resource):
@@ -58,7 +58,7 @@ class Author(Resource):
             setattr(author, key, value)
         db.session.add(author)
         db.session.commit()
-        return author.to_json(), 201
+        return author.to_json_short(), 201
 
     #Eliminar recurso
     def delete(self, author_id):

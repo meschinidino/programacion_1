@@ -32,7 +32,7 @@ class Loans(Resource):
 
         loans = loans.paginate(page=page, per_page=per_page, error_out=True)
 
-        return jsonify({'loans': [loan.to_json() for loan in loans],
+        return jsonify({'loans': [loan.to_json_short() for loan in loans],
                         'total': loans.total,
                         'pages': loans.pages,
                         'page': page})
@@ -49,13 +49,13 @@ class Loans(Resource):
 
         db.session.add(loan)
         db.session.commit()
-        return loan.to_json(), 201
+        return loan.to_json_short(), 201
 
 
 class Loan(Resource):
     def get(self, loan_id):
         loan = db.session.query(LoansModel).get_or_404(loan_id)
-        return loan.to_json_short()
+        return loan.to_json()
 
     def put(self, loan_id):
         loan_id = int(loan_id)

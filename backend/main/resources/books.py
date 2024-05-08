@@ -34,7 +34,7 @@ class Books(Resource):
 
         books = books.paginate(page=page, per_page=per_page, error_out=True, max_per_page=30)
 
-        return jsonify({'books': [book.to_json_complete() for book in books],
+        return jsonify({'books': [book.to_json_short() for book in books],
                         'total':books.total,
                         'pages':books.pages,
                         'page': page})
@@ -53,14 +53,14 @@ class Books(Resource):
 
         db.session.add(book)
         db.session.commit()
-        return book.to_json(), 201
+        return book.to_json_short(), 201
 
 
 class Book(Resource):
     #obtener recurso
     def get(self, book_id):
         book = db.session.query(BooksModel).get_or_404(book_id)
-        return book.to_json_complete()
+        return book.to_json()
 
     #Modificar el recurso libro
     def put(self, book_id):
@@ -70,7 +70,7 @@ class Book(Resource):
             setattr(book, key, value)
         db.session.add(book)
         db.session.commit()
-        return book.to_json(), 201
+        return book.to_json_short(), 201
 
 
     #Eliminar recurso
