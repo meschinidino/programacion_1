@@ -15,7 +15,7 @@ class Books(db.Model):
     def __repr__(self):
         return '<Book %r>' % self.title
     
-    def to_json_complete(self):
+    def to_json(self):
         ratings = [rating.to_json_short() for rating in self.ratings]
         book_json = {
             'book_id': self.book_id,
@@ -28,18 +28,6 @@ class Books(db.Model):
             'ratings': ratings,
             'loans': [loan.to_json_short() for loan in self.loans],
             'authors': [author.to_json() for author in self.authors]
-        }
-        return book_json
-
-    def to_json(self):
-        book_json = {
-            'book_id': self.book_id,
-            'title': str(self.title),
-            'genre': str(self.genre),
-            'year': self.year,
-            'editorial': str(self.editorial),
-            'isbn': self.isbn,
-            'available': self.available,
         }
         return book_json
 

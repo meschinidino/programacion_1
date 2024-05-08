@@ -32,7 +32,7 @@ class Users(Resource):
         users = users.paginate(page=page, per_page=per_page, error_out=True)
         
         return jsonify({
-            'users': [user.to_json_complete() for user in users.items],
+            'users': [user.to_json_short() for user in users.items],
             'total': users.total,
             'pages': users.pages,
             'page': page
@@ -43,14 +43,14 @@ class Users(Resource):
         new_user = UsersModel.from_json(request.get_json())
         db.session.add(new_user)
         db.session.commit()
-        return new_user.to_json(), 201
+        return new_user.to_json_short(), 201
 
 
 class User(Resource):
     #obtener recurso
     def get(self, user_id):
         user = db.session.query(UsersModel).get_or_404(user_id)
-        return user.to_json_complete()
+        return user.to_json()
 
 
     # Modificar el recurso usuario
@@ -62,7 +62,7 @@ class User(Resource):
             setattr(user, key, value)
         db.session.add(user)
         db.session.commit()
-        return user.to_json(), 201
+        return user.to_json_short(), 201
 
     # Eliminar recurso
     def delete(self, user_id):

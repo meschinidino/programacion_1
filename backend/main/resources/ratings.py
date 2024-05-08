@@ -35,7 +35,7 @@ class Ratings(Resource):
 
         ratings = ratings.paginate(page=page, per_page=per_page, error_out=True, max_per_page=30)
 
-        return jsonify({'ratings': [rating.to_json() for rating in ratings],
+        return jsonify({'ratings': [rating.to_json_short() for rating in ratings],
                         'total': ratings.total,
                         'pages': ratings.pages,
                         'page': page})
@@ -44,7 +44,7 @@ class Ratings(Resource):
         new_rating = RatingsModel.from_json(request.get_json())
         db.session.add(new_rating)
         db.session.commit()
-        return new_rating.to_json(), 201
+        return new_rating.to_json_short(), 201
 
 
 class Rating(Resource):
@@ -61,7 +61,7 @@ class Rating(Resource):
             setattr(rating, key, value)
         db.session.add(rating)
         db.session.commit()
-        return rating.to_json(), 201
+        return rating.to_json_short(), 201
 
     def delete(self, rating_id):
         rating_id = int(rating_id)

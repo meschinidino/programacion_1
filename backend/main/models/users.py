@@ -15,20 +15,8 @@ class Users(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.user_id
-    def to_json(self):
-        user_json = {
-            "user_id": self.user_id,
-            "name": self.name,
-            "last_name": self.last_name,
-            "email": self.email,
-            "password": self.password,
-            "phone_number": self.phone_number,
-            "address": self.address,
-            "role": self.role
-        }
-        return user_json
 
-    def to_json_complete(self):
+    def to_json(self):
         loan = [loan.to_json_short() for loan in self.loans]
         user_json = {
             "user_id": self.user_id,
