@@ -1,6 +1,6 @@
 from flask_restful import Resource
 from flask import request, jsonify
-from main.models import AuthorsModel
+from main.models import AuthorsModel, BooksModel
 from sqlalchemy import or_
 from .. import db
 
@@ -25,7 +25,10 @@ class Authors(Resource):
             authors = authors.filter(AuthorsModel.last_name.like("%"+request.args.get('last_name')+"%"))
         if request.args.get('author'):
             author_name = request.args.get('author')
-            authors = authors.filter(AuthorsModel.authors.any(or_(AuthorsModel.name.like(f"%{author_name}%"), AuthorsModel.last_name.like(f"%{author_name}%"))))
+            authors = authors.filter(or_(AuthorsModel.name.like(f"%{author_name}%"), AuthorsModel.last_name.like(f"%{author_name}%")))
+        if request.args.get('book_title'):
+            book = request.args.get('book_title')
+            authors = authors.join(AuthorsModel.books).filter(BooksModel.title.like(f"%{book}%"))
 
         authors = authors.paginate(page=page, per_page=per_page, error_out=True)
 

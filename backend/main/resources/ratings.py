@@ -2,7 +2,7 @@ from flask_restful import Resource
 from flask import request, jsonify
 from .. import db
 from main.models import RatingsModel, UsersModel, BooksModel
-from sqlalchemy import func, desc, or_
+from sqlalchemy import func, desc, or_, asc
 
 
 class Ratings(Resource):
@@ -20,18 +20,26 @@ class Ratings(Resource):
         if request.args.get('assessment'):
             assessment_value = request.args.get('assessment')
             ratings = ratings.filter(RatingsModel.assessment == assessment_value)
-        if request.args.get('sort_descending'):
-            ratings = ratings.order_by(desc(RatingsModel.assessment))
+        if request.args.get('sort_by'):
+            if request.args.get('sort_by') == 'd':
+                ratings = ratings.order_by(desc(RatingsModel.assessment))
+            if request.args.get('sort_by') == 'a':
+                ratings = ratings.order_by(asc(RatingsModel.assessment))
         if request.args.get('valuation_date'):
             valuation_date_value = request.args.get('valuation_date')
-            ratings = ratings.filter(RatingsModel.valuation_date == valuation_date_value)
-        if request.args.get('user_id'):
+            ratings = ratings.filter(RatingsModel.valuation_date.like(f"%{valuation_date_value}"))
+
+        if request.args.get('name'):
             user_name = request.args.get('user_id')
-            ratings = ratings.filter(RatingsModel.users.any(
-                or_(UsersModel.name.like(f"%{user_name}%"), UsersModel.last_name.like(f"%{user_name}%"))))
-        # if request.args.get('book_id'):
-        #     book = request.args.get('book_id')
-        #     ratings = ratings.filter(RatingsModel.books.any(or_(BooksModel.title.like(f"%{book}%"))))
+            ratings = ratings.join(UsersModel).filter(or_(UsersModel.name.like(f"%{user_name}%"), UsersModel.last_name.like(f"%{user_name}%")))
+
+        if request.args.get('book_title'):
+            book = request.args.get('book_title')
+            ratings = ratings.join(BooksModel).filter(BooksModel.title.like(f"%{book}%"))
+
+        if request.args.get('book_id'):
+            book_id = request.args.get('book_id')
+            ratings = ratings.join(BooksModel).filter_by(book_id = book_id)
 
         ratings = ratings.paginate(page=page, per_page=per_page, error_out=True, max_per_page=30)
 
