@@ -26,8 +26,8 @@ class Loans(db.Model):
             'user_id': self.user_id,
             'loan_date': self.loan_date,
             'finish_date': self.finish_date,
-            'user': self.users.to_json(), #muestra el user de ese loan
-            'books': [book.to_json() for book in self.books] #muestra el book de ese loan
+            'user': self.users.to_json_short(), #muestra el user de ese loan
+            'books': [book.to_json_short() for book in self.books] #muestra el book de ese loan
         }
         return loan_json
 

@@ -27,7 +27,7 @@ class Books(db.Model):
             'available': self.available,
             'ratings': ratings,
             'loans': [loan.to_json_short() for loan in self.loans],
-            'authors': [author.to_json() for author in self.authors]
+            'authors': [author.to_json_short() for author in self.authors]
         }
         return book_json
 

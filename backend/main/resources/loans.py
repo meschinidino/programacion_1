@@ -3,6 +3,7 @@ from flask import request, jsonify
 from main.models import LoansModel, BooksModel
 from sqlalchemy import func, desc
 from .. import db
+from datetime import datetime, date as date_module
 
 
 class Loans(Resource):
@@ -21,14 +22,16 @@ class Loans(Resource):
         if request.args.get("user_id"):
             loans = loans.filter(LoansModel.user_id == request.args.get("user_id"))
         if request.args.get("book_id"):
-            loans = loans.filter(LoansModel.book_id == request.args.get("book_id"))
-        if request.args.get("loan_date"):
-            loans = loans.filter(LoansModel.loan_date == request.args.get("loan_date"))
-        if request.args.get("sorting_by_finish_date"):
-            loans = loans.outerjoin(BooksModel).order_by(desc(BooksModel.finish_date))
-
-
-
+            loans = loans.filter(LoansModel.book_id == request.args.get("book_id"))####
+        if request.args.get("loan_date"): 
+            date = request.args.get('loan_date')
+            loans = loans.filter(LoansModel.loan_date.like(f"%{date}"))
+        """if request.args.get("sorting_by_finish_date"): #####
+            today = datetime.now()
+            #loans = loans.filter(func.STRFTIME('%d/%m/%Y', LoansModel.finish_date) < today.strftime('%d/%m/%Y')
+            
+            today_str = datetime.now().strftime('%d/%m/%Y')
+            loans = loans.filter(datetime.strptime(getattr(LoansModel, 'finish_date'), '%d/%m/%Y') > today)"""
 
         loans = loans.paginate(page=page, per_page=per_page, error_out=True)
 

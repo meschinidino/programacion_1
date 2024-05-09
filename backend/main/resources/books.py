@@ -2,7 +2,7 @@ from flask_restful import Resource
 from flask import request, jsonify
 from sqlalchemy import select
 from main.models import BooksModel, AuthorsModel, RatingsModel
-from sqlalchemy import func, desc, or_
+from sqlalchemy import func, desc, or_, asc
 from .. import db
 
 class Books(Resource):
@@ -27,14 +27,17 @@ class Books(Resource):
         if request.args.get('title'):
             books = books.filter(BooksModel.title.like("%"+request.args.get('title')+"%"))
         if request.args.get('sortby_rating'):
-            pass
+            if request.args.get('sortby_rating') == 'd':
+                books = books.outerjoin(BooksModel.ratings).group_by(BooksModel.book_id).order_by(func.avg(RatingsModel.assessment).desc()) 
+            if request.args.get('sortby_rating') == 'a':
+                books = books.outerjoin(BooksModel.ratings).group_by(BooksModel.book_id).order_by(func.avg(RatingsModel.assessment).asc()) 
         if request.args.get('author'):
             author_name = request.args.get('author')
             books = books.filter(BooksModel.authors.any(or_(AuthorsModel.name.like(f"%{author_name}%"), AuthorsModel.last_name.like(f"%{author_name}%"))))
 
         books = books.paginate(page=page, per_page=per_page, error_out=True, max_per_page=30)
 
-        return jsonify({'books': [book.to_json_short() for book in books],
+        return jsonify({'books': [book.to_json() for book in books],
                         'total':books.total,
                         'pages':books.pages,
                         'page': page})
