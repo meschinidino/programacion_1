@@ -17,7 +17,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/books",
+							"raw": "http://127.0.0.1:5000/books?page=1&per_page=1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -42,18 +42,16 @@
 								},
 								{
 									"key": "title",
-									"value": "duna",
+									"value": "dune",
 									"disabled": true
 								},
 								{
 									"key": "page",
-									"value": "1",
-									"disabled": true
+									"value": "1"
 								},
 								{
 									"key": "per_page",
-									"value": "1",
-									"disabled": true
+									"value": "1"
 								},
 								{
 									"key": "author",
