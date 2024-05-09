@@ -14,7 +14,7 @@ class Authors(db.Model):
     books = db.relationship('Books', secondary=author_books,backref=db.backref('authors', lazy='dynamic'))
 
     def to_json(self):
-        books = [book.to_json() for book in self.books]
+        books = [book.to_json_short() for book in self.books]
         author_json = {
             "author_id": self.author_id,
             "name": self.name,

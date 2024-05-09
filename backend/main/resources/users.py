@@ -25,9 +25,10 @@ class Users(Resource):
             users = users.filter(UsersModel.role.like("%" + request.args.get('role') + "%"))
         if request.args.get('email'):
             users = users.filter(UsersModel.email.like("%" + request.args.get('email') + "%"))
-        if request.args.get('user'):
-            user_name = request.args.get('user')
-            users = users.filter(UsersModel.users.any(or_(UsersModel.name.like(f"%{user_name}%"), UsersModel.last_name.like(f"%{user_name}%"))))
+        if request.args.get('name'):
+            user_name = request.args.get('name')
+            users = users.filter((UsersModel.name.like(f"%{user_name}%")) | (UsersModel.last_name.like(f"%{user_name}%")))
+
 
         users = users.paginate(page=page, per_page=per_page, error_out=True)
         

@@ -24,7 +24,7 @@ class Ratings(db.Model):
             "assessment": self.assessment,
             "valuation_date": self.valuation_date,
             "comment": self.comment,
-            "book" : self.book.to_json(),
+            "book" : self.book.to_json_short(),
         }
         return rating_json
 

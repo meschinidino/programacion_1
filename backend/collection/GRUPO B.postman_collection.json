@@ -4,52 +4,20 @@
 		"name": "PROGRAMACION_1 GRUPO B",
 		"description": "INTEGRANTES **GRUPO B:**\n\nMESCHINI DINO\n\nAIDAR JUAN MANUEL\n\nCROSTA LUCAS\n\nQUINTEROS ALMA",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "33778086",
-		"_collection_link": "https://grupob.postman.co/workspace/Team-Workspace~6d6dc8a1-94b2-4127-8040-e1c8df09e4bb/collection/33777583-27f730c6-9627-42cb-9bcc-f3c07e6a3b6a?action=share&source=collection_link&creator=33778086"
+		"_exporter_id": "33777583",
+		"_collection_link": "https://grupob.postman.co/workspace/Team-Workspace~6d6dc8a1-94b2-4127-8040-e1c8df09e4bb/collection/33777583-27f730c6-9627-42cb-9bcc-f3c07e6a3b6a?action=share&source=collection_link&creator=33777583"
 	},
 	"item": [
 		{
 			"name": "Books",
 			"item": [
 				{
-					"name": "get_book_db_with_pagin",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://127.0.0.1:5000/books?page=2&per_page=1",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "5000",
-							"path": [
-								"books"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "2"
-								},
-								{
-									"key": "per_page",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "get_book_with_filters_and_pag",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/books?author=frank",
+							"raw": "http://127.0.0.1:5000/books?page=1&per_page=1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -63,8 +31,37 @@
 							],
 							"query": [
 								{
+									"key": "sortby_rating",
+									"value": "a",
+									"disabled": true
+								},
+								{
+									"key": "sortby_rating",
+									"value": "d",
+									"disabled": true
+								},
+								{
+									"key": "title",
+									"value": "dune",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "1"
+								},
+								{
 									"key": "author",
-									"value": "frank"
+									"value": "Frank",
+									"disabled": true
+								},
+								{
+									"key": "genre",
+									"value": "sci",
+									"disabled": true
 								}
 							]
 						}
@@ -114,7 +111,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/book/5",
+							"raw": "http://127.0.0.1:5000/book/1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -125,14 +122,14 @@
 							"port": "5000",
 							"path": [
 								"book",
-								"5"
+								"1"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "put_Book",
+					"name": "put_book",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -144,7 +141,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"book_id\": 2,\n    \"author_id\" : 3,\n    \"title\" : \"Dune part 2\",\n    \"genre\": \"Sci-Fi\",\n    \"year\" : 1967,\n    \"editorial\" : \"Editorial\",\n    \"isbn\" : 1231231,\n    \"available\" : \"Yes\"\n}\n",
+							"raw": "{\n    \"author_id\" : 3,\n    \"title\" : \"Dune part 2\",\n    \"genre\": \"Sci-Fi\",\n    \"year\" : 1968,\n    \"editorial\" : \"Editorial\",\n    \"isbn\" : 1231231,\n    \"available\" : \"Yes\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -152,7 +149,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:5000/book/2",
+							"raw": "http://127.0.0.1:5000/book/1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -163,7 +160,7 @@
 							"port": "5000",
 							"path": [
 								"book",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -257,7 +254,7 @@
 			"name": "Users",
 			"item": [
 				{
-					"name": "get_users",
+					"name": "get_users_with_filters_and_pag",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -273,6 +270,38 @@
 							"port": "5000",
 							"path": [
 								"users"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "User",
+									"disabled": true
+								},
+								{
+									"key": "role",
+									"value": "Admin",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "aliciab",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "lcias",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "per_page",
+									"value": "1",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -316,7 +345,7 @@
 					"response": []
 				},
 				{
-					"name": "get_user_by_id",
+					"name": "get_user_id",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -394,34 +423,6 @@
 							"path": [
 								"user",
 								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get_users_filter",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://127.0.0.1:5000/users?role=User",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "5000",
-							"path": [
-								"users"
-							],
-							"query": [
-								{
-									"key": "role",
-									"value": "User"
-								}
 							]
 						}
 					},
@@ -547,7 +548,7 @@
 			"name": "Loans",
 			"item": [
 				{
-					"name": "Lista de prestamos",
+					"name": "get_loans_with_filters_and_pag",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -563,13 +564,40 @@
 							"port": "5000",
 							"path": [
 								"loans"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "book_id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "loan_date",
+									"value": "2023",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "per_page",
+									"value": "1",
+									"disabled": true
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Agregar prestamo",
+					"name": "post_loans",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -600,7 +628,7 @@
 					"response": []
 				},
 				{
-					"name": "Ver un prestamo",
+					"name": "get_loan_id",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -623,7 +651,7 @@
 					"response": []
 				},
 				{
-					"name": "Actualizar un prestamo",
+					"name": "put_loan",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -655,7 +683,7 @@
 					"response": []
 				},
 				{
-					"name": "Eliminar prestamo",
+					"name": "delete_loan",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -683,7 +711,7 @@
 			"name": "Ratings",
 			"item": [
 				{
-					"name": "get_ratings_filter",
+					"name": "get_ratings_with_filters_and_pag",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -694,7 +722,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:5000/ratings?assessment=4",
+							"raw": "http://127.0.0.1:5000/ratings",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -709,39 +737,48 @@
 							"query": [
 								{
 									"key": "assessment",
-									"value": "4"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get_ratings_with_pagin",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://127.0.0.1:5000/ratings?page=2&per_page=1",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "5000",
-							"path": [
-								"ratings"
-							],
-							"query": [
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "sort_by",
+									"value": "a",
+									"disabled": true
+								},
+								{
+									"key": "sort_by",
+									"value": "d",
+									"disabled": true
+								},
+								{
+									"key": "valuation_date",
+									"value": "2024",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "john",
+									"disabled": true
+								},
+								{
+									"key": "book_id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "book_title",
+									"value": "dune",
+									"disabled": true
+								},
 								{
 									"key": "page",
-									"value": "2"
+									"value": "1",
+									"disabled": true
 								},
 								{
 									"key": "per_page",
-									"value": "1"
+									"value": "2",
+									"disabled": true
 								}
 							]
 						}
@@ -786,7 +823,7 @@
 					"response": []
 				},
 				{
-					"name": "get_rating",
+					"name": "get_rating_id",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -869,7 +906,7 @@
 			"name": "Authors",
 			"item": [
 				{
-					"name": "get_authors",
+					"name": "get_authors_with_filters_and_pag",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -885,6 +922,33 @@
 							"port": "5000",
 							"path": [
 								"authors"
+							],
+							"query": [
+								{
+									"key": "last_name",
+									"value": "meschini",
+									"disabled": true
+								},
+								{
+									"key": "author",
+									"value": "dino",
+									"disabled": true
+								},
+								{
+									"key": "book_title",
+									"value": "1984",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "per_page",
+									"value": "1",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -1006,34 +1070,6 @@
 							"path": [
 								"author",
 								"2"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get_author_filter",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://127.0.0.1:5000/authors?last_name=herbert",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "5000",
-							"path": [
-								"authors"
-							],
-							"query": [
-								{
-									"key": "last_name",
-									"value": "herbert"
-								}
 							]
 						}
 					},
