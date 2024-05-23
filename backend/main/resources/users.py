@@ -1,12 +1,15 @@
 from flask_restful import Resource
 from flask import request, jsonify
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from main.models import UsersModel
+from main.auth.decorators import role_required
 from sqlalchemy import or_
 from .. import db
 
 
 class Users(Resource):
-    # obtener lista de usuarios
+    # obtener lista de usuarios solo lo puede hacer el admin
+    @role_required(roles = "Admin")
     def get(self):
         page = 1
 
@@ -39,22 +42,22 @@ class Users(Resource):
             'page': page
         })
 
-    # instertar recurso
-    def post(self):
-        new_user = UsersModel.from_json(request.get_json())
-        db.session.add(new_user)
-        db.session.commit()
-        return new_user.to_json_short(), 201
-
 
 class User(Resource):
-    #obtener recurso
+
+    #obtener usuario
+    @role_required(roles = ["User", "Admin"])
     def get(self, user_id):
         user = db.session.query(UsersModel).get_or_404(user_id)
-        return user.to_json()
 
+        current_identity = get_jwt_identity()
+        if current_identity:
+            return user.to_json()
+        else:
+            return user.to_json_short()
 
     # Modificar el recurso usuario
+    @role_required(roles = ["User", "Admin"])
     def put(self, user_id):
         user_id = int(user_id)
         user = db.session.query(UsersModel).get_or_404(user_id)
@@ -65,7 +68,8 @@ class User(Resource):
         db.session.commit()
         return user.to_json_short(), 201
 
-    # Eliminar recurso
+    # Eliminar usuario
+    @role_required(roles = "Admin")
     def delete(self, user_id):
         user_id = int(user_id)
         user = db.session.query(UsersModel).get_or_404(user_id)

@@ -2,6 +2,7 @@ from flask import Flask
 from dotenv import load_dotenv
 # Importamos nuevas librerias
 from flask_restful import Api
+from flask_jwt_extended import JWTManager
 import os
 
 # importamos directorio de recursos
@@ -12,6 +13,8 @@ from flask_sqlalchemy import SQLAlchemy
 api = Api()
 
 db = SQLAlchemy()
+
+jwt = JWTManager()
 
 def create_app():
     # inicio flask
@@ -30,7 +33,8 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     #Url de configuración de base de datos
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////'+os.getenv('DATABASE_PATH')+os.getenv('DATABASE_NAME')
-    db.init_app(app)
+    db.init_app(app) 
+
     # espacio para modulos de la app
     import main.resources as resource
     # cargar a la API el recurso usuarios (users) y especificar la ruta
@@ -52,5 +56,12 @@ def create_app():
     api.add_resource(resource.AuthorResource, '/author/<author_id>')
 
     api.init_app(app)
+
+    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+    app.config['JWT_EXPIRATION_TIME'] = int(os.getenv('JWT_EXPIRATION_TIME'))
+    jwt.init_app(app)
+
+    from main.auth import routes
+    app.register_blueprint(routes.auth)
 
     return app
