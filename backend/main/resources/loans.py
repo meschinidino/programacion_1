@@ -1,13 +1,16 @@
 from flask_restful import Resource
 from flask import request, jsonify
 from main.models import LoansModel, BooksModel
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from main.auth.decorators import role_required
 from sqlalchemy import func, desc
 from .. import db
 from datetime import datetime, date as date_module
 
 
 class Loans(Resource):
-    def get(sel):
+    @jwt_required(optional=True)
+    def get(self):
         page = 1
 
         per_page = 10
@@ -42,7 +45,7 @@ class Loans(Resource):
                         'pages': loans.pages,
                         'page': page})
 
-
+    @jwt_required()
     def post(self):
         book_ids = request.get_json().get('book_id')
         loan = LoansModel.from_json(request.get_json())
@@ -58,10 +61,12 @@ class Loans(Resource):
 
 
 class Loan(Resource):
+    @jwt_required()
     def get(self, loan_id):
         loan = db.session.query(LoansModel).get_or_404(loan_id)
         return loan.to_json()
 
+    @jwt_required()
     def put(self, loan_id):
         loan_id = int(loan_id)
         loan = db.session.query(LoansModel).get_or_404(loan_id)
@@ -72,11 +77,10 @@ class Loan(Resource):
         db.session.commit()
         return loan.to_json_short(), 201
 
+    @role_required(roles = ["Admin"])
     def delete(self, loan_id):
         loan = db.session.query(LoansModel).get_or_404(loan_id)
         db.session.delete(loan)
         db.session.commit()
         return 'Delete', 200
 
-#jma2
-#jma2
