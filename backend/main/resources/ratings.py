@@ -2,10 +2,13 @@ from flask_restful import Resource
 from flask import request, jsonify
 from .. import db
 from main.models import RatingsModel, UsersModel, BooksModel
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from main.auth.decorators import role_required
 from sqlalchemy import func, desc, or_, asc
 
 
 class Ratings(Resource):
+    @jwt_required(optional=True)
     def get(self):
         page = 1
         per_page = 10
@@ -48,6 +51,7 @@ class Ratings(Resource):
                         'pages': ratings.pages,
                         'page': page})
 
+    @jwt_required()
     def post(self):
         new_rating = RatingsModel.from_json(request.get_json())
         db.session.add(new_rating)
@@ -56,11 +60,18 @@ class Ratings(Resource):
 
 
 class Rating(Resource):
+    #obtener rating
+    @jwt_required()
     def get(self, rating_id):
-        #rating_id = int(rating_id)
         rating = db.session.query(RatingsModel).get_or_404(rating_id)
-        return rating.to_json()
 
+        current_identity = get_jwt_identity()
+        if current_identity:
+            return rating.to_json()
+        else:
+            return rating.to_json_short()
+
+    @jwt_required()
     def put(self, rating_id):
         rating_id = int(rating_id)
         rating = db.session.query(RatingsModel).get_or_404(rating_id)
@@ -71,6 +82,7 @@ class Rating(Resource):
         db.session.commit()
         return rating.to_json_short(), 201
 
+    @role_required(roles = ["User", "Admin"])
     def delete(self, rating_id):
         rating_id = int(rating_id)
         rating = db.session.query(RatingsModel).get_or_404(rating_id)

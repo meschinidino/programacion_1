@@ -1,6 +1,5 @@
 from .. import db
 
-
 class Ratings(db.Model):
     __tablename__ = 'ratings'
     rating_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -11,7 +10,6 @@ class Ratings(db.Model):
     #relations
     book_id = db.Column(db.Integer, db.ForeignKey("books.book_id"), nullable=False)  # Foreign Key
     book = db.relationship("Books", back_populates="ratings")
-
 
     def __repr__(self):
         return '<Ratings %r>' % self.rating_id
