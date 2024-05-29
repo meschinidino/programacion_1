@@ -1,12 +1,15 @@
 from flask_restful import Resource
 from flask import request, jsonify
 from main.models import AuthorsModel, BooksModel
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from main.auth.decorators import role_required
 from sqlalchemy import or_
 from .. import db
 
 
 class Authors(Resource):
     #obtener lista de los libros
+    @jwt_required(optional=True)
     def get(self):
         page = 1
 
@@ -40,6 +43,7 @@ class Authors(Resource):
         })
 
     #insertar recurso
+    @role_required(roles=["Admin"])
     def post(self):
         new_author = AuthorsModel.from_json(request.get_json())
         db.session.add(new_author)
@@ -49,11 +53,13 @@ class Authors(Resource):
 
 class Author(Resource):
     #obtener recurso
+    @jwt_required()
     def get(self, author_id):
         author = db.session.query(AuthorsModel).get_or_404(author_id)
         return author.to_json()
 
     #Modificar el recurso libro
+    @role_required(roles=["Admin"])
     def put(self, author_id):
         author = db.session.query(AuthorsModel).get_or_404(author_id)
         data = request.get_json().items()
@@ -64,6 +70,7 @@ class Author(Resource):
         return author.to_json_short(), 201
 
     #Eliminar recurso
+    @role_required(roles=["Admin"])
     def delete(self, author_id):
         #Verifico que exista el libro
         author = db.session.query(AuthorsModel).get_or_404(author_id)
