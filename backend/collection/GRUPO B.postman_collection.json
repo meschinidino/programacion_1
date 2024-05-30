@@ -4,8 +4,8 @@
 		"name": "PROGRAMACION_1 GRUPO B",
 		"description": "INTEGRANTES **GRUPO B:**\n\nMESCHINI DINO\n\nAIDAR JUAN MANUEL\n\nCROSTA LUCAS\n\nQUINTEROS ALMA",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "33777583",
-		"_collection_link": "https://grupob.postman.co/workspace/Team-Workspace~6d6dc8a1-94b2-4127-8040-e1c8df09e4bb/collection/33777583-27f730c6-9627-42cb-9bcc-f3c07e6a3b6a?action=share&source=collection_link&creator=33777583"
+		"_exporter_id": "33778086",
+		"_collection_link": "https://grupob.postman.co/workspace/Team-Workspace~6d6dc8a1-94b2-4127-8040-e1c8df09e4bb/collection/33777583-27f730c6-9627-42cb-9bcc-f3c07e6a3b6a?action=share&source=collection_link&creator=33778086"
 	},
 	"item": [
 		{
@@ -791,6 +791,16 @@
 				{
 					"name": "post_ratings",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjk0MzY3OCwianRpIjoiM2YyNWRlNDAtZmNlYy00ZDA1LWE1MzEtYzc1YzJjMGM4ODFhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2OTQzNjc4LCJjc3JmIjoiMmE5YTIxZmMtZjAxYi00NGVjLTg4MjctNGUwZWIzMGUxNzViIiwiZXhwIjoxNzE2OTQ0NTc4LCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.llLyX1l2NTPRVLwSGXzQQ_H-yrpHCmuH_52Px1CFX_U",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -828,6 +838,16 @@
 				{
 					"name": "get_rating_id",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjk0MzY3OCwianRpIjoiM2YyNWRlNDAtZmNlYy00ZDA1LWE1MzEtYzc1YzJjMGM4ODFhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2OTQzNjc4LCJjc3JmIjoiMmE5YTIxZmMtZjAxYi00NGVjLTg4MjctNGUwZWIzMGUxNzViIiwiZXhwIjoxNzE2OTQ0NTc4LCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.llLyX1l2NTPRVLwSGXzQQ_H-yrpHCmuH_52Px1CFX_U",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -883,10 +903,20 @@
 				{
 					"name": "delete_rating",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjk0MzY3OCwianRpIjoiM2YyNWRlNDAtZmNlYy00ZDA1LWE1MzEtYzc1YzJjMGM4ODFhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2OTQzNjc4LCJjc3JmIjoiMmE5YTIxZmMtZjAxYi00NGVjLTg4MjctNGUwZWIzMGUxNzViIiwiZXhwIjoxNzE2OTQ0NTc4LCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.llLyX1l2NTPRVLwSGXzQQ_H-yrpHCmuH_52Px1CFX_U",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:5000/rating/7",
+							"raw": "http://127.0.0.1:5000/rating/8",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -897,7 +927,7 @@
 							"port": "5000",
 							"path": [
 								"rating",
-								"7"
+								"8"
 							]
 						}
 					},
@@ -960,6 +990,16 @@
 				{
 					"name": "post_authors",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzAyNDk3NSwianRpIjoiYmEyZWM3MTktZmMzNi00ODM0LWIxYzctZjZkZjM0ODZkMGQzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE3MDI0OTc1LCJjc3JmIjoiNGRjNTI4ZWItNzYwZS00ODAxLTkwODMtMWM4MDE0NzA2YzkyIiwiZXhwIjoxNzE3MDI1ODc1LCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.7seD4uAsVOXUeTa-o2eyVMOe7NQO2DI3uO4_YnhgNZ0",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -997,6 +1037,16 @@
 				{
 					"name": "get_author_id",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzAyNDk3NSwianRpIjoiYmEyZWM3MTktZmMzNi00ODM0LWIxYzctZjZkZjM0ODZkMGQzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE3MDI0OTc1LCJjc3JmIjoiNGRjNTI4ZWItNzYwZS00ODAxLTkwODMtMWM4MDE0NzA2YzkyIiwiZXhwIjoxNzE3MDI1ODc1LCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.7seD4uAsVOXUeTa-o2eyVMOe7NQO2DI3uO4_YnhgNZ0",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -1020,6 +1070,16 @@
 				{
 					"name": "put_author",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzAyNDk3NSwianRpIjoiYmEyZWM3MTktZmMzNi00ODM0LWIxYzctZjZkZjM0ODZkMGQzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE3MDI0OTc1LCJjc3JmIjoiNGRjNTI4ZWItNzYwZS00ODAxLTkwODMtMWM4MDE0NzA2YzkyIiwiZXhwIjoxNzE3MDI1ODc1LCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.7seD4uAsVOXUeTa-o2eyVMOe7NQO2DI3uO4_YnhgNZ0",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [
 							{
@@ -1058,6 +1118,16 @@
 				{
 					"name": "delete_author",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzAyNDk3NSwianRpIjoiYmEyZWM3MTktZmMzNi00ODM0LWIxYzctZjZkZjM0ODZkMGQzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE3MDI0OTc1LCJjc3JmIjoiNGRjNTI4ZWItNzYwZS00ODAxLTkwODMtMWM4MDE0NzA2YzkyIiwiZXhwIjoxNzE3MDI1ODc1LCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.7seD4uAsVOXUeTa-o2eyVMOe7NQO2DI3uO4_YnhgNZ0",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
