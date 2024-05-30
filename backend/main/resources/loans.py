@@ -61,12 +61,12 @@ class Loans(Resource):
 
 
 class Loan(Resource):
-    @jwt_required()
+    @role_required(roles=["Admin"])
     def get(self, loan_id):
         loan = db.session.query(LoansModel).get_or_404(loan_id)
         return loan.to_json()
 
-    @jwt_required()
+    @role_required(roles=["Admin"])
     def put(self, loan_id):
         loan_id = int(loan_id)
         loan = db.session.query(LoansModel).get_or_404(loan_id)
