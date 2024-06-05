@@ -1,0 +1,7 @@
+Bienvenido {{user.name}} {{user.last_name}}!
+
+Gracias por registrarte en nuestro sistema.
+
+Con nuestro servicio podras:
+
+- Ver tus préstamos, libros y reseñas
