@@ -2,6 +2,7 @@ from flask import request, jsonify, Blueprint
 from .. import db
 from main.models import UsersModel
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
+from main.mail.functions import sendMail
 
 #Blueprint para acceder a los métodos de autenticación
 auth = Blueprint('auth', __name__, url_prefix='/auth')
@@ -38,10 +39,12 @@ def register():
         return 'Duplicated mail', 409
     else:
         try:
-            #Agregar user a la base
+            #Agregar user a la basex
             db.session.add(user)
             db.session.commit()
+            send = sendMail([user.email], "Welcome", 'register', user=user)
         except Exception as error:
             db.session.rollback()
+            print(error)
             return str(error), 409
         return user.to_json_short() , 201
