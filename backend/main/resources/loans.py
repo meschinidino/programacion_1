@@ -61,12 +61,12 @@ class Loans(Resource):
 
 
 class Loan(Resource):
-    @role_required(roles=["Admin"])
+    @role_required(roles=["Librarian"])
     def get(self, loan_id):
         loan = db.session.query(LoansModel).get_or_404(loan_id)
         return loan.to_json()
 
-    @role_required(roles=["Admin"])
+    @role_required(roles=["Librarian"])
     def put(self, loan_id):
         loan_id = int(loan_id)
         loan = db.session.query(LoansModel).get_or_404(loan_id)
@@ -77,7 +77,7 @@ class Loan(Resource):
         db.session.commit()
         return loan.to_json_short(), 201
 
-    @role_required(roles = ["Admin"])
+    @role_required(roles = ["Librarian"])
     def delete(self, loan_id):
         loan = db.session.query(LoansModel).get_or_404(loan_id)
         db.session.delete(loan)

@@ -82,7 +82,7 @@ class Rating(Resource):
         db.session.commit()
         return rating.to_json_short(), 201
 
-    @role_required(roles = ["User", "Admin"])
+    @role_required(roles = ["Librarian"])
     def delete(self, rating_id):
         rating_id = int(rating_id)
         rating = db.session.query(RatingsModel).get_or_404(rating_id)
