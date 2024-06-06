@@ -42,8 +42,9 @@ def register():
             #Agregar user a la basex
             db.session.add(user)
             db.session.commit()
-            send = sendMail([user.email], "Welcome", "register", user = user)
+            send = sendMail([user.email], "Welcome", 'register', user=user)
         except Exception as error:
             db.session.rollback()
+            print(error)
             return str(error), 409
         return user.to_json_short() , 201
