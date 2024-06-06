@@ -43,6 +43,7 @@ class Users(Resource):
         })
 
 
+
 class User(Resource):
 
     #obtener usuario
