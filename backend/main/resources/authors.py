@@ -43,7 +43,7 @@ class Authors(Resource):
         })
 
     #insertar recurso
-    @role_required(roles=["Admin"])
+    @role_required(roles=["Librarian"])
     def post(self):
         new_author = AuthorsModel.from_json(request.get_json())
         db.session.add(new_author)
@@ -59,7 +59,7 @@ class Author(Resource):
         return author.to_json()
 
     #Modificar el recurso libro
-    @role_required(roles=["Admin"])
+    @role_required(roles=["Librarian"])
     def put(self, author_id):
         author = db.session.query(AuthorsModel).get_or_404(author_id)
         data = request.get_json().items()
@@ -70,7 +70,7 @@ class Author(Resource):
         return author.to_json_short(), 201
 
     #Eliminar recurso
-    @role_required(roles=["Admin"])
+    @role_required(roles=["Librarian"])
     def delete(self, author_id):
         #Verifico que exista el libro
         author = db.session.query(AuthorsModel).get_or_404(author_id)

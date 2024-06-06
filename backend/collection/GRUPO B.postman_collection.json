@@ -408,7 +408,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODIxMSwianRpIjoiNjM4ZWY1YTMtNzZjOS00NThmLWE1YWMtNjRhMGUzOWY2ODA2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4MjExLCJjc3JmIjoiYTljZDdlOTUtYmVjZi00YTkyLTkzMGUtNTEyZmEzYjFmNWJiIiwiZXhwIjoxNzE2NDc5MTExLCJyb2xlIjoiQWRtaW4iLCJpZCI6MSwiZW1haWwiOiJ1bS5lZHUuYXIifQ.4mrrV5qjn2d3lk3EBiGxQDx0aj9HVLcpr52Z3U1Ipx0",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzY0NDUyMiwianRpIjoiY2E4NDZmNTktN2NlNi00NWJkLWJiNGYtZjY4MTRlYTI4Y2ZmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6NiwibmJmIjoxNzE3NjQ0NTIyLCJjc3JmIjoiYjM3YjU5MTUtZGIyYi00ZTNlLWE1ZWQtOTk1OWM4MGZlYjQ4IiwiZXhwIjoxNzE3NjQ1NDIyLCJyb2xlIjoiTGlicmFyaWFuIiwiaWQiOjYsImVtYWlsIjoibC5jcm9zdGFAYWx1bW5vLnVtLmVkdS5hciJ9.MuN-q2eO1XkDWzEHHO_gH1VEJc7Y7sUxT7Zbp3eo8j8",
 									"type": "string"
 								}
 							]
@@ -1218,7 +1218,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\":\"um.edu.ar\",\n    \"password\": \"pass\"\n}",
+							"raw": "{\n    \"email\":\"l.crosta@alumno.um.edu.ar\",\n    \"password\": \"um\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1250,7 +1250,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"profe rodrigo\",\n    \"last_name\" : \"Doe\",\n    \"email\": \"rodrigo.edu.ar\",\n    \"password\" : \"um\",\n    \"phone_number\" : 123456,\n    \"address\" : \"Lincoln Road 76\",\n    \"role\" : \"User\"\n}",
+							"raw": "{\n    \"name\": \"lucas\",\n    \"last_name\" : \"Doe\",\n    \"email\": \"l2.crosta@alumno.um.edu.ar\",\n    \"password\" : \"um\",\n    \"phone_number\" : 123456,\n    \"address\" : \"Lincoln Road 76\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

@@ -9,7 +9,7 @@ from .. import db
 
 class Users(Resource):
     # obtener lista de usuarios solo lo puede hacer el admin
-    @role_required(roles = "Admin")
+    @role_required(roles=["Admin", "Librarian"])
     def get(self):
         page = 1
 
@@ -46,7 +46,7 @@ class Users(Resource):
 class User(Resource):
 
     #obtener usuario
-    @role_required(roles = ["User", "Admin"])
+    @role_required(roles = ["User", "Admin", "Librarian"])
     def get(self, user_id):
         user = db.session.query(UsersModel).get_or_404(user_id)
 
@@ -57,19 +57,30 @@ class User(Resource):
             return user.to_json_short()
 
     # Modificar el recurso usuario
-    @role_required(roles = ["User", "Admin"])
+    @role_required(roles = ["User", "Admin", "Librarian"])
     def put(self, user_id):
         user_id = int(user_id)
         user = db.session.query(UsersModel).get_or_404(user_id)
         data = request.get_json().items()
+
+        current_user_id = get_jwt_identity()
+        current_user = db.session.query(UsersModel).get_or_404(current_user_id)
+
+        for key, value in data:
+            if key == "role":
+                if current_user.role.lower() != "Admin":
+                    return "Only admins can change user roles", 403
+            
+
         for key, value in data:
             setattr(user, key, value)
         db.session.add(user)
         db.session.commit()
+
         return user.to_json_short(), 201
 
     # Eliminar usuario
-    @role_required(roles = "Admin")
+    @role_required(roles = ["Librarian", "Admin"])
     def delete(self, user_id):
         user_id = int(user_id)
         user = db.session.query(UsersModel).get_or_404(user_id)
