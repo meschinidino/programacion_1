@@ -1,0 +1,1281 @@
+{
+	"info": {
+		"_postman_id": "27f730c6-9627-42cb-9bcc-f3c07e6a3b6a",
+		"name": "PROGRAMACION_1 GRUPO B",
+		"description": "INTEGRANTES **GRUPO B:**\n\nMESCHINI DINO\n\nAIDAR JUAN MANUEL\n\nCROSTA LUCAS\n\nQUINTEROS ALMA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33777583",
+		"_collection_link": "https://grupob.postman.co/workspace/Team-Workspace~6d6dc8a1-94b2-4127-8040-e1c8df09e4bb/collection/33777583-27f730c6-9627-42cb-9bcc-f3c07e6a3b6a?action=share&source=collection_link&creator=33777583"
+	},
+	"item": [
+		{
+			"name": "Books",
+			"item": [
+				{
+					"name": "get_book_with_filters_and_pag",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODUyMywianRpIjoiYjcwMTJkNjktOWYyMy00ZWNmLWJjN2YtMTdmNTk5NzAxNzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4NTIzLCJjc3JmIjoiMzI0ZWNkMTEtYjMzNC00MjFhLTgxMzYtNjg0ZGU2ZGM5NzgzIiwiZXhwIjoxNzE2NDc5NDIzLCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.3OMhJOwctFH1i33jUIp7GrtuRAh50jwcRNi9h2amoOI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/books?page=1&per_page=1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"books"
+							],
+							"query": [
+								{
+									"key": "sortby_rating",
+									"value": "a",
+									"disabled": true
+								},
+								{
+									"key": "sortby_rating",
+									"value": "d",
+									"disabled": true
+								},
+								{
+									"key": "title",
+									"value": "dune",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "1"
+								},
+								{
+									"key": "author",
+									"value": "Frank",
+									"disabled": true
+								},
+								{
+									"key": "genre",
+									"value": "sci",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post_book_db",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODUyMywianRpIjoiYjcwMTJkNjktOWYyMy00ZWNmLWJjN2YtMTdmNTk5NzAxNzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4NTIzLCJjc3JmIjoiMzI0ZWNkMTEtYjMzNC00MjFhLTgxMzYtNjg0ZGU2ZGM5NzgzIiwiZXhwIjoxNzE2NDc5NDIzLCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.3OMhJOwctFH1i33jUIp7GrtuRAh50jwcRNi9h2amoOI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\" : \"Dune part three\",\n    \"genre\": \"Sci-Fi\",\n    \"year\" : 1967,\n    \"editorial\" : \"Editorial\",\n    \"isbn\" : 1231231,\n    \"available\" : 10,\n    \"author_id\": [1,2]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/books",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_book_id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODUyMywianRpIjoiYjcwMTJkNjktOWYyMy00ZWNmLWJjN2YtMTdmNTk5NzAxNzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4NTIzLCJjc3JmIjoiMzI0ZWNkMTEtYjMzNC00MjFhLTgxMzYtNjg0ZGU2ZGM5NzgzIiwiZXhwIjoxNzE2NDc5NDIzLCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.3OMhJOwctFH1i33jUIp7GrtuRAh50jwcRNi9h2amoOI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/book/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"book",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put_book",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODUyMywianRpIjoiYjcwMTJkNjktOWYyMy00ZWNmLWJjN2YtMTdmNTk5NzAxNzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4NTIzLCJjc3JmIjoiMzI0ZWNkMTEtYjMzNC00MjFhLTgxMzYtNjg0ZGU2ZGM5NzgzIiwiZXhwIjoxNzE2NDc5NDIzLCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.3OMhJOwctFH1i33jUIp7GrtuRAh50jwcRNi9h2amoOI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"author_id\" : 3,\n    \"title\" : \"Dune part 2\",\n    \"genre\": \"Sci-Fi\",\n    \"year\" : 1968,\n    \"editorial\" : \"Editorial\",\n    \"isbn\" : 1231231,\n    \"available\" : \"Yes\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/book/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"book",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_book",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODUyMywianRpIjoiYjcwMTJkNjktOWYyMy00ZWNmLWJjN2YtMTdmNTk5NzAxNzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4NTIzLCJjc3JmIjoiMzI0ZWNkMTEtYjMzNC00MjFhLTgxMzYtNjg0ZGU2ZGM5NzgzIiwiZXhwIjoxNzE2NDc5NDIzLCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.3OMhJOwctFH1i33jUIp7GrtuRAh50jwcRNi9h2amoOI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/book/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"book",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Configuration",
+			"item": [
+				{
+					"name": "Lista de configuraciones",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/configurations",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"configurations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar configuraciones",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"type\": \"books reconditioning\",\n        \"text\": \"every 4 years\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/configuration/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"configuration",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "get_users_with_filters_and_pag",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODUyMywianRpIjoiYjcwMTJkNjktOWYyMy00ZWNmLWJjN2YtMTdmNTk5NzAxNzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4NTIzLCJjc3JmIjoiMzI0ZWNkMTEtYjMzNC00MjFhLTgxMzYtNjg0ZGU2ZGM5NzgzIiwiZXhwIjoxNzE2NDc5NDIzLCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.3OMhJOwctFH1i33jUIp7GrtuRAh50jwcRNi9h2amoOI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/users",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "User",
+									"disabled": true
+								},
+								{
+									"key": "role",
+									"value": "Admin",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "aliciab",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "lcias",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "per_page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_user_id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODUyMywianRpIjoiYjcwMTJkNjktOWYyMy00ZWNmLWJjN2YtMTdmNTk5NzAxNzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4NTIzLCJjc3JmIjoiMzI0ZWNkMTEtYjMzNC00MjFhLTgxMzYtNjg0ZGU2ZGM5NzgzIiwiZXhwIjoxNzE2NDc5NDIzLCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.3OMhJOwctFH1i33jUIp7GrtuRAh50jwcRNi9h2amoOI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/user/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"user",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put_user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzY0NDUyMiwianRpIjoiY2E4NDZmNTktN2NlNi00NWJkLWJiNGYtZjY4MTRlYTI4Y2ZmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6NiwibmJmIjoxNzE3NjQ0NTIyLCJjc3JmIjoiYjM3YjU5MTUtZGIyYi00ZTNlLWE1ZWQtOTk1OWM4MGZlYjQ4IiwiZXhwIjoxNzE3NjQ1NDIyLCJyb2xlIjoiTGlicmFyaWFuIiwiaWQiOjYsImVtYWlsIjoibC5jcm9zdGFAYWx1bW5vLnVtLmVkdS5hciJ9.MuN-q2eO1XkDWzEHHO_gH1VEJc7Y7sUxT7Zbp3eo8j8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"role\": \"User\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/user/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODUyMywianRpIjoiYjcwMTJkNjktOWYyMy00ZWNmLWJjN2YtMTdmNTk5NzAxNzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4NTIzLCJjc3JmIjoiMzI0ZWNkMTEtYjMzNC00MjFhLTgxMzYtNjg0ZGU2ZGM5NzgzIiwiZXhwIjoxNzE2NDc5NDIzLCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.3OMhJOwctFH1i33jUIp7GrtuRAh50jwcRNi9h2amoOI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/user/3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"user",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "Agregar notificaciones",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tipo\":\"creacion\",\n    \"mensaje\":\"cuenta creada\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/notifications",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Loans",
+			"item": [
+				{
+					"name": "get_loans_with_filters_and_pag",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODUyMywianRpIjoiYjcwMTJkNjktOWYyMy00ZWNmLWJjN2YtMTdmNTk5NzAxNzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4NTIzLCJjc3JmIjoiMzI0ZWNkMTEtYjMzNC00MjFhLTgxMzYtNjg0ZGU2ZGM5NzgzIiwiZXhwIjoxNzE2NDc5NDIzLCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.3OMhJOwctFH1i33jUIp7GrtuRAh50jwcRNi9h2amoOI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/loans",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"loans"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "book_id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "loan_date",
+									"value": "2023",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "per_page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post_loans",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODUyMywianRpIjoiYjcwMTJkNjktOWYyMy00ZWNmLWJjN2YtMTdmNTk5NzAxNzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4NTIzLCJjc3JmIjoiMzI0ZWNkMTEtYjMzNC00MjFhLTgxMzYtNjg0ZGU2ZGM5NzgzIiwiZXhwIjoxNzE2NDc5NDIzLCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.3OMhJOwctFH1i33jUIp7GrtuRAh50jwcRNi9h2amoOI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"user_id\": 1,\n        \"loan_date\": \"2021-01-02\",\n        \"finish_date\": \"2021-01-16\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/loans",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"loans"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_loan_id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODUyMywianRpIjoiYjcwMTJkNjktOWYyMy00ZWNmLWJjN2YtMTdmNTk5NzAxNzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4NTIzLCJjc3JmIjoiMzI0ZWNkMTEtYjMzNC00MjFhLTgxMzYtNjg0ZGU2ZGM5NzgzIiwiZXhwIjoxNzE2NDc5NDIzLCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.3OMhJOwctFH1i33jUIp7GrtuRAh50jwcRNi9h2amoOI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/loan/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"loan",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put_loan",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODUyMywianRpIjoiYjcwMTJkNjktOWYyMy00ZWNmLWJjN2YtMTdmNTk5NzAxNzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4NTIzLCJjc3JmIjoiMzI0ZWNkMTEtYjMzNC00MjFhLTgxMzYtNjg0ZGU2ZGM5NzgzIiwiZXhwIjoxNzE2NDc5NDIzLCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.3OMhJOwctFH1i33jUIp7GrtuRAh50jwcRNi9h2amoOI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"loan_id\" : 10,\n        \"user_id\": 10,\n        \"book_id\": 3,\n        \"loan_date\": \"2021-01-02\",\n        \"finish_date\": \"2021-01-18\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/loan/10",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"loan",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_loan",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODUyMywianRpIjoiYjcwMTJkNjktOWYyMy00ZWNmLWJjN2YtMTdmNTk5NzAxNzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4NTIzLCJjc3JmIjoiMzI0ZWNkMTEtYjMzNC00MjFhLTgxMzYtNjg0ZGU2ZGM5NzgzIiwiZXhwIjoxNzE2NDc5NDIzLCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.3OMhJOwctFH1i33jUIp7GrtuRAh50jwcRNi9h2amoOI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/loan/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"loan",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ratings",
+			"item": [
+				{
+					"name": "get_ratings_with_filters_and_pag",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODUyMywianRpIjoiYjcwMTJkNjktOWYyMy00ZWNmLWJjN2YtMTdmNTk5NzAxNzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4NTIzLCJjc3JmIjoiMzI0ZWNkMTEtYjMzNC00MjFhLTgxMzYtNjg0ZGU2ZGM5NzgzIiwiZXhwIjoxNzE2NDc5NDIzLCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.3OMhJOwctFH1i33jUIp7GrtuRAh50jwcRNi9h2amoOI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "assessment",
+								"value": "4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:5000/ratings",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"ratings"
+							],
+							"query": [
+								{
+									"key": "assessment",
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "sort_by",
+									"value": "a",
+									"disabled": true
+								},
+								{
+									"key": "sort_by",
+									"value": "d",
+									"disabled": true
+								},
+								{
+									"key": "valuation_date",
+									"value": "2024",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "john",
+									"disabled": true
+								},
+								{
+									"key": "book_id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "book_title",
+									"value": "dune",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "per_page",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post_ratings",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjk0MzY3OCwianRpIjoiM2YyNWRlNDAtZmNlYy00ZDA1LWE1MzEtYzc1YzJjMGM4ODFhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2OTQzNjc4LCJjc3JmIjoiMmE5YTIxZmMtZjAxYi00NGVjLTg4MjctNGUwZWIzMGUxNzViIiwiZXhwIjoxNzE2OTQ0NTc4LCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.llLyX1l2NTPRVLwSGXzQQ_H-yrpHCmuH_52Px1CFX_U",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"rating_id\":8,\n        \"assessment\":3,\n        \"book_id\": 5,\n        \"user_id\": 1,\n        \"comment\": \"very good\",\n        \"valuation_date\": \"21/04/2024\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/ratings",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"ratings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_rating_id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjk0MzY3OCwianRpIjoiM2YyNWRlNDAtZmNlYy00ZDA1LWE1MzEtYzc1YzJjMGM4ODFhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2OTQzNjc4LCJjc3JmIjoiMmE5YTIxZmMtZjAxYi00NGVjLTg4MjctNGUwZWIzMGUxNzViIiwiZXhwIjoxNzE2OTQ0NTc4LCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.llLyX1l2NTPRVLwSGXzQQ_H-yrpHCmuH_52Px1CFX_U",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/rating/8",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"rating",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put_rating",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODUyMywianRpIjoiYjcwMTJkNjktOWYyMy00ZWNmLWJjN2YtMTdmNTk5NzAxNzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4NTIzLCJjc3JmIjoiMzI0ZWNkMTEtYjMzNC00MjFhLTgxMzYtNjg0ZGU2ZGM5NzgzIiwiZXhwIjoxNzE2NDc5NDIzLCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.3OMhJOwctFH1i33jUIp7GrtuRAh50jwcRNi9h2amoOI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"rating_id\": 1,\n        \"user_id\": 1,\n        \"book_id\": 2,\n        \"assessment\": 4,\n        \"valuation_date\": \"2024-04-10\", \n        \"comment\": \"muy bueno\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/rating/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"rating",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_rating",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjk0MzY3OCwianRpIjoiM2YyNWRlNDAtZmNlYy00ZDA1LWE1MzEtYzc1YzJjMGM4ODFhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2OTQzNjc4LCJjc3JmIjoiMmE5YTIxZmMtZjAxYi00NGVjLTg4MjctNGUwZWIzMGUxNzViIiwiZXhwIjoxNzE2OTQ0NTc4LCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.llLyX1l2NTPRVLwSGXzQQ_H-yrpHCmuH_52Px1CFX_U",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/rating/8",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"rating",
+								"8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authors",
+			"item": [
+				{
+					"name": "get_authors_with_filters_and_pag",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNjQ3ODUyMywianRpIjoiYjcwMTJkNjktOWYyMy00ZWNmLWJjN2YtMTdmNTk5NzAxNzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE2NDc4NTIzLCJjc3JmIjoiMzI0ZWNkMTEtYjMzNC00MjFhLTgxMzYtNjg0ZGU2ZGM5NzgzIiwiZXhwIjoxNzE2NDc5NDIzLCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.3OMhJOwctFH1i33jUIp7GrtuRAh50jwcRNi9h2amoOI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/authors",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"authors"
+							],
+							"query": [
+								{
+									"key": "last_name",
+									"value": "meschini",
+									"disabled": true
+								},
+								{
+									"key": "author",
+									"value": "dino",
+									"disabled": true
+								},
+								{
+									"key": "book_title",
+									"value": "1984",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "per_page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post_authors",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzAyNDk3NSwianRpIjoiYmEyZWM3MTktZmMzNi00ODM0LWIxYzctZjZkZjM0ODZkMGQzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE3MDI0OTc1LCJjc3JmIjoiNGRjNTI4ZWItNzYwZS00ODAxLTkwODMtMWM4MDE0NzA2YzkyIiwiZXhwIjoxNzE3MDI1ODc1LCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.7seD4uAsVOXUeTa-o2eyVMOe7NQO2DI3uO4_YnhgNZ0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"last_name\": \"Herbert\",\n    \"name\": \"Franjkjj\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/authors",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_author_id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzAyNDk3NSwianRpIjoiYmEyZWM3MTktZmMzNi00ODM0LWIxYzctZjZkZjM0ODZkMGQzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE3MDI0OTc1LCJjc3JmIjoiNGRjNTI4ZWItNzYwZS00ODAxLTkwODMtMWM4MDE0NzA2YzkyIiwiZXhwIjoxNzE3MDI1ODc1LCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.7seD4uAsVOXUeTa-o2eyVMOe7NQO2DI3uO4_YnhgNZ0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/author/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"author",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put_author",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzAyNDk3NSwianRpIjoiYmEyZWM3MTktZmMzNi00ODM0LWIxYzctZjZkZjM0ODZkMGQzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE3MDI0OTc1LCJjc3JmIjoiNGRjNTI4ZWItNzYwZS00ODAxLTkwODMtMWM4MDE0NzA2YzkyIiwiZXhwIjoxNzE3MDI1ODc1LCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.7seD4uAsVOXUeTa-o2eyVMOe7NQO2DI3uO4_YnhgNZ0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"author_id\": 2,\n    \"last_name\": \"Herbert\",\n    \"name\": \"Frank\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/author/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"author",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_author",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxNzAyNDk3NSwianRpIjoiYmEyZWM3MTktZmMzNi00ODM0LWIxYzctZjZkZjM0ODZkMGQzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6MSwibmJmIjoxNzE3MDI0OTc1LCJjc3JmIjoiNGRjNTI4ZWItNzYwZS00ODAxLTkwODMtMWM4MDE0NzA2YzkyIiwiZXhwIjoxNzE3MDI1ODc1LCJyb2xlIjoiVXNlciIsImlkIjoxLCJlbWFpbCI6InVtLmVkdS5hciJ9.7seD4uAsVOXUeTa-o2eyVMOe7NQO2DI3uO4_YnhgNZ0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/author/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"author",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"l.crosta@alumno.um.edu.ar\",\n    \"password\": \"um\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/auth/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"lucas\",\n    \"last_name\" : \"Doe\",\n    \"email\": \"l2.crosta@alumno.um.edu.ar\",\n    \"password\" : \"um\",\n    \"phone_number\" : 123456,\n    \"address\" : \"Lincoln Road 76\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/auth/register",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

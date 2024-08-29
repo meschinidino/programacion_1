@@ -2,6 +2,8 @@ from flask import Flask
 from dotenv import load_dotenv
 # Importamos nuevas librerias
 from flask_restful import Api
+from flask_jwt_extended import JWTManager
+from flask_mail import Mail
 import os
 
 # importamos directorio de recursos
@@ -12,6 +14,10 @@ from flask_sqlalchemy import SQLAlchemy
 api = Api()
 
 db = SQLAlchemy()
+
+jwt = JWTManager()
+
+mailsender = Mail()
 
 def create_app():
     # inicio flask
@@ -30,7 +36,8 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     #Url de configuración de base de datos
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////'+os.getenv('DATABASE_PATH')+os.getenv('DATABASE_NAME')
-    db.init_app(app)
+    db.init_app(app) 
+
     # espacio para modulos de la app
     import main.resources as resource
     # cargar a la API el recurso usuarios (users) y especificar la ruta
@@ -52,5 +59,23 @@ def create_app():
     api.add_resource(resource.AuthorResource, '/author/<author_id>')
 
     api.init_app(app)
+
+    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+    app.config['JWT_EXPIRATION_TIME'] = int(os.getenv('JWT_EXPIRATION_TIME'))
+    jwt.init_app(app)
+
+    from main.auth import routes
+    app.register_blueprint(routes.auth)
+
+    # Configuración de mail
+    app.config['MAIL_HOSTNAME'] = os.getenv('MAIL_HOSTNAME')
+    app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
+    app.config['MAIL_PORT'] = os.getenv('MAIL_PORT')
+    app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS')
+    app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+    app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+    app.config['FLASKY_MAIL_SENDER'] = os.getenv('FLASKY_MAIL_SENDER')
+    # Inicializar en app
+    mailsender.init_app(app)
 
     return app

@@ -1,6 +1,5 @@
 from .. import db
 
-
 class Ratings(db.Model):
     __tablename__ = 'ratings'
     rating_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -12,7 +11,6 @@ class Ratings(db.Model):
     book_id = db.Column(db.Integer, db.ForeignKey("books.book_id"), nullable=False)  # Foreign Key
     book = db.relationship("Books", back_populates="ratings")
 
-
     def __repr__(self):
         return '<Ratings %r>' % self.rating_id
 
@@ -23,23 +21,16 @@ class Ratings(db.Model):
             "book_id": self.book_id,
             "assessment": self.assessment,
             "valuation_date": self.valuation_date,
-            "comment": self.comment
-        }
-        return rating_json
-
-    def to_json_complete(self):
-        rating_json = {
-            "rating_id": self.rating_id,
-            "user_id": self.user_id,
-            "book_id": self.book_id,
-            "assessment": self.assessment,
             "comment": self.comment,
+            "book" : self.book.to_json_short(),
         }
         return rating_json
 
     def to_json_short(self):
         rating_json = {
             "rating_id": self.rating_id,
+            "user_id": self.user_id,
+            "book_id": self.book_id,
             "assessment": self.assessment,
             "valuation_date": self.valuation_date,
             "comment": self.comment
