@@ -1,0 +1,70 @@
+/* Checkboxes in filters */
+.form-check-label {
+    margin-left: 10px;
+    font-size: 1.1rem;
+}
+
+.form-check-input {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    border: 2px solid #007bff;
+}
+
+/* Accordion styling */
+.accordion-button {
+    font-weight: bold;
+}
+
+/* Accordion body spacing */
+.accordion-body {
+    padding-left: 20px;
+}
+
+/* Filter modal header and button */
+.modal-header h5 {
+    font-weight: bold;
+}
+
+.modal-footer .btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+/* Space between filters and gallery */
+.filter-row {
+    margin-bottom: 20px;
+}
+
+/* Book image styling */
+.book-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+/* Gallery item spacing */
+#bookGallery {
+    margin-top: 20px;
+}
+/* Book image styling */
+.book-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+/* Book card styling */
+.book-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none; /* Remove any unwanted borders */
+    overflow: hidden;
+}
+
+/* Book card hover effect */
+.book-card:hover {
+    transform: translateY(-5px) scale(1.05); /* Makes the card pop up and slightly enlarge */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Adds a shadow effect to give it depth */
+}
