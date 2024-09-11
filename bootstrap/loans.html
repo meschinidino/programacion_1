@@ -90,24 +90,24 @@
     <div class="filter-row mb-4">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <select class="form-select" aria-label="Filter by Status">
-                    <option selected>All Status</option>
-                    <option value="1">Returned</option>
-                    <option value="2">Overdue</option>
-                    <option value="3">Borrowed</option>
+                <select id="loanStatusFilter" class="form-select" aria-label="Filter by Status">
+                    <option value="all" selected>All Status</option>
+                    <option value="returned">Returned</option>
+                    <option value="overdue">Overdue</option>
+                    <option value="borrowed">Borrowed</option>
                 </select>
             </div>
             <div class="col-md-6 text-end">
-                <button class="btn btn-primary">Clear Filters</button>
+                <button id="clearFiltersBtn" class="btn btn-primary">Clear Filters</button>
             </div>
         </div>
     </div>
 
     <!-- Loan List -->
     <div class="row" id="loanList">
-        <!-- Loan Card 1 -->
-        <div class="col-12 mb-3">
-            <div class="loan-card d-flex align-items-center">
+        <!-- Loan Card 1 (Borrowed) -->
+        <div class="col-12 mb-3 loan-card" data-status="borrowed">
+            <div class="d-flex align-items-center">
                 <div class="col-4 col-md-2">
                     <div class="card book-card">
                         <img src="images/hobbit.png" class="card-img-top img-fluid" alt="The Hobbit">
@@ -119,13 +119,14 @@
                 <div class="loan-info ms-3">
                     <p><strong>Borrowed:</strong> 01/08/2024</p>
                     <p><strong>Return By:</strong> 15/08/2024</p>
+                    <button class="btn btn-success">Return</button>
                 </div>
             </div>
         </div>
 
-        <!-- Loan Card 2 -->
-        <div class="col-12 mb-3">
-            <div class="loan-card d-flex align-items-center">
+        <!-- Loan Card 2 (Returned) -->
+        <div class="col-12 mb-3 loan-card" data-status="returned">
+            <div class="d-flex align-items-center">
                 <div class="col-4 col-md-2">
                     <div class="card book-card">
                         <img src="images/got.png" class="card-img-top img-fluid" alt="Game of Thrones">
@@ -137,13 +138,40 @@
                 <div class="loan-info ms-3">
                     <p><strong>Borrowed:</strong> 05/07/2024</p>
                     <p><strong>Return By:</strong> 20/07/2024</p>
+                    <button class="btn btn-secondary" disabled>Returned</button>
                 </div>
             </div>
         </div>
 
-        <!-- Additional Loan Cards can be added here -->
+        <!-- Additional Loan Cards with different statuses (Overdue, Borrowed, Returned) can be added here -->
     </div>
 </div>
+
+<!-- JavaScript -->
+<script>
+    document.getElementById('loanStatusFilter').addEventListener('change', function() {
+        const selectedStatus = this.value;
+        const loanCards = document.querySelectorAll('.loan-card');
+
+        loanCards.forEach(card => {
+            const loanStatus = card.getAttribute('data-status');
+            if (selectedStatus === 'all' || loanStatus === selectedStatus) {
+                card.style.display = 'block'; // Show card
+            } else {
+                card.style.display = 'none'; // Hide card
+            }
+        });
+    });
+
+    document.getElementById('clearFiltersBtn').addEventListener('click', function() {
+        document.getElementById('loanStatusFilter').value = 'all';
+        const loanCards = document.querySelectorAll('.loan-card');
+        loanCards.forEach(card => {
+            card.style.display = 'block'; // Show all cards
+        });
+    });
+</script>
+
 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

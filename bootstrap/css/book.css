@@ -1,0 +1,31 @@
+body {
+    background-color: #f0f4ff;
+}
+
+.card {
+    border: none;
+}
+
+h3, h5 {
+    font-family: 'Arial', sans-serif;
+}
+
+img {
+    width: 60%;
+    max-width: 200px;
+    height: auto;
+}
+
+p {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+.btn-primary {
+    background-color: #4a90e2;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #357ab8;
+}

@@ -295,3 +295,73 @@
 .user-stat-item p {
     margin: 0;
 }
+/* Modal Styling */
+.modal-content {
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background-color: #fdfdfd; /* Subtle background color */
+    border: none; /* Remove default border */
+}
+
+.modal-header {
+    border-bottom: none; /* Remove bottom border */
+    padding: 20px;
+}
+
+.modal-header .modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.modal-header .btn-close {
+    background-color: transparent;
+    border: none;
+}
+
+.modal-body {
+    padding: 20px;
+    font-size: 1rem;
+    color: #555;
+}
+
+.modal-body img {
+    max-width: 100%; /* Ensure the image never exceeds the modal width */
+    max-height: 400px; /* Limit the height to a reasonable size */
+    width: auto;
+    height: auto;
+    object-fit: contain; /* Keep the image aspect ratio */
+    margin: 0 auto 15px auto; /* Center the image and add margin below */
+    display: block;
+}
+
+
+.modal-body p {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+.modal-footer {
+    border-top: none; /* Remove top border */
+    padding: 15px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.modal-footer .btn-primary {
+    background-color: #5a67d8; /* Modern blue color */
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-footer .btn-primary:hover {
+    background-color: #4c51bf; /* Darker on hover */
+}
+
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.7); /* Dark backdrop */
+}
