@@ -1,55 +1,56 @@
 <div class="container mt-5">
-  <!-- Title -->
-  <h2 class="mb-4">User List</h2>
+    <!-- Title -->
+    <h2 class="mb-4">User List</h2>
 
-  <!-- Filters Section -->
-  <div class="filter-row mb-4">
-    <div class="row align-items-center">
-      <div class="col-md-6">
-        <select class="form-select" aria-label="Filter by User Type">
-          <option selected>All Users</option>
-          <option value="1">Admins</option>
-          <option value="2">Members</option>
-        </select>
-      </div>
-      <div class="col-md-6 text-end">
-        <button class="btn btn-primary" (click)="open(content)">Add User</button>
-      </div>
+    <!-- Filters Section -->
+    <div class="filter-row mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <select class="form-select" aria-label="Filter by User Type">
+                    <option selected>All Users</option>
+                    <option value="1">Admins</option>
+                    <option value="2">Members</option>
+                </select>
+            </div>
+            <div class="col-md-6 text-end">
+                <button class="btn btn-primary" (click)="open(content)">Add User</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- User List -->
-  <div class="row" id="userList">
-    <div class="col-12 mb-3" *ngFor="let user of users">
-      <app-user [user]="user"></app-user>
-      <button class="btn btn-secondary" (click)="open(content, user)">Edit</button>
-      <button class="btn btn-danger" (click)="deleteUser(user)">Delete</button>
+    <!-- User List -->
+    <div class="row" id="userList">
+        <div class="col-12 mb-3" *ngFor="let user of users">
+            <app-user [user]="user"></app-user>
+            <button class="btn btn-secondary" (click)="open(content, user)">Edit</button>
+            <button class="btn btn-danger" (click)="deleteUser(user)">Delete</button>
+            <button class="btn btn-info" (click)="viewLoanHistory(user.id)">View Loan History</button>
+        </div>
     </div>
-  </div>
 
-  <!-- Edit/Add User Modal -->
-  <ng-template #content let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">{{ isEditing ? 'Edit User' : 'Add User' }}</h4>
-      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-    </div>
-    <div class="modal-body">
-      <form (ngSubmit)="saveUser(); modal.close()">
-        <div class="mb-3">
-          <label for="name" class="form-label">Name</label>
-          <input type="text" id="name" [(ngModel)]="selectedUser.name" name="name" class="form-control" required>
+    <!-- Edit/Add User Modal -->
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">{{ isEditing ? 'Edit User' : 'Add User' }}</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
         </div>
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" id="email" [(ngModel)]="selectedUser.email" name="email" class="form-control" required>
+        <div class="modal-body">
+            <form (ngSubmit)="saveUser(); modal.close()">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" id="name" [(ngModel)]="selectedUser.name" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" [(ngModel)]="selectedUser.email" name="email" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="memberSince" class="form-label">Member Since</label>
+                    <input type="text" id="memberSince" [(ngModel)]="selectedUser.memberSince" name="memberSince" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cancel click')">Cancel</button>
+            </form>
         </div>
-        <div class="mb-3">
-          <label for="memberSince" class="form-label">Member Since</label>
-          <input type="text" id="memberSince" [(ngModel)]="selectedUser.memberSince" name="memberSince" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Save</button>
-        <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cancel click')">Cancel</button>
-      </form>
-    </div>
-  </ng-template>
+    </ng-template>
 </div>

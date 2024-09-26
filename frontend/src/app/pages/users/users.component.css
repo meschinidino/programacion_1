@@ -1,0 +1,40 @@
+/* Add spacing between buttons */
+button {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+/* Make buttons more rounded */
+button {
+    border-radius: 8px;
+}
+
+/* Add gradient background to buttons */
+button.btn-primary {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    border: none;
+    color: white;
+}
+
+button.btn-secondary {
+    background: linear-gradient(45deg, #6c757d, #343a40);
+    border: none;
+    color: white;
+}
+
+button.btn-danger {
+    background: linear-gradient(45deg, #dc3545, #a71d2a);
+    border: none;
+    color: white;
+}
+
+button.btn-info {
+    background: linear-gradient(45deg, #17a2b8, #0d6efd);
+    border: none;
+    color: white;
+}
+
+/* Add hover effect for buttons */
+button:hover {
+    opacity: 0.9;
+}

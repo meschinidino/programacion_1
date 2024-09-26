@@ -1,0 +1,24 @@
+<div>
+    <h2>User Loan History</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Loan ID</th>
+            <th>Book Title</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let loan of loans">
+            <td>{{ loan.id }}</td>
+            <td>{{ loan.bookTitle }}</td>
+            <td>{{ loan.status }}</td>
+            <td>
+                <button (click)="updateLoanStatus(loan.id, 'returned')">Mark as Returned</button>
+                <button (click)="updateLoanStatus(loan.id, 'lost')">Mark as Lost</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <h2 class="text-center">Sign Up</h2>
+            <form (ngSubmit)="signup()">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" [(ngModel)]="username" name="username" placeholder="Username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="mobile" class="form-label">Mobile</label>
+                    <input type="text" class="form-control" id="mobile" [(ngModel)]="mobile" name="mobile" placeholder="Mobile" required>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-signup">Signup</button>
+                </div>
+                <p class="text-center mt-3">
+                    Already have an account?
+                    <a routerLink="/login" class="text-decoration-none">Log in</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
