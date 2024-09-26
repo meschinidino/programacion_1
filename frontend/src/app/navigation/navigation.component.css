@@ -1,0 +1,78 @@
+/* Gradient background for desktop and mobile navbar */
+.navbar {
+  background: linear-gradient(to right, #226372, #3813C2);
+  color: white;
+}
+/* Profile avatar styles */
+.navbar .navbar-nav .nav-link img {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+}
+
+/* Dropdown customization */
+.navbar .dropdown-menu {
+  background-color: #f9f9f9; /* Slightly different background */
+}
+
+.navbar .dropdown-menu a {
+  color: #333;
+}
+
+.navbar .dropdown-menu a:hover {
+  background-color: #f0f0f0;
+  color: #226372;
+}
+
+/* Mobile top navbar */
+@media (max-width: 992px) {
+  .navbar.fixed-top {
+    background: linear-gradient(to right, #226372, #3813C2);
+    color: white;
+    z-index: 1030; /* Ensure it's on top of the rest of the page */
+    padding: 0.5rem 1rem;
+  }
+
+  /* Adjust body padding to prevent content from being hidden behind the navbar */
+  body {
+    padding-top: 56px; /* Height of the mobile navbar */
+  }
+
+  /* Center the logo in the mobile navbar */
+  .navbar-brand.mx-auto {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Ensure back arrow and avatar are on opposite sides */
+  .navbar-icon {
+    width: 30px; /* Icon size */
+  }
+
+  .navbar-icon img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .navbar .container-fluid {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+/* Ensure the text color is appropriate for the gradient background */
+.navbar .nav-link {
+  color: white !important;
+}
+
+.navbar .nav-link:hover {
+  color: #f0f0f0 !important;
+}
+
+/* Gradient background for the mobile navbar */
+.navbar.fixed-bottom {
+  background: linear-gradient(to right, #226372, #3813C2);
+}

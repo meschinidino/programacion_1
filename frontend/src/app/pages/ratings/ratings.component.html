@@ -1,0 +1,36 @@
+  <!-- Main Content -->
+<div class="container mt-5">
+    <!-- Title -->
+    <h2 class="mb-4">Your Ratings</h2>
+
+    <!-- Rating List -->
+    <div class="row" *ngFor="let rating of ratings">
+        <!-- Rating Card -->
+        <div class="col-12 mb-3">
+        <div class="loan-card d-flex align-items-center">
+            <div class="col-4 col-md-2">
+            <div class="card book-card">
+                <img [src]="rating.image" class="card-img-top img-fluid" [alt]="rating.title">
+                <div class="card-body text-center">
+                <h6 class="card-title">{{ rating.title }}</h6>
+                </div>
+            </div>
+            </div>
+            <div class="rating-info ms-3">
+            <p><strong>Rating:</strong>
+                <span class="text-warning">
+                <ng-container *ngFor="let star of fullStars(rating.rating)">
+                    <i class="fas fa-star"></i>
+                </ng-container>
+                <ng-container *ngIf="hasHalfStar(rating.rating)">
+                    <i class="fas fa-star-half-alt"></i>
+                </ng-container>
+                </span> ({{ rating.rating }}/5)
+            </p>
+            <p><strong>Comment:</strong> "{{ rating.comment }}"</p>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+

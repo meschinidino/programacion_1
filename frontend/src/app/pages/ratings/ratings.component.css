@@ -1,0 +1,19 @@
+.loan-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.card-body {
+    padding: 5px;
+}
+
+.rating-info p {
+    margin: 0;
+}
+
+.text-warning {
+    color: #ffc107; /* Estrellas amarillas */
+}
+
