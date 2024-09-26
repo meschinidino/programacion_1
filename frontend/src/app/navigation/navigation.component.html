@@ -1,0 +1,59 @@
+<!-- Mobile Navbar (Top) -->
+<nav class="navbar navbar-light bg-light fixed-top d-flex d-lg-none">
+  <div class="container-fluid justify-content-between align-items-center">
+    <!-- Back Arrow Placeholder -->
+    <a routerLink="/home" class="navbar-icon">
+      <img src="assets/images/back-arrow.png" alt="Back" width="24" height="24">
+    </a>
+
+    <!-- Centered Logo -->
+    <a class="navbar-brand mx-auto" routerLink="/home">
+      <img src="assets/images/logo.png" alt="Library" width="30" height="30" class="d-inline-block align-text-top">
+    </a>
+
+    <!-- Placeholder Avatar Icon -->
+    <a routerLink="/user-settings" class="navbar-icon">
+      <img src="assets/images/user-avatar.png" alt="Avatar" width="30" height="30" class="rounded-circle">
+    </a>
+  </div>
+</nav>
+
+<!-- Desktop Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light d-none d-lg-flex">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/home">
+      <img src="assets/images/logo.png" alt="Library" width="30" height="30" class="d-inline-block align-text-top">
+    </a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" routerLink="/home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/search">Search</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/ratings">Ratings</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/loans">Loans</a></li>
+      </ul>
+      <ul class="navbar-nav ms-auto">
+        <!-- Profile Avatar for Desktop -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="assets/images/user-avatar.png" alt="User Avatar" width="30" height="30" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+            <li><a class="dropdown-item" routerLink="/settings">User Settings</a></li>
+            <li><a class="dropdown-item" routerLink="/login">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Navbar (Bottom) -->
+<nav class="navbar navbar-light bg-light fixed-bottom d-flex d-lg-none">
+  <div class="container-fluid justify-content-around">
+    <a class="nav-link text-center" routerLink="/home"><i class="fas fa-home"></i><br></a>
+    <a class="nav-link text-center" routerLink="/search"><i class="fas fa-search"></i><br></a>
+    <a class="nav-link text-center" routerLink="/ratings"><i class="fas fa-star"></i><br></a>
+    <a class="nav-link text-center" routerLink="/loans"><i class="fas fa-book"></i><br></a>
+    <a class="nav-link text-center" routerLink="/settings"><i class="fas fa-user-cog"></i><br></a>
+  </div>
+</nav>
