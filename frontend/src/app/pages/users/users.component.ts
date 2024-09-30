@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserComponent } from '../../user/user.component';
 import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user.model';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-users',
@@ -12,41 +15,56 @@ import { Router } from '@angular/router';
   imports: [CommonModule, UserComponent, FormsModule],
   styleUrls: ['./users.component.css']
 })
-export class UsersComponent {
-  users = [
-    { id: '1', name: 'John Doe', email: 'johndoe@example.com', memberSince: '2021' },
-    { id: '2', name: 'Jane Smith', email: 'janesmith@example.com', memberSince: '2020' }
-  ];
-
-  selectedUser: any = null;
+export class UsersComponent implements OnInit {
+  users$: Observable<User[]> = new Observable<User[]>();
+  selectedUser: User | null = null;
   isEditing: boolean = false;
 
-  constructor(private modalService: NgbModal, private router: Router) {}
+  constructor(
+      private modalService: NgbModal,
+      private router: Router,
+      private userService: UserService
+  ) {}
 
-  open(content: any, user: any = null) {
-    this.selectedUser = user ? { ...user } : { id: '', name: '', email: '', memberSince: '' };
+  ngOnInit(): void {
+    this.loadUsers();
+  }
+
+  loadUsers(): void {
+    this.users$ = this.userService.getUsers().pipe(
+        map((response: any) => response.users)
+    );
+  }
+
+  open(content: any, user: User | null = null): void {
+    this.selectedUser = user ? { ...user } : { user_id: 0, name: '', last_name: '', email: '', role: '', phone_number: 0, address: '' };
     this.isEditing = !!user;
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
-  saveUser() {
+  saveUser(modal: any): void {
     if (this.selectedUser) {
-      const index = this.users.findIndex(user => user.id === this.selectedUser.id);
-      if (index !== -1) {
-        this.users[index] = this.selectedUser;
-      } else {
-        this.users.push(this.selectedUser);
-      }
+      const saveObservable = this.isEditing
+          ? this.userService.updateUser(this.selectedUser.user_id, this.selectedUser)
+          : this.userService.createUser(this.selectedUser);
+
+      saveObservable.subscribe(() => {
+        this.loadUsers();
+        modal.close();
+      });
+
       this.selectedUser = null;
       this.isEditing = false;
     }
   }
 
-  deleteUser(user: any) {
-    this.users = this.users.filter(u => u.id !== user.id);
+  deleteUser(user: User): void {
+    this.userService.deleteUser(user.user_id).subscribe(() => {
+      this.loadUsers();
+    });
   }
 
-  viewLoanHistory(userId: string): void {
+  viewLoanHistory(userId: number): void {
     this.router.navigate(['/user-loans', userId]);
   }
 }

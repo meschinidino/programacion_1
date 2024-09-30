@@ -20,11 +20,12 @@
 
     <!-- User List -->
     <div class="row" id="userList">
-        <div class="col-12 mb-3" *ngFor="let user of users">
+        <div class="col-12 mb-3" *ngFor="let user of users$ | async">
             <app-user [user]="user"></app-user>
+            <p>{{ user.name }} {{ user.last_name }}</p>
             <button class="btn btn-secondary" (click)="open(content, user)">Edit</button>
             <button class="btn btn-danger" (click)="deleteUser(user)">Delete</button>
-            <button class="btn btn-info" (click)="viewLoanHistory(user.id)">View Loan History</button>
+            <button class="btn btn-info" (click)="viewLoanHistory(user.user_id)">View Loan History</button>
         </div>
     </div>
 
@@ -34,19 +35,23 @@
             <h4 class="modal-title" id="modal-basic-title">{{ isEditing ? 'Edit User' : 'Add User' }}</h4>
             <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
         </div>
-        <div class="modal-body">
-            <form (ngSubmit)="saveUser(); modal.close()">
+        <div class="modal-body" *ngIf="selectedUser">
+            <form (ngSubmit)="saveUser(modal); modal.close()">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" id="name" [(ngModel)]="selectedUser.name" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="last_name" class="form-label">Last Name</label>
+                    <input type="text" id="last_name" [(ngModel)]="selectedUser.last_name" name="last_name" class="form-control" required>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" id="email" [(ngModel)]="selectedUser.email" name="email" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label for="memberSince" class="form-label">Member Since</label>
-                    <input type="text" id="memberSince" [(ngModel)]="selectedUser.memberSince" name="memberSince" class="form-control" required>
+                    <label for="role" class="form-label">Role</label>
+                    <input type="text" id="role" [(ngModel)]="selectedUser.role" name="role" class="form-control" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Save</button>
                 <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cancel click')">Cancel</button>

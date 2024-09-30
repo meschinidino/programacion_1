@@ -11,6 +11,7 @@ import { UsersComponent } from './pages/users/users.component';
 import { LoanViewComponent } from './pages/loan-view/loan-view.component';
 import { UserLoansComponent } from './pages/user-loans/user-loans.component';
 import { authGuard } from './guards/auth.guard';
+import { roleGuard } from './guards/role.guard';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [authGuard] },
@@ -20,8 +21,8 @@ const routes: Routes = [
   { path: 'loans', component: LoansComponent, canActivate: [authGuard], data: { role: 'User' } },
   { path: 'ratings', component: RatingsComponent, canActivate: [authGuard], data: { role: 'User' } },
   { path: 'search', component: SearchComponent },
-  { path: 'settings', component: SettingsComponent, canActivate: [authGuard], data: { role: 'Admin' } },
-  { path: 'users', component: UsersComponent, canActivate: [authGuard], data: { role: 'Admin' } },
+  { path: 'settings', component: SettingsComponent, canActivate: [roleGuard], data: { expectedRole: 'Admin' } },
+  { path: 'users', component: UsersComponent, canActivate: [roleGuard], data: { expectedRole: 'Admin' } },
   { path: 'loan-view', component: LoanViewComponent, canActivate: [authGuard], data: { role: 'User' } },
   { path: 'user-loans/:userId', component: UserLoansComponent, canActivate: [authGuard], data: { role: 'User' } }
 ];

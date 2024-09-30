@@ -1,8 +1,9 @@
 <div class="user-card d-flex align-items-center">
-  <img src="assets/images/user-avatar.png" alt="User Avatar">
-  <div class="user-info">
-    <h6>{{ user.name }}</h6>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Member since:</strong> {{ user.memberSince }}</p>
-  </div>
+    <img src="assets/images/user-avatar.png" alt="User Avatar">
+    <div class="user-info">
+        <h6>{{ user?.name }} {{ user?.last_name }}</h6>
+        <p><strong>Email:</strong> {{ user?.email }}</p>
+        <p><strong>Phone Number:</strong> {{ user?.phone_number }}</p>
+        <p><strong>Address:</strong> {{ user?.address }}</p>
+    </div>
 </div>
