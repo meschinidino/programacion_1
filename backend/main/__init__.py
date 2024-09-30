@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_mail import Mail
+from flask_cors import CORS
 import os
 
 # importamos directorio de recursos
@@ -11,6 +12,7 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 
 # inicio restful
+
 api = Api()
 
 db = SQLAlchemy()
@@ -22,7 +24,9 @@ mailsender = Mail()
 def create_app():
     # inicio flask
     app = Flask(__name__)
-    
+
+    CORS(app)
+
     # importamos directorio de recursos
     import main.resources as resources
 
@@ -36,7 +40,7 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     #Url de configuración de base de datos
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////'+os.getenv('DATABASE_PATH')+os.getenv('DATABASE_NAME')
-    db.init_app(app) 
+    db.init_app(app)
 
     # espacio para modulos de la app
     import main.resources as resource

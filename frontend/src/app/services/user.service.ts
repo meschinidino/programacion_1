@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UserService {
-  url = '/api';
+  url = 'http://127.0.0.1:5000';
 
   constructor(
       private httpClient: HttpClient
