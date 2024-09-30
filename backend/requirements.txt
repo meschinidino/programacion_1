@@ -6,3 +6,4 @@ flask_migrate
 flask_jwt_extended
 flask-mail
 flask-cors
+flask-cors

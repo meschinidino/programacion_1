@@ -69,7 +69,7 @@ class User(Resource):
 
         for key, value in data:
             if key == "role":
-                if current_user.role.lower() != "Admin":
+                if current_user.role.lower() != "admin":
                     return "Only admins can change user roles", 403
             
 
