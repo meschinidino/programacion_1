@@ -12,11 +12,13 @@ import { SearchComponent } from './pages/search/search.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { BookComponent } from './components/book/book.component';
-import { LoanViewComponent } from './pages/loan-view/loan-view.component';
 import { UserLoansComponent } from './pages/user-loans/user-loans.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
-import { AuthService } from './services/auth.service'; // Import AuthService
+import { AuthService } from './services/auth.service';
+import { LoanComponent } from './components/loan/loan.component';
+import { LoanListComponent } from './pages/loan-list/loan-list.component';
+import { RatingComponent } from './components/rating/rating.component'; // Import AuthService
 
 @NgModule({
   declarations: [
@@ -25,10 +27,12 @@ import { AuthService } from './services/auth.service'; // Import AuthService
     HomeComponent,
     SearchComponent,
     SettingsComponent,
-    LoanViewComponent,
     UserLoansComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    LoanComponent,
+    LoanListComponent,
+    RatingComponent
   ],
   imports: [
     BrowserModule,

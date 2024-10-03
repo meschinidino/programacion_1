@@ -1,36 +1,35 @@
-  <!-- Main Content -->
 <div class="container mt-5">
-    <!-- Title -->
-    <h2 class="mb-4">Your Ratings</h2>
-
-    <!-- Rating List -->
-    <div class="row" *ngFor="let rating of ratings">
-        <!-- Rating Card -->
-        <div class="col-12 mb-3">
-        <div class="loan-card d-flex align-items-center">
-            <div class="col-4 col-md-2">
-            <div class="card book-card">
-                <img [src]="rating.image" class="card-img-top img-fluid" [alt]="rating.title">
-                <div class="card-body text-center">
-                <h6 class="card-title">{{ rating.title }}</h6>
-                </div>
-            </div>
-            </div>
-            <div class="rating-info ms-3">
-            <p><strong>Rating:</strong>
-                <span class="text-warning">
-                <ng-container *ngFor="let star of fullStars(rating.rating)">
-                    <i class="fas fa-star"></i>
-                </ng-container>
-                <ng-container *ngIf="hasHalfStar(rating.rating)">
-                    <i class="fas fa-star-half-alt"></i>
-                </ng-container>
-                </span> ({{ rating.rating }}/5)
-            </p>
-            <p><strong>Comment:</strong> "{{ rating.comment }}"</p>
-            </div>
+    <h2 class="mb-4">Ratings</h2>
+    <button class="btn btn-secondary mb-4" (click)="toggleUserRatings()">
+        {{ showUserRatings ? 'Show All Ratings' : 'Show My Ratings' }}
+    </button>
+    <button class="btn btn-secondary mb-4 ml-2" (click)="toggleFilterMenu()">
+        {{ showFilterMenu ? 'Hide Filters' : 'Show Filters' }}
+    </button>
+    <div class="filters mb-4" *ngIf="showFilterMenu">
+        <div class="star-rating">
+            <button *ngFor="let star of [1, 2, 3, 4, 5]"
+                    [ngClass]="{'selected': star <= filters.assessment}"
+                    (click)="setAssessment(star)">
+                &#9733;
+            </button>
         </div>
-        </div>
+        <select [(ngModel)]="filters.sort_by" class="form-control">
+            <option value="" disabled selected>Sort By</option>
+            <option value="a">Ascending</option>
+            <option value="d">Descending</option>
+        </select>
+        <input type="text" [(ngModel)]="filters.valuation_date" placeholder="Valuation Date" class="form-control" />
+        <input type="text" [(ngModel)]="filters.name" placeholder="Reviewer Name" class="form-control" />
+        <input type="text" [(ngModel)]="filters.book_title" placeholder="Book Title" class="form-control" />
+        <button (click)="applyFilters()" class="btn btn-primary">Apply Filters</button>
     </div>
+    <div class="row">
+        <app-rating *ngFor="let rating of ratings" [rating]="rating"></app-rating>
     </div>
-
+    <div class="pagination-controls">
+        <button (click)="previousPage()" [disabled]="page === 1" class="btn btn-primary rounded">Previous</button>
+        <span>Page {{ page }} of {{ pages }}</span>
+        <button (click)="nextPage()" [disabled]="page === pages" class="btn btn-primary rounded">Next</button>
+    </div>
+</div>

@@ -1,35 +1,72 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Rating } from '../../models/rating.model';
+import { RatingService } from '../../services/rating.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-ratings',
   templateUrl: './ratings.component.html',
-  styleUrl: './ratings.component.css'
+  styleUrls: ['./ratings.component.css']
 })
-export class RatingsComponent {
-  // Datos de las calificaciones
-  ratings = [
-    {
-      title: 'The Hobbit',
-      image: 'assets/images/hobbit.png',
-      rating: 4.5,
-      comment: 'An amazing journey, timeless classic!'
-    },
-    {
-      title: 'Game of Thrones',
-      image: 'assets/images/got.png',
-      rating: 5,
-      comment: 'Incredible world-building and plot twists!'
-    }
-  ];
+export class RatingsComponent implements OnInit {
+  ratings: Rating[] = [];
+  page: number = 1;
+  pages: number = 1;
+  userId: number = 0;
+  filters: any = { assessment: 0 };
+  showUserRatings: boolean = false;
+  showFilterMenu: boolean = false;
 
-  // Retorna la cantidad de estrellas completas
-  fullStars(rating: number): number[] {
-    const fullStarsCount = Math.floor(rating);
-    return Array(fullStarsCount).fill(0);
+  constructor(private ratingService: RatingService, private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.userId = parseInt(localStorage.getItem('userId') || '0', 10);
+    this.loadRatings();
   }
 
-  // Verifica si hay media estrella
-  hasHalfStar(rating: number): boolean {
-    return rating % 1 !== 0;
+  loadRatings(): void {
+    const filters = { ...this.filters };
+    if (this.showUserRatings) {
+      filters.user_id = this.userId;
+    } else {
+      delete filters.user_id;
+    }
+    this.ratingService.getRatings(this.page, filters).subscribe(data => {
+      this.ratings = data.ratings;
+      this.page = data.page;
+      this.pages = data.pages;
+    });
+  }
+
+  applyFilters(): void {
+    this.page = 1; // Reset to first page when applying filters
+    this.loadRatings();
+  }
+
+  nextPage(): void {
+    if (this.page < this.pages) {
+      this.page++;
+      this.loadRatings();
+    }
+  }
+
+  previousPage(): void {
+    if (this.page > 1) {
+      this.page--;
+      this.loadRatings();
+    }
+  }
+
+  toggleUserRatings(): void {
+    this.showUserRatings = !this.showUserRatings;
+    this.loadRatings();
+  }
+
+  toggleFilterMenu(): void {
+    this.showFilterMenu = !this.showFilterMenu;
+  }
+
+  setAssessment(star: number): void {
+    this.filters.assessment = star;
   }
 }

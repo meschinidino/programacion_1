@@ -1,19 +1,73 @@
-.loan-card {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    background-color: #fff;
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
-.card-body {
-    padding: 5px;
+.filters .form-control {
+    flex: 1;
+    min-width: 150px;
+    margin-bottom: 10px;
 }
 
-.rating-info p {
-    margin: 0;
+.btn {
+    border-radius: 17px;
+    background: linear-gradient(135deg, #13EED4 0%, #623AA2 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
 }
 
-.text-warning {
-    color: #ffc107; /* Estrellas amarillas */
+.btn:hover {
+    background: linear-gradient(135deg, #623AA2 0%, #13EED4 100%);
 }
 
+.btn.ml-2 {
+    margin-left: 10px;
+}
+
+.star-rating {
+    display: flex;
+    align-items: center;
+}
+
+.star-rating button {
+    font-size: 30px; /* Increase the size of the stars */
+    color: #ccc; /* Gray color for unselected stars */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 5px;
+    transition: color 0.3s ease; /* Add transition for hover effect */
+}
+
+.star-rating button.selected {
+    color: #ffd700; /* Gold color for selected stars */
+}
+
+.star-rating button:hover {
+    color: #ffcc00; /* Slightly different gold color for hover effect */
+}
+
+.pagination-controls button {
+    border-radius: 17px;
+    background: linear-gradient(135deg, #13EED4 0%, #623AA2 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.pagination-controls button:disabled {
+    background: lightgray;
+    cursor: not-allowed;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+    background: linear-gradient(135deg, #623AA2 0%, #13EED4 100%);
+}
