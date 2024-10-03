@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
-import { SignupComponent } from './signup/signup.component';
+import { SignupComponent } from './pages/signup/signup.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LoansComponent } from './pages/loans/loans.component';
 import { RatingsComponent } from './pages/ratings/ratings.component';
@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'loans', component: LoansComponent, canActivate: [authGuard], data: { role: 'User' } },
   { path: 'ratings', component: RatingsComponent, canActivate: [authGuard], data: { role: 'User' } },
   { path: 'search', component: SearchComponent },
-  { path: 'settings', component: SettingsComponent, canActivate: [roleGuard], data: { expectedRole: 'Admin' } },
+  { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
   { path: 'users', component: UsersComponent, canActivate: [roleGuard], data: { expectedRole: 'Admin' } },
   { path: 'loan-view', component: LoanViewComponent, canActivate: [authGuard], data: { role: 'User' } },
   { path: 'user-loans/:userId', component: UserLoansComponent, canActivate: [authGuard], data: { role: 'User' } }

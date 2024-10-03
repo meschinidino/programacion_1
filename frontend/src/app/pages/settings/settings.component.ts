@@ -1,10 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrl: './settings.component.css'
+  styleUrls: ['./settings.component.css']
 })
-export class SettingsComponent {
+export class SettingsComponent implements OnInit {
+  userRole: string = '';
 
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.authService.getCurrentUserRole().subscribe(role => {
+      this.userRole = role;
+    });
+  }
+
+  isAdminOrLibrarian(): boolean {
+    return this.userRole === 'Admin' || this.userRole === 'Librarian';
+  }
 }

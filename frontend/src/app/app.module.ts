@@ -11,11 +11,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { SearchComponent } from './pages/search/search.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { NavigationComponent } from './navigation/navigation.component';
-import { BookComponent } from './book/book.component';
+import { BookComponent } from './components/book/book.component';
 import { LoanViewComponent } from './pages/loan-view/loan-view.component';
 import { UserLoansComponent } from './pages/user-loans/user-loans.component';
 import { LoginComponent } from './pages/login/login.component';
-import { SignupComponent } from './signup/signup.component';
+import { SignupComponent } from './pages/signup/signup.component';
 import { AuthService } from './services/auth.service'; // Import AuthService
 
 @NgModule({

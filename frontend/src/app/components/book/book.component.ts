@@ -1,6 +1,7 @@
 import { Component, Input, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Book } from '../../models/book-response.model';
 
 @Component({
   selector: 'app-book',
@@ -10,9 +11,8 @@ import { Router } from '@angular/router';
   imports: [CommonModule]
 })
 export class BookComponent {
-  @Input() book: any;
+  @Input() book!: Book;
   isFlipped = false;
-  showFullDescription = false;
 
   constructor(private router: Router) { }
 
@@ -32,14 +32,7 @@ export class BookComponent {
     }
   }
 
-  toggleDescription(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.showFullDescription = !this.showFullDescription;
-  }
-
-  getShortDescription(description: string): string {
-    const words = description.split(' ');
-    return words.length > 10 ? words.slice(0, 10).join(' ') + '...' : description;
+  getAuthors(): string {
+    return this.book.authors.map(a => `${a.name} ${a.last_name}`).join(', ');
   }
 }
