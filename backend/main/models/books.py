@@ -33,13 +33,9 @@ class Books(db.Model):
 
     def to_json_short(self):
         book_json = {
-            'book_id': self.book_id,
             'title': str(self.title),
-            'genre': str(self.genre),
-            'year': self.year,
             'editorial': str(self.editorial),
             'isbn': self.isbn,
-            'available': self.available
         }
         return book_json
 

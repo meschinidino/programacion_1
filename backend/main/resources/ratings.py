@@ -44,9 +44,13 @@ class Ratings(Resource):
             book_id = request.args.get('book_id')
             ratings = ratings.join(BooksModel).filter_by(book_id = book_id)
 
+        if request.args.get('user_id'):
+            user_id = request.args.get('user_id')
+            ratings = ratings.join(UsersModel).filter_by(user_id = user_id)
+
         ratings = ratings.paginate(page=page, per_page=per_page, error_out=True, max_per_page=30)
 
-        return jsonify({'ratings': [rating.to_json_short() for rating in ratings],
+        return jsonify({'ratings': [rating.to_json() for rating in ratings],
                         'total': ratings.total,
                         'pages': ratings.pages,
                         'page': page})

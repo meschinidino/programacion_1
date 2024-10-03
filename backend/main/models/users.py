@@ -1,30 +1,33 @@
 from .. import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 class Users(db.Model):
     __tablename__ = 'users'
     user_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     last_name = db.Column(db.String(80), nullable=False)
-    email = db.Column(db.Integer, nullable=False) #para login
+    email = db.Column(db.Integer, nullable=False)  # para login
     password = db.Column(db.String(80), nullable=False)
     phone_number = db.Column(db.Integer, nullable=False)
     address = db.Column(db.String(80), nullable=False)
-    role = db.Column(db.Enum('Admin', 'User', 'Librarian'), nullable=False) #Agregar bibliotecario, empleado
-    loans = db.relationship('Loans', back_populates='users', cascade = 'all, delete-orphan') #relacion con loans
+    role = db.Column(db.Enum('Admin', 'User', 'Librarian'), nullable=False)
 
-    #Getter de la contraseña plana no permite leerla
+    # Relationship with Loans
+    loans = db.relationship('Loans', back_populates='users', cascade='all, delete-orphan')
+
+    # Relationship with Ratings
+    ratings = db.relationship('Ratings', back_populates='user', cascade='all, delete-orphan')  # <-- Add this
+
     @property
     def plain_password(self):
-        raise AttributeError('Password cant be read')
-    
-    # calcula el hash de una contraseña puesta y lo guarda en password
+        raise AttributeError('Password cannot be read')
+
     @plain_password.setter
     def plain_password(self, password):
         self.password = generate_password_hash(password)
 
-    #Método que compara una contraseña en texto plano con el hash guardado en la db
-    def validate_pass(self,password):
+    def validate_pass(self, password):
         return check_password_hash(self.password, password)
 
     def __repr__(self):
@@ -37,7 +40,6 @@ class Users(db.Model):
             "name": self.name,
             "last_name": self.last_name,
             "email": self.email,
-            #"password": self.password,
             "phone_number": self.phone_number,
             "address": self.address,
             "role": self.role,
@@ -51,7 +53,6 @@ class Users(db.Model):
             "name": self.name,
             "last_name": self.last_name,
             "email": self.email,
-            #"password": self.password,
             "phone_number": self.phone_number,
             "address": self.address,
             "role": self.role
