@@ -11,7 +11,7 @@ import { BookResponse } from '../models/book-response.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private url = 'http://127.0.0.1:5000';
+  private url = '/api';
 
   constructor(
       private httpClient: HttpClient,
