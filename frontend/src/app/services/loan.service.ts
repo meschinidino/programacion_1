@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import{ HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Loan } from '../models/loan.model';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class LoanService {
-    private apiUrl = 'http://127.0.0.1:5000/loans';
+  url = 'http://localhost:8000/api/loans';
+  constructor(
+      private httpClient: HttpClient,
+  ) { }
 
-    constructor(private http: HttpClient) {}
+    Loans(): Observable<any> {
+        let dataLoan = {
 
-    getLoans(): Observable<{ loans: Loan[] }> {
-        return this.http.get<{ loans: Loan[] }>(this.apiUrl);
+        }
+        return this.httpClient.post(this.url, dataLoan);
     }
 }
