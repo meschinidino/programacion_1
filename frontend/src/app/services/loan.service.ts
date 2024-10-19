@@ -1,20 +1,28 @@
 import { Injectable } from '@angular/core';
-import{ HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { Loan } from '../models/loan.model'; // Adjust the import path as necessary
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoanService {
-  url = 'http://localhost:8000/api/loans';
-  constructor(
-      private httpClient: HttpClient,
-  ) { }
+  private url = '/api';
 
-    Loans(): Observable<any> {
-        let dataLoan = {
+  constructor(private httpClient: HttpClient) {}
 
-        }
-        return this.httpClient.post(this.url, dataLoan);
-    }
+  getLoans(): Observable<{ loans: Loan[] }> {
+    return this.httpClient.get<{ loans: Loan[] }>(`${this.url}/api/loans`);
+  }
+
+  loan(): Observable<any> {
+    let dataLoan = {
+      loan_id: 4,
+      user_id: 1,
+      loan_date: "2021-01-02",
+      finish_date: "2021-01-16"
+    };
+    return this.httpClient.post(`${this.url}/api/loans`, dataLoan).pipe(take(1));
+  }
 }

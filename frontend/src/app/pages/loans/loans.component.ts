@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { LoanService } from '../../services/loan.service';
 
 @Component({
   selector: 'app-loans',
@@ -9,6 +10,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule]
 })
+
 export class LoansComponent {
   selectedStatus: string = 'all';
   loans = [
@@ -27,8 +29,24 @@ export class LoansComponent {
       image: 'assets/images/got.png'
     }
   ];
-
   filteredLoans = this.loans;
+
+  constructor(private loanService: LoanService) {}
+
+  irLoan() {
+    this.loanService.loan().subscribe({
+      next: (rta: any) => {
+        alert('Credenciales correctas');
+        console.log('Exitos: ', rta);
+      },
+      error: (err: any) => {
+        alert('Credenciales incorrectas');
+      },
+      complete: () => {
+        console.log('finalizado');
+      }
+    });
+  }
 
   filterLoans() {
     if (this.selectedStatus === 'all') {
