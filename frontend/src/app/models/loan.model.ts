@@ -3,4 +3,7 @@ export interface Loan {
     loan_date: string;
     loan_id: number;
     user_id: number;
+    status?: string; 
+    image?: string;
+    title?: string;
 }

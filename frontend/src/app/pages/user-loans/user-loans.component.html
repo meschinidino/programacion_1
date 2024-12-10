@@ -1,24 +1,45 @@
-<div>
-    <h2>User Loan History</h2>
-    <table>
-        <thead>
+<div class="container mt-4">
+    <h2 class="text-center mb-4">User Loan History</h2>
+    
+    <div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
         <tr>
-            <th>Loan ID</th>
-            <th>Book Title</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th scope="col">Loan ID</th>
+            <th scope="col">Book Title</th>
+            <th scope="col">Status</th>
+            <th scope="col" class="text-center">Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let loan of loans">
+          <tr *ngFor="let loan of loans">
             <td>{{ loan.id }}</td>
             <td>{{ loan.bookTitle }}</td>
-            <td>{{ loan.status }}</td>
             <td>
-                <button (click)="updateLoanStatus(loan.id, 'returned')">Mark as Returned</button>
-                <button (click)="updateLoanStatus(loan.id, 'lost')">Mark as Lost</button>
+            <span 
+                class="badge"
+                [ngClass]="{
+                'bg-success': loan.status === 'returned',
+                'bg-danger': loan.status === 'lost',
+                'bg-warning text-dark': loan.status === 'pending'
+                }">
+                {{ loan.status | titlecase }}
+            </span>
+            </td>
+            <td class="text-center">
+            <button 
+                class="btn btn-success btn-sm me-2" 
+                (click)="updateLoanStatus(loan.id, 'returned')">
+                <i class="bi bi-check-circle me-1"></i> Returned
+            </button>
+            <button 
+                class="btn btn-danger btn-sm" 
+                (click)="updateLoanStatus(loan.id, 'lost')">
+                <i class="bi bi-x-circle me-1"></i> Lost
+            </button>
             </td>
         </tr>
         </tbody>
     </table>
+    </div>
 </div>
