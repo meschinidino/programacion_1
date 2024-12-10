@@ -26,6 +26,8 @@ export class LoansComponent implements OnInit {
     private loanService: LoanService
   ) {}
 
+  
+  
   ngOnInit(): void {
     this.loadLoans();
   }

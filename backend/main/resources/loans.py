@@ -47,17 +47,55 @@ class Loans(Resource):
 
     @jwt_required()
     def post(self):
-        book_ids = request.get_json().get('book_id')
-        loan = LoansModel.from_json(request.get_json())
-
-        if book_ids:
-
-            books = BooksModel.query.filter(BooksModel.loan_id.in_(book_ids)).all()
-            loan.books.extend(books)
-
-        db.session.add(loan)
-        db.session.commit()
-        return loan.to_json_short(), 201
+        try:
+            # Log para ver los datos recibidos
+            print("Request Headers:", dict(request.headers))
+            print("Request Data:", request.get_data(as_text=True))
+            print("Request JSON:", request.get_json())
+            
+            # Validar que se recibió un JSON válido
+            if not request.is_json:
+                return {"error": "El contenido debe ser JSON"}, 400
+            
+            loan_data = request.get_json()
+            
+            # Log para ver los datos procesados
+            print("Loan Data procesada:", loan_data)
+            
+            # Validar que existan los campos requeridos
+            required_fields = ['user_id', 'loan_date', 'finish_date', 'book_id']
+            for field in required_fields:
+                if field not in loan_data:
+                    return {"error": f"El campo {field} es requerido"}, 400
+            
+            book_ids = loan_data.get('book_id')
+            
+            # Validar que book_ids sea una lista
+            if not isinstance(book_ids, list):
+                return {"error": "book_id debe ser una lista"}, 400
+            
+            # Crear el préstamo
+            loan = LoansModel(
+                user_id=loan_data['user_id'],
+                loan_date=loan_data['loan_date'],
+                finish_date=loan_data['finish_date']
+            )
+            
+            # Verificar que los libros existan
+            if book_ids:
+                books = BooksModel.query.filter(BooksModel.book_id.in_(book_ids)).all()
+                if len(books) != len(book_ids):
+                    return {"error": "Uno o más libros no existen"}, 404
+                loan.books.extend(books)
+                
+            db.session.add(loan)
+            db.session.commit()
+            
+            return loan.to_json(), 201
+            
+        except Exception as e:
+            db.session.rollback()
+            return {"error": str(e)}, 422
 
 
 class Loan(Resource):
