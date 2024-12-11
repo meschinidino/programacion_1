@@ -14,66 +14,94 @@ export class AuthService {
   private url = '/api';
 
   constructor(
-      private httpClient: HttpClient,
-      private router: Router
+    private httpClient: HttpClient,
+    private router: Router
   ) { }
 
+  // Método para generar encabezados con el token
   private getHeaders(): HttpHeaders {
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.getToken()}`
-    });
+    const token = this.getToken();
+    const headersConfig: { [header: string]: string } = {
+      'Content-Type': 'application/json'
+    };
+    if (token) {
+      headersConfig['Authorization'] = `Bearer ${token}`;
+    }
+    return new HttpHeaders(headersConfig);
   }
 
+  // Registro de usuarios
   signup(data: any): Observable<any> {
     return this.httpClient.post(`${this.url}/auth/register`, data, { headers: this.getHeaders() });
   }
 
+  // Inicio de sesión
   login(dataLogin: any): Observable<LoginResponse> {
-    return this.httpClient.post<LoginResponse>(this.url + '/auth/login', dataLogin).pipe(
-        take(1),
-        tap(response => {
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('userId', response.id.toString());
-        })
+    return this.httpClient.post<LoginResponse>(`${this.url}/auth/login`, dataLogin).pipe(
+      take(1),
+      tap(response => {
+        this.saveToken(response.token);
+        this.saveUserId(response.id);
+      })
     );
   }
 
-  logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
+  // Cerrar sesión
+  logout(): void {
+    this.clearToken();
+    this.clearUserId();
     this.router.navigateByUrl('home');
   }
 
+  // Obtener el token almacenado
   getToken(): string | null {
     return localStorage.getItem('token');
   }
 
+  // Guardar el token en localStorage
+  private saveToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
+
+  // Borrar el token de localStorage
+  private clearToken(): void {
+    localStorage.removeItem('token');
+  }
+
+  // Obtener el ID del usuario actual
+  private getUserId(): number {
+    return parseInt(localStorage.getItem('userId') || '0', 10);
+  }
+
+  // Guardar el ID del usuario actual en localStorage
+  private saveUserId(userId: number): void {
+    localStorage.setItem('userId', userId.toString());
+  }
+
+  // Borrar el ID del usuario actual de localStorage
+  private clearUserId(): void {
+    localStorage.removeItem('userId');
+  }
+
+  // Obtener información del usuario actual
   getCurrentUser(userId: number): Observable<User> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.getToken()}`
-    });
-    return this.httpClient.get<User>(`${this.url}/user/${userId}`, { headers });
+    return this.httpClient.get<User>(`${this.url}/user/${userId}`, { headers: this.getHeaders() });
   }
 
+  // Editar datos del usuario actual
   editUser(userId: number, userData: any): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.getToken()}`
-    });
-    return this.httpClient.put(`${this.url}/user/${userId}`, userData, { headers });
+    return this.httpClient.put(`${this.url}/user/${userId}`, userData, { headers: this.getHeaders() });
   }
 
+  // Obtener el rol del usuario actual
   getCurrentUserRole(): Observable<string> {
-    const userId = parseInt(localStorage.getItem('userId') || '0', 10);
-    return this.getCurrentUser(userId).pipe(
-        map(user => user.role)
+    return this.getCurrentUser(this.getUserId()).pipe(
+      map(user => user.role)
     );
   }
 
+  // Obtener libros con paginación
   getBooks(page: number = 1): Observable<BookResponse> {
-    const headers = this.getHeaders();
-    return this.httpClient.get<BookResponse>(`${this.url}/books?page=${page}`, { headers });
+    return this.httpClient.get<BookResponse>(`${this.url}/books?page=${page}`, { headers: this.getHeaders() });
   }
 }

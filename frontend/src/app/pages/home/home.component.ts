@@ -1,70 +1,95 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, HostListener, OnInit, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { LoanService } from '../../services/loan.service';
+import { BookService } from '../../services/book.service'; 
 import { AuthService } from '../../services/auth.service';
-import { BookResponse } from '../../models/book-response.model';
+import { Book } from '../../models/book-response.model';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-book',
+  templateUrl: './book.component.html',
+  styleUrls: ['./book.component.css'],
+  standalone: true,
+  imports: [CommonModule],
 })
-export class HomeComponent implements OnInit {
-  searchTerm: string = '';
-  books: any[] = [];
-  filteredBooks: any[] = [];
-  paginatedBooks: any[] = [];
-  currentPage: number = 1;
-  totalPages: number = 1;
-  itemsPerPage: number = 8; // Adjust as needed
+export class BookComponent implements OnInit {
+  @Input() book!: Book; 
+  @Output() bookDeleted = new EventEmitter<number>(); // Emite el ID del libro eliminado
+  isFlipped = false;
+  userRole: string = ''; 
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private loanService: LoanService,
+    private bookService: BookService, 
+    private authService: AuthService 
+  ) {}
 
   ngOnInit(): void {
-    this.fetchBooks();
-  }
-
-  fetchBooks(page: number = 1): void {
-    this.authService.getBooks(page).subscribe((response: BookResponse) => {
-      this.books = response.books;
-      this.filteredBooks = this.books;
-      this.currentPage = response.page;
-      this.totalPages = response.pages;
-      this.updatePaginatedBooks();
+    this.authService.getCurrentUserRole().subscribe((role) => {
+      this.userRole = role;
     });
   }
 
-  updatePaginatedBooks(): void {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedBooks = this.filteredBooks.slice(startIndex, endIndex);
+  onBookClick(): void {
+    this.isFlipped = !this.isFlipped;
   }
 
-  onBookClick(book: any): void {
-    console.log('Book clicked:', book);
-    // Add your logic here, e.g., navigate to a book detail page
+  onBorrowClick(event: Event): void {
+    event.stopPropagation();
+    const loanRequest = {
+      user_id: Number(6),
+      loan_date: new Date().toISOString().split('T')[0],
+      finish_date: this.calculateFinishDate(14),
+      book_id: [Number(this.book.book_id)],
+    };
+
+    this.loanService.createLoan(loanRequest).subscribe({
+      next: (response) => {
+        console.log('Préstamo creado exitosamente:', response);
+        alert(`Préstamo para "${this.book.title}" creado exitosamente!`);
+      },
+      error: (error) => {
+        if (error.message.includes('token')) {
+          alert('Necesita iniciar sesión para realizar esta acción');
+        } else {
+          console.error('Error al crear el préstamo:', error);
+          alert('No se pudo crear el préstamo. Inténtelo de nuevo.');
+        }
+      },
+    });
   }
 
-  filterBooks(): void {
-    this.filteredBooks = this.books.filter(book =>
-        book.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        book.authors.some((author: any) =>
-            `${author.name} ${author.last_name}`.toLowerCase().includes(this.searchTerm.toLowerCase())
-        ) ||
-        book.isbn.toString().toLowerCase().includes(this.searchTerm.toLowerCase()) || // Convert isbn to string
-        book.editorial.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-    this.updatePaginatedBooks();
+  private calculateFinishDate(days: number): string {
+    const finishDate = new Date();
+    finishDate.setDate(finishDate.getDate() + days);
+    return finishDate.toISOString().split('T')[0];
   }
 
-  clearFilters(): void {
-    this.searchTerm = '';
-    this.filteredBooks = this.books;
-    this.updatePaginatedBooks();
-  }
-
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updatePaginatedBooks();
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    if (this.isFlipped && !(event.target as HTMLElement).closest('.book-card')) {
+      this.isFlipped = false;
     }
   }
+
+  getAuthors(): string {
+    return this.book.authors.map((a) => `${a.name} ${a.last_name}`).join(', ');
+  }
+
+  deleteBook(): void {
+    if (confirm(`¿Está seguro de que desea eliminar el libro "${this.book.title}"?`)) {
+      this.bookService.deleteBook(this.book.book_id).subscribe({
+        next: () => {
+          console.log(`Libro "${this.book.title}" eliminado correctamente.`);
+          alert(`Libro "${this.book.title}" eliminado correctamente.`);
+          this.bookDeleted.emit(this.book.book_id); // Emitir evento para actualizar la lista
+        },
+        error: (err) => {
+          console.error('Error al eliminar el libro:', err);
+          alert('No se pudo eliminar el libro. Inténtelo de nuevo más tarde.');
+        },
+      });
+    }
+  }
+  
 }

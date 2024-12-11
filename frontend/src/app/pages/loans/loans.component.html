@@ -7,7 +7,12 @@
     <div class="filter-row mb-4">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <select id="loanStatusFilter" class="form-select" aria-label="Filter by Status" [(ngModel)]="selectedStatus" (change)="filterLoans()">
+                <select
+                    id="loanStatusFilter"
+                    class="form-select"
+                    aria-label="Filter by Status"
+                    [(ngModel)]="selectedStatus"
+                    (change)="filterLoans(selectedStatus)">
                     <option value="all" selected>All Status</option>
                     <option value="returned">Returned</option>
                     <option value="overdue">Overdue</option>
@@ -26,15 +31,18 @@
             <div class="d-flex align-items-center">
                 <div class="col-4 col-md-2">
                     <div class="card book-card">
-                        <img [src]="loan.image" class="card-img-top img-fluid" [alt]="loan.title">
+                        <img
+                            [src]="loan.image || 'assets/images/got.png'"
+                            class="card-img-top img-fluid"
+                            [alt]="loan.title || 'Book Image'">
                         <div class="card-body text-center">
-                            <h6 class="card-title">{{ loan.title }}</h6>
+                            <h6 class="card-title">{{ loan.title || 'A Game of Thrones' }}</h6>
                         </div>
                     </div>
                 </div>
                 <div class="loan-info ms-3">
-                    <p><strong>Borrowed:</strong> {{ loan.borrowedDate }}</p>
-                    <p><strong>Return By:</strong> {{ loan.returnDate }}</p>
+                    <p><strong>Borrowed:</strong> {{ loan.loan_date }}</p>
+                    <p><strong>Return By:</strong> {{ loan.finish_date }}</p>
                     <button *ngIf="loan.status === 'borrowed'" class="btn btn-success">Return</button>
                     <button *ngIf="loan.status === 'returned'" class="btn btn-secondary" disabled>Returned</button>
                 </div>
