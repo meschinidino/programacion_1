@@ -1,150 +1,95 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, HostListener, OnInit, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { LoanService } from '../../services/loan.service';
+import { BookService } from '../../services/book.service'; 
 import { AuthService } from '../../services/auth.service';
-import { BookResponse } from '../../models/book-response.model';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { BookService } from '../../services/book.service';
-import { Router } from '@angular/router';
+import { Book } from '../../models/book-response.model';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-book',
+  templateUrl: './book.component.html',
+  styleUrls: ['./book.component.css'],
+  standalone: true,
+  imports: [CommonModule],
 })
-export class HomeComponent implements OnInit {
-  searchTerm: string = '';
-  availableBooks: any[] = [];
-  filteredBooks: any[] = [];
-  paginatedBooks: any[] = [];
-  currentPage: number = 1;
-  totalPages: number = 1;
-  itemsPerPage: number = 8;
-  userRole: string = '';
-  selectedBook: any = { authors: [] };
-  availableAuthors: any[] = [];
-  isEditing: boolean = false;
-
-  @ViewChild('bookModal', { static: true }) bookModal: any;
+export class BookComponent implements OnInit {
+  @Input() book!: Book; 
+  @Output() bookDeleted = new EventEmitter<number>(); // Emite el ID del libro eliminado
+  isFlipped = false;
+  userRole: string = ''; 
 
   constructor(
-    private authService: AuthService,
-    private bookService: BookService,
-    private modalService: NgbModal,
-    private router: Router
+    private loanService: LoanService,
+    private bookService: BookService, 
+    private authService: AuthService 
   ) {}
 
   ngOnInit(): void {
-    this.loadBooks();
-    this.authService.getCurrentUserRole().subscribe(role => {
+    this.authService.getCurrentUserRole().subscribe((role) => {
       this.userRole = role;
     });
   }
 
-  loadBooks(): void {
-    this.bookService.getBooks().subscribe({
-      next: (response: any) => {
-        if (response?.books) {
-          this.availableBooks = response.books;
-          this.extractAuthors(this.availableBooks);
-          this.filteredBooks = [...this.availableBooks];
-          this.updatePaginatedBooks();
+  onBookClick(): void {
+    this.isFlipped = !this.isFlipped;
+  }
+
+  onBorrowClick(event: Event): void {
+    event.stopPropagation();
+    const loanRequest = {
+      user_id: Number(6),
+      loan_date: new Date().toISOString().split('T')[0],
+      finish_date: this.calculateFinishDate(14),
+      book_id: [Number(this.book.book_id)],
+    };
+
+    this.loanService.createLoan(loanRequest).subscribe({
+      next: (response) => {
+        console.log('Préstamo creado exitosamente:', response);
+        alert(`Préstamo para "${this.book.title}" creado exitosamente!`);
+      },
+      error: (error) => {
+        if (error.message.includes('token')) {
+          alert('Necesita iniciar sesión para realizar esta acción');
         } else {
-          console.error('La respuesta no contiene la propiedad "books".');
+          console.error('Error al crear el préstamo:', error);
+          alert('No se pudo crear el préstamo. Inténtelo de nuevo.');
         }
       },
-      error: (err) => {
-        console.error('Error al cargar libros:', err);
-      }
     });
   }
 
-  extractAuthors(books: any[]): void {
-    const authors = books.flatMap((book: any) => Array.isArray(book.authors) ? book.authors : []);
-    this.availableAuthors = Array.from(new Set(authors.map((a: any) => a.id)))
-      .map((id: any) => authors.find((a: any) => a.id === id));
+  private calculateFinishDate(days: number): string {
+    const finishDate = new Date();
+    finishDate.setDate(finishDate.getDate() + days);
+    return finishDate.toISOString().split('T')[0];
   }
 
-  updatePaginatedBooks(): void {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedBooks = this.filteredBooks.slice(startIndex, endIndex);
-  }
-
-  filterBooks(): void {
-    this.filteredBooks = this.availableBooks.filter(book =>
-      book.title?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      book.authors?.some((author: any) =>
-        `${author.name} ${author.last_name}`.toLowerCase().includes(this.searchTerm.toLowerCase())
-      ) ||
-      book.isbn?.toString().toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      book.editorial?.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-    this.updatePaginatedBooks();
-  }
-
-  clearFilters(): void {
-    this.searchTerm = '';
-    this.filteredBooks = [...this.availableBooks];
-    this.updatePaginatedBooks();
-  }
-
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updatePaginatedBooks();
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    if (this.isFlipped && !(event.target as HTMLElement).closest('.book-card')) {
+      this.isFlipped = false;
     }
   }
 
-  onAddBook(): void {
-    this.isEditing = false;
-    this.selectedBook = { title: '', authors: [], genre: '', year: '', editorial: '', isbn: '', available: '' };
-    this.modalService.open(this.bookModal, { ariaLabelledBy: 'modal-basic-title' });
+  getAuthors(): string {
+    return this.book.authors.map((a) => `${a.name} ${a.last_name}`).join(', ');
   }
 
-  addAuthorFromInput(event: KeyboardEvent): void {
-    const input = (event.target as HTMLInputElement).value.trim();
-    const [name, lastName] = input.split(' ');
-    console.log(`Nuevo autor: ${name} ${lastName}`);
-
-    if (name && lastName) {
-      this.selectedBook.authors.push({ name, last_name: lastName });
-      (event.target as HTMLInputElement).value = ''; // Limpia el campo
-    } else {
-      console.error('Debe ingresar un nombre y apellido separados por un espacio.');
-    }
-  }
-
-  saveBook(modal: any): void {
-    const bookData = { ...this.selectedBook };
-  
-    if (this.isEditing) {
-      this.bookService.updateBook(this.selectedBook.id, bookData).subscribe({
+  deleteBook(): void {
+    if (confirm(`¿Está seguro de que desea eliminar el libro "${this.book.title}"?`)) {
+      this.bookService.deleteBook(this.book.book_id).subscribe({
         next: () => {
-          this.loadBooks();
-          modal.dismiss();
-          console.log('Libro actualizado correctamente:', bookData);
-          alert('Libro actualizado correctamente');
+          console.log(`Libro "${this.book.title}" eliminado correctamente.`);
+          alert(`Libro "${this.book.title}" eliminado correctamente.`);
+          this.bookDeleted.emit(this.book.book_id); // Emitir evento para actualizar la lista
         },
         error: (err) => {
-          console.error('Error actualizando libro:', err);
-        }
-      });
-    } else {
-      this.bookService.createBook(bookData).subscribe({
-        next: () => {
-          this.loadBooks();
-          modal.dismiss();
-          console.log('Libro guardado correctamente:', bookData);
-          alert('Libro guardado correctamente');
+          console.error('Error al eliminar el libro:', err);
+          alert('No se pudo eliminar el libro. Inténtelo de nuevo más tarde.');
         },
-        error: (err) => {
-          console.error('Error agregando libro:', err);
-        }
       });
     }
   }
   
-
-  onBookClick(book: any): void {
-    console.log('Book clicked:', book);
-  }
 }

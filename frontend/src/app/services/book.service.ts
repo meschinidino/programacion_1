@@ -41,11 +41,30 @@ export class BookService {
         );
     }
 
-    deleteBook(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
-            catchError(this.handleError)
+    deleteBook(bookId: number): Observable<void> {
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+            console.error('No se encontró el token de autenticación');
+            return throwError(() => new Error('No se encontró el token de autenticación'));
+        }
+    
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        });
+    
+        const url = `http://127.0.0.1:5000/book/${bookId}`; // URL fija y dinámica para eliminar un libro
+        console.log(`Eliminando el libro con ID: ${bookId}`);
+    
+        return this.http.delete<void>(url, { headers }).pipe(
+            catchError(error => {
+                console.error('Error al eliminar el libro:', error);
+                return throwError(() => error);
+            })
         );
     }
+    
 
     private handleError(error: any): Observable<never> {
         console.error('Ocurrió un error:', error);
