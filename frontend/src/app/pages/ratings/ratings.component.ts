@@ -38,8 +38,14 @@ export class RatingsComponent implements OnInit {
     });
   }
 
+  clearFilters(): void {
+    this.filters = { assessment: 0 };
+    this.page = 1;
+    this.loadRatings();
+  }
+
   applyFilters(): void {
-    this.page = 1; // Reset to first page when applying filters
+    this.page = 1;
     this.loadRatings();
   }
 

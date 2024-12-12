@@ -1,7 +1,7 @@
 import { Component, Input, HostListener, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoanService } from '../../services/loan.service';
-import { BookService } from '../../services/book.service'; 
+import { BookService } from '../../services/book.service';
 import { AuthService } from '../../services/auth.service';
 import { Book } from '../../models/book-response.model';
 
@@ -13,21 +13,23 @@ import { Book } from '../../models/book-response.model';
   imports: [CommonModule],
 })
 export class BookComponent implements OnInit {
-  @Input() book!: Book; 
-  @Output() bookDeleted = new EventEmitter<number>(); // Emite el ID del libro eliminado
+  @Input() book!: Book;
+  @Output() bookDeleted = new EventEmitter<number>();
   isFlipped = false;
-  userRole: string = ''; 
+  userRole: string = '';
+  userId: number = 0; // Add a property to store the user ID
 
   constructor(
-    private loanService: LoanService,
-    private bookService: BookService, 
-    private authService: AuthService 
+      private loanService: LoanService,
+      private bookService: BookService,
+      private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.authService.getCurrentUserRole().subscribe((role) => {
       this.userRole = role;
     });
+    this.userId = parseInt(localStorage.getItem('userId') || '0', 10); // Retrieve the user ID
   }
 
   onBookClick(): void {
@@ -37,7 +39,7 @@ export class BookComponent implements OnInit {
   onBorrowClick(event: Event): void {
     event.stopPropagation();
     const loanRequest = {
-      user_id: Number(6),
+      user_id: this.userId, // Use the retrieved user ID
       loan_date: new Date().toISOString().split('T')[0],
       finish_date: this.calculateFinishDate(14),
       book_id: [Number(this.book.book_id)],
@@ -45,15 +47,15 @@ export class BookComponent implements OnInit {
 
     this.loanService.createLoan(loanRequest).subscribe({
       next: (response) => {
-        console.log('Préstamo creado exitosamente:', response);
-        alert(`Préstamo para "${this.book.title}" creado exitosamente!`);
+        console.log('Loan created successfully:', response);
+        alert(`Loan for "${this.book.title}" created successfully!`);
       },
       error: (error) => {
         if (error.message.includes('token')) {
-          alert('Necesita iniciar sesión para realizar esta acción');
+          alert('You need to log in to perform this action');
         } else {
-          console.error('Error al crear el préstamo:', error);
-          alert('No se pudo crear el préstamo. Inténtelo de nuevo.');
+          console.error('Error creating loan:', error);
+          alert('Could not create the loan. Please try again.');
         }
       },
     });
@@ -77,19 +79,18 @@ export class BookComponent implements OnInit {
   }
 
   deleteBook(): void {
-    if (confirm(`¿Está seguro de que desea eliminar el libro "${this.book.title}"?`)) {
+    if (confirm(`Are you sure you want to delete the book "${this.book.title}"?`)) {
       this.bookService.deleteBook(this.book.book_id).subscribe({
         next: () => {
-          console.log(`Libro "${this.book.title}" eliminado correctamente.`);
-          alert(`Libro "${this.book.title}" eliminado correctamente.`);
-          this.bookDeleted.emit(this.book.book_id); // Emitir evento para actualizar la lista
+          console.log(`Book "${this.book.title}" deleted successfully.`);
+          alert(`Book "${this.book.title}" deleted successfully.`);
+          this.bookDeleted.emit(this.book.book_id);
         },
         error: (err) => {
-          console.error('Error al eliminar el libro:', err);
-          alert('No se pudo eliminar el libro. Inténtelo de nuevo más tarde.');
+          console.error('Error deleting book:', err);
+          alert('Could not delete the book. Please try again later.');
         },
       });
     }
   }
-  
 }

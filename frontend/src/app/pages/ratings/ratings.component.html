@@ -6,6 +6,9 @@
     <button class="btn btn-secondary mb-4 ml-2" (click)="toggleFilterMenu()">
         {{ showFilterMenu ? 'Hide Filters' : 'Show Filters' }}
     </button>
+    <button class="btn btn-secondary mb-4 ml-2" (click)="clearFilters()">
+        Clear Filters
+    </button>
     <div class="filters mb-4" *ngIf="showFilterMenu">
         <div class="star-rating">
             <button *ngFor="let star of [1, 2, 3, 4, 5]"

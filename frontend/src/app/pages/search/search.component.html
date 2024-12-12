@@ -1,114 +1,38 @@
-<nav class="navbar navbar-light bg-light fixed-top d-flex d-lg-none">
-  <div class="container-fluid justify-content-between align-items-center">
-    <!-- Back Arrow Placeholder -->
-    <a href="index.html" class="navbar-icon">
-      <img src="assets/images/back-arrow.png" alt="Back" width="24" height="24">
-    </a>
-
-    <a class="navbar-brand mx-auto" href="index.html">
-      <img src="assets/images/logo.png" alt="Library" width="30" height="30" class="d-inline-block align-text-top">
-    </a>
-
-    <a href="#" class="navbar-icon">
-      <img src="assets/images/user-avatar.png" alt="Avatar" width="30" height="30" class="rounded-circle">
-    </a>
-  </div>
-</nav>
-
-<!-- Desktop Navbar -->
-
-<!-- Mobile Navbar (Bottom) -->
-<nav class="navbar navbar-light bg-light fixed-bottom d-flex d-lg-none">
-  <div class="container-fluid justify-content-around">
-    <a class="nav-link text-center" href="index.html"><i class="fas fa-home"></i><br></a>
-    <a class="nav-link text-center" href="search.html"><i class="fas fa-search"></i><br></a>
-    <a class="nav-link text-center" href="ratings.html"><i class="fas fa-star"></i><br></a>
-    <a class="nav-link text-center" href="loans.html"><i class="fas fa-book"></i><br></a>
-    <a class="nav-link text-center" href="user-settings.html"><i class="fas fa-user-cog"></i><br></a>
-  </div>
-</nav>
-
-<!-- Search Page -->
 <div class="container mt-5">
-  <!-- Search Bar -->
-  <div class="row mb-4">
-    <div class="col-12">
-      <form id="searchForm" class="d-flex">
-        <input type="text" class="form-control me-2" id="bookSearch" placeholder="Book, Author, ISBN, Publisher..." aria-label="Search">
-        <button type="submit" class="btn btn-primary">Search</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Book Categories -->
-  <div class="row mb-4" id="categoryGallery">
-    <!-- Fiction Category Card -->
-    <div class="col-6 col-md-4 col-lg-2 mb-4">
-      <div class="card category-card">
-        <img src="assets/images/fiction.png" class="card-img-top img-fluid" alt="Fiction">
-        <div class="category-overlay">
-          <h6 class="category-title">Fiction</h6>
+    <div class="row mb-4">
+        <div class="col-12">
+            <form (ngSubmit)="searchBooks()">
+                <input type="text" class="form-control me-2" [(ngModel)]="searchTerm" name="searchTerm" placeholder="Book, Author, ISBN, Publisher..." aria-label="Search">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
         </div>
-      </div>
     </div>
 
-    <!-- History Category Card -->
-    <div class="col-6 col-md-4 col-lg-2 mb-4">
-      <div class="card category-card">
-        <img src="assets/images/history.png" class="card-img-top img-fluid" alt="History">
-        <div class="category-overlay">
-          <h6 class="category-title">History</h6>
+    <div class="row mb-4" id="categoryGallery" *ngIf="!selectedGenre">
+        <div class="col-6 col-md-4 col-lg-2 mb-4" *ngFor="let genre of genres">
+            <div class="card category-card" (click)="filterByGenre(genre)">
+                <img [src]="'assets/images/' + genre.image" class="card-img-top img-fluid" [alt]="genre.name">
+                <div class="category-overlay">
+                    <h6 class="category-title">{{ genre.name }}</h6>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
-    <div class="col-6 col-md-4 col-lg-2 mb-4">
-      <div class="card category-card">
-        <img src="assets/images/crime.png" class="card-img-top img-fluid" alt="Crime">
-        <div class="category-overlay">
-          <h6 class="category-title">Crime</h6>
+    <div class="row mb-4" *ngIf="selectedGenre">
+        <div class="col-12">
+            <button class="btn btn-secondary" (click)="clearFilters()">Clear Filters</button>
         </div>
-      </div>
     </div>
-    <div class="col-6 col-md-4 col-lg-2 mb-4">
-      <div class="card category-card">
-        <img src="assets/images/horror.png" class="card-img-top img-fluid" alt="Horror">
-        <div class="category-overlay">
-          <h6 class="category-title">Horror</h6>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-md-4 col-lg-2 mb-4">
-      <div class="card category-card">
-        <img src="assets/images/romance.png" class="card-img-top img-fluid" alt="Romance">
-        <div class="category-overlay">
-          <h6 class="category-title">Romance</h6>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-md-4 col-lg-2 mb-4">
-      <div class="card category-card">
-        <img src="assets/images/fantasy.png" class="card-img-top img-fluid" alt="Fantasy">
-        <div class="category-overlay">
-          <h6 class="category-title">Fantasy</h6>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-md-4 col-lg-2 mb-4">
-      <div class="card category-card">
-        <img src="assets/images/religion.png" class="card-img-top img-fluid" alt="Religion">
-        <div class="category-overlay">
-          <h6 class="category-title">Religion</h6>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Search Results -->
-  <div class="row" id="searchResults">
-    <!-- Placeholder for search results -->
-    <p>No books found. Try searching for a book.</p>
-  </div>
+    <div class="row" id="searchResults">
+        <div class="col-12" *ngIf="books.length === 0">
+            <p>No books found. Try searching for a book.</p>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 mb-4" *ngFor="let book of books">
+            <div class="book-container">
+                <app-book [book]="book"></app-book>
+            </div>
+        </div>
+    </div>
 </div>
-<!-- Bootstrap JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { BookResponse } from '../models/book-response.model';
@@ -8,14 +8,15 @@ import { BookResponse } from '../models/book-response.model';
     providedIn: 'root'
 })
 export class BookService {
-    private apiUrl = 'http://localhost:5000/books'; // URL base actualizada
+    private apiUrl = 'http://127.0.0.1:5000/books';
+    private deleteUrl = 'http://127.0.0.1:5000/book';
 
     constructor(private http: HttpClient) {}
 
     private getHeaders(): HttpHeaders {
         const token = localStorage.getItem('token');
         if (!token) {
-            throw new Error('No se encontró el token de autenticación');
+            throw new Error('No authentication token found');
         }
         return new HttpHeaders({
             'Content-Type': 'application/json',
@@ -23,8 +24,13 @@ export class BookService {
         });
     }
 
-    getBooks(): Observable<BookResponse[]> {
-        return this.http.get<BookResponse[]>(this.apiUrl, { headers: this.getHeaders() }).pipe(
+    getBooks(page: number, filters: any = {}, perPage: number = 10): Observable<any> {
+        let params = new HttpParams().set('page', page.toString()).set('per_page', perPage.toString());
+        Object.keys(filters).forEach(key => {
+            params = params.set(key, filters[key]);
+        });
+
+        return this.http.get<any>(this.apiUrl, { params }).pipe(
             catchError(this.handleError)
         );
     }
@@ -41,33 +47,21 @@ export class BookService {
         );
     }
 
-    deleteBook(bookId: number): Observable<void> {
-        const token = localStorage.getItem('token');
-        
-        if (!token) {
-            console.error('No se encontró el token de autenticación');
-            return throwError(() => new Error('No se encontró el token de autenticación'));
-        }
-    
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        });
-    
-        const url = `http://127.0.0.1:5000/book/${bookId}`; // URL fija y dinámica para eliminar un libro
-        console.log(`Eliminando el libro con ID: ${bookId}`);
-    
-        return this.http.delete<void>(url, { headers }).pipe(
-            catchError(error => {
-                console.error('Error al eliminar el libro:', error);
-                return throwError(() => error);
-            })
+    createAuthor(author: { name: string, last_name: string }): Observable<any> {
+        const url = 'http://127.0.0.1:5000/authors';
+        return this.http.post<any>(url, author, { headers: this.getHeaders() }).pipe(
+            catchError(this.handleError)
         );
     }
-    
+
+    deleteBook(bookId: number): Observable<any> {
+        return this.http.delete(`${this.deleteUrl}/${bookId}`, { headers: this.getHeaders() }).pipe(
+            catchError(this.handleError)
+        );
+    }
 
     private handleError(error: any): Observable<never> {
-        console.error('Ocurrió un error:', error);
-        return throwError(() => new Error('Error en la solicitud, por favor intente nuevamente.'));
+        console.error('An error occurred:', error);
+        return throwError(() => new Error('Request error, please try again.'));
     }
 }
