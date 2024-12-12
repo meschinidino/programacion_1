@@ -1,0 +1,26 @@
+<div class="container mt-5">
+    <h2>Editar Información de la Cuenta</h2>
+    <form (ngSubmit)="onSubmit()" #editProfileForm="ngForm">
+        <div class="mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input type="text" id="name" class="form-control" [(ngModel)]="user.name" name="name" required>
+        </div>
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Apellido</label>
+            <input type="text" id="lastName" class="form-control" [(ngModel)]="user.last_name" name="lastName" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" class="form-control" [(ngModel)]="user.email" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">Número de Teléfono</label>
+            <input type="text" id="phone" class="form-control" [(ngModel)]="user.phone_number" name="phone" required>
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">Dirección</label>
+            <input type="text" id="address" class="form-control" [(ngModel)]="user.address" name="address" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+</div>

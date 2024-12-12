@@ -20,6 +20,7 @@ import { LoanComponent } from './components/loan/loan.component';
 import { LoanListComponent } from './pages/loan-list/loan-list.component';
 import { RatingComponent } from './components/rating/rating.component';
 import { AccountInfoComponent } from './pages/account-info/account-info.component';
+import { EditAccountComponent } from './pages/edit-account/edit-account.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { AccountInfoComponent } from './pages/account-info/account-info.componen
     LoanListComponent,
     RatingComponent,
     AccountInfoComponent,
+    EditAccountComponent,
   ],
   imports: [
     BrowserModule,

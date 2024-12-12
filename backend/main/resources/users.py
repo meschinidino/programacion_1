@@ -58,27 +58,28 @@ class User(Resource):
             return user.to_json_short()
 
     # Modificar el recurso usuario
-    @role_required(roles = ["User", "Admin", "Librarian"])
+    @role_required(roles=["User", "Admin", "Librarian"])
     def put(self, user_id):
         user_id = int(user_id)
         user = db.session.query(UsersModel).get_or_404(user_id)
-        data = request.get_json().items()
+        data = request.get_json()
 
         current_user_id = get_jwt_identity()
         current_user = db.session.query(UsersModel).get_or_404(current_user_id)
 
-        for key, value in data:
-            if key == "role":
-                if current_user.role.lower() != "admin":
-                    return "Only admins can change user roles", 403
-            
+        # Verificar si el usuario tiene permiso para cambiar el rol
+        if "role" in data and current_user.role.lower() != "admin":
+            return {"message": "Only admins can change user roles"}, 403
 
-        for key, value in data:
-            setattr(user, key, value)
-        db.session.add(user)
-        db.session.commit()
-
-        return user.to_json_short(), 201
+        # Actualizar los atributos del usuario
+        try:
+            for key, value in data.items():
+                setattr(user, key, value)
+            db.session.commit()  # Guardar los cambios en la base de datos
+            return user.to_json_short(), 200  # Cambiar el código de estado a 200
+        except Exception as e:
+            db.session.rollback()  # Revertir cambios en caso de error
+            return {"message": str(e)}, 500  # Retornar el error
 
     # Eliminar usuario
     @role_required(roles = ["Librarian", "Admin"])

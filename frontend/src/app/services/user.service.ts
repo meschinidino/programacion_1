@@ -21,10 +21,28 @@ export class UserService {
 
   getUsers(): Observable<any> {
     return this.httpClient.get(`${this.url}/users`, { headers: this.getHeaders() });
+    }
+
+  // Método para obtener el perfil del usuario
+  getUserProfile(userId:number): Observable<any> {
+    return this.httpClient.get(`${this.url}/user/${userId}`, { headers: this.getHeaders() });
   }
 
-  updateUser(userId: number, userData: User): Observable<any> {
-    return this.httpClient.put(`${this.url}/user/${userId}`, userData, { headers: this.getHeaders() });
+  updateUser(userId: number, userData: User & { loans?: any[] }): Observable<any> {
+    // Crear una copia del objeto userData
+    const filteredUserData = { ...userData };
+
+    // Eliminar loans si existe
+    if ('loans' in filteredUserData) {
+        delete filteredUserData.loans;
+    }
+
+    // Crear un nuevo objeto sin la clave role
+    const { role, ...userDataWithoutRole } = filteredUserData;
+
+    console.log('userId:', userId, 'userData:', userDataWithoutRole, 'headers:', this.getHeaders(), 'url:', `${this.url}/user/${userId}`);
+    
+    return this.httpClient.put(`${this.url}/user/${userId}`, userDataWithoutRole, { headers: this.getHeaders() });
   }
 
   createUser(userData: User): Observable<any> {
