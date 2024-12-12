@@ -69,9 +69,17 @@ export class AuthService {
   }
 
   // Obtener el ID del usuario actual
-  private getUserId(): number {
+  public getUserId(): number {
     return parseInt(localStorage.getItem('userId') || '0', 10);
   }
+
+  isAuthenticated(): boolean {
+    // Cambia de 'access_token' al nombre correcto de tu token
+    const token = this.getToken(); // Usa tu método existente getToken()
+    console.log('Token actual:', token); // Depuración
+    return !!token; // Simplifica la verificación inicialmente
+  }
+  
 
   // Guardar el ID del usuario actual en localStorage
   private saveUserId(userId: number): void {
@@ -104,4 +112,5 @@ export class AuthService {
   getBooks(page: number = 1): Observable<BookResponse> {
     return this.httpClient.get<BookResponse>(`${this.url}/books?page=${page}`, { headers: this.getHeaders() });
   }
+  
 }

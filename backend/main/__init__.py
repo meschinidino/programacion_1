@@ -56,6 +56,7 @@ def create_app():
     api.add_resource(resources.SigninResource, '/signin')
     api.add_resource(resources.LoginResource, '/login')
     api.add_resource(resources.LoansResource, '/loans')
+    api.add_resource(resources.LoansByUserResource, '/loans/user/<user_id>')
     api.add_resource(resources.LoanResource, '/loan/<loan_id>')
     api.add_resource(resources.RatingsResource, '/ratings')
     api.add_resource(resources.RatingResource, '/rating/<rating_id>')

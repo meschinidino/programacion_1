@@ -1,3 +1,13 @@
+export interface User {
+    user_id: number;
+    name: string;
+    last_name: string;
+    email: string;
+    phone_number: number;
+    address: string;
+    role: string;
+}
+
 // `loan.model.ts`
 export interface Loan {
     finish_date: string;
@@ -7,5 +17,4 @@ export interface Loan {
     status?: string;
     image?: string;
     title?: string;
-    user_name?: string; // Add this line
 }

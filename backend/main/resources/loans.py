@@ -122,3 +122,25 @@ class Loan(Resource):
         db.session.commit()
         return 'Delete', 200
 
+
+class LoansByUser(Resource):
+    @jwt_required()
+    def get(self, user_id):
+        page = 1
+        per_page = 10
+
+        if request.args.get("page"):
+            page = int(request.args.get("page"))
+        if request.args.get("per_page"):
+            per_page = int(request.args.get("per_page"))
+
+        loans = db.session.query(LoansModel).filter(LoansModel.user_id == user_id)
+        loans = loans.paginate(page=page, per_page=per_page, error_out=True)
+
+        return jsonify({
+            'loans': [loan.to_json_short() for loan in loans],
+            'total': loans.total,
+            'pages': loans.pages,
+            'page': page
+        })
+

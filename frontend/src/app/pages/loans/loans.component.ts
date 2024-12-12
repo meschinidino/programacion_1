@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoanService } from '../../services/loan.service';
 import { Loan } from '../../models/loan.model';
-import { map, Observable } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-loans',
@@ -14,60 +14,72 @@ import { map, Observable } from 'rxjs';
   styleUrls: ['./loans.component.css']
 })
 export class LoansComponent implements OnInit {
-  loans$: Observable<Loan[]> = new Observable<Loan[]>(); // Lista observable de préstamos
-  allLoans: Loan[] = []; // Lista completa de préstamos
+  loans: Loan[] = []; // Lista de préstamos
   filteredLoans: Loan[] = []; // Lista filtrada de préstamos
-  selectedLoan: Loan | null = null; // Préstamo seleccionado para edición o creación
-  isEditing: boolean = false; // Indica si se está editando un préstamo
-  selectedStatus: string = ''; // Estado seleccionado del préstamo
+  selectedLoan: Loan | null = null;
+  isEditing: boolean = false;
+  selectedStatus: string = '';
 
   constructor(
     private modalService: NgbModal,
-    private loanService: LoanService
+    private loanService: LoanService,
+    private authService: AuthService
   ) {}
 
-  
-  
   ngOnInit(): void {
+    const userId = this.authService.getUserId();
+    console.log('User ID from Auth Service:' + userId);
     this.loadLoans();
   }
 
-  // Cargar todos los préstamos
   loadLoans(): void {
-    this.loanService.getLoans().pipe(
-      map((response: any) => {
-        return response.loans.map((loan: Loan) => ({
-          ...loan,
-          status: this.calculateStatus(loan) // Agrega el campo `status`
-        }));
-      })
-    ).subscribe(
-      (loans) => {
-        this.allLoans = loans; // Cargar todos los préstamos
-        this.filteredLoans = [...this.allLoans]; // Inicializar la lista filtrada
+    const currentUserId = this.authService.getUserId();
+    
+    if (!currentUserId) {
+      console.error('No se pudo obtener el ID del usuario');
+      return;
+    }
+
+    this.loanService.getLoansByUser(currentUserId).subscribe(
+      (loans: Loan[]) => {
+        console.log('Préstamos obtenidos:', loans);
+        this.loans = loans;
+        this.filteredLoans = [...this.loans];
+        
+        if (this.loans.length === 0) {
+          console.log('No tienes préstamos registrados');
+        }
       },
       (error) => {
-        console.error('Error loading loans:', error);
+        console.error('Error al cargar préstamos:', error);
       }
     );
   }
-  
-  // Método para calcular el estado de un préstamo
+
+  // Método para calcular el estado del préstamo
   calculateStatus(loan: Loan): string {
-    const today = new Date().toISOString().split('T')[0]; // Fecha actual
-    if (loan.finish_date < today) {
-      return 'overdue'; // Retrasado si la fecha de finalización ya pasó
-    } else {
-      return 'borrowed'; // En préstamo
-    }
+    const today = new Date();
+    const finishDate = new Date(this.parseDate(loan.finish_date));
+    
+    return finishDate < today ? 'overdue' : 'borrowed';
   }
 
-  // Filtrar préstamos por texto
+  // Método para parsear la fecha en formato DD/MM/YYYY
+  parseDate(dateString: string): Date {
+    const [day, month, year] = dateString.split('/');
+    return new Date(+year, +month - 1, +day);
+  }
+
+  // Filtrar préstamos
   filterLoans(status: string): void {
+    this.selectedStatus = status;
+    
     if (status === 'all') {
-      this.filteredLoans = [...this.allLoans]; // Mostrar todos los préstamos
+      this.filteredLoans = [...this.loans];
     } else {
-      this.filteredLoans = this.allLoans.filter(loan => loan.status === status);
+      this.filteredLoans = this.loans.filter(loan => 
+        this.calculateStatus(loan) === status
+      );
     }
   }
   
@@ -89,7 +101,12 @@ export class LoansComponent implements OnInit {
   // Guardar préstamo (crear o actualizar)
   saveLoan(modal: any): void {
     if (this.selectedLoan) {
-      const saveObservable = this.isEditing
+        // Asegurarse de que el user_id esté asignado al crear un préstamo
+        if (!this.isEditing) {
+          this.selectedLoan.user_id = this.authService.getUserId() || 0;
+        }
+
+        const saveObservable = this.isEditing
         ? this.loanService.updateLoan(this.selectedLoan.loan_id.toString(), this.selectedLoan)
         : this.loanService.createLoan(this.selectedLoan);
 
