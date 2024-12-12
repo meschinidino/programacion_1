@@ -34,25 +34,41 @@ export class LoansComponent implements OnInit {
 
   loadLoans(): void {
     const currentUserId = this.authService.getUserId();
-    
+
     if (!currentUserId) {
       console.error('No se pudo obtener el ID del usuario');
       return;
     }
 
-    this.loanService.getLoansByUser(currentUserId).subscribe(
-      (loans: Loan[]) => {
-        console.log('Préstamos obtenidos:', loans);
-        this.loans = loans;
-        this.filteredLoans = [...this.loans];
-        
-        if (this.loans.length === 0) {
-          console.log('No tienes préstamos registrados');
+    this.authService.getCurrentUser(currentUserId).subscribe(
+        (user) => {
+          if (user.role === 'admin') {
+            this.loanService.getLoans().subscribe(
+                (loans: Loan[]) => {
+                  console.log('All loans obtained:', loans);
+                  this.loans = loans;
+                  this.filteredLoans = [...this.loans];
+                },
+                (error) => {
+                  console.error('Error loading all loans:', error);
+                }
+            );
+          } else {
+            this.loanService.getLoansByUser(currentUserId).subscribe(
+                (loans: Loan[]) => {
+                  console.log('User loans obtained:', loans);
+                  this.loans = loans;
+                  this.filteredLoans = [...this.loans];
+                },
+                (error) => {
+                  console.error('Error loading user loans:', error);
+                }
+            );
+          }
+        },
+        (error) => {
+          console.error('Error fetching user data:', error);
         }
-      },
-      (error) => {
-        console.error('Error al cargar préstamos:', error);
-      }
     );
   }
 

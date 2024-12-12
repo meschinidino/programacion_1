@@ -2,8 +2,10 @@
     <div class="row mb-4">
         <div class="col-12">
             <form (ngSubmit)="searchBooks()">
-                <input type="text" class="form-control me-2" [(ngModel)]="searchTerm" name="searchTerm" placeholder="Book, Author, ISBN, Publisher..." aria-label="Search">
-                <button type="submit" class="btn btn-primary">Search</button>
+                <div class="input-group">
+                    <input type="text" class="form-control" [(ngModel)]="searchTerm" name="searchTerm" placeholder="Book, Author, ISBN, Publisher..." aria-label="Search">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
             </form>
         </div>
     </div>

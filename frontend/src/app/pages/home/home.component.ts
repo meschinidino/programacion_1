@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { BookService } from '../../services/book.service';
+import { LoanService } from '../../services/loan.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeDetectorRef } from '@angular/core';
 
@@ -28,6 +29,7 @@ export class HomeComponent implements OnInit {
   constructor(
       private authService: AuthService,
       private bookService: BookService,
+      private loanService: LoanService,
       private modalService: NgbModal,
       private cdr: ChangeDetectorRef
   ) {}
@@ -40,10 +42,8 @@ export class HomeComponent implements OnInit {
   }
 
   loadBooks(page: number = 1): void {
-    console.log(`Loading books for page: ${page}`);
     this.bookService.getBooks(page, this.filters, this.itemsPerPage).subscribe({
       next: (response: any) => {
-        console.log('HTTP Response:', response); // Log the response for debugging
         if (response?.books) {
           this.handlePageChange(response);
         } else {
@@ -57,14 +57,12 @@ export class HomeComponent implements OnInit {
   }
 
   handlePageChange(response: any): void {
-    console.log('Handling page change:', response);
     this.availableBooks = response.books;
     this.extractAuthors(this.availableBooks);
     this.filteredBooks = this.availableBooks;
-    this.totalPages = response.pages; // Ensure this is set correctly
+    this.totalPages = response.pages;
     this.currentPage = response.page;
-    this.paginatedBooks = response.books; // Directly set paginatedBooks from response
-    console.log('Updated paginatedBooks:', this.paginatedBooks);
+    this.paginatedBooks = response.books;
   }
 
   extractAuthors(books: any[]): void {
@@ -86,7 +84,6 @@ export class HomeComponent implements OnInit {
 
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
-      console.log(`Going to page: ${page}`);
       this.currentPage = page;
       this.loadBooks(this.currentPage);
     }
@@ -103,6 +100,7 @@ export class HomeComponent implements OnInit {
     this.selectedBook = { title: '', authors: [], genre: '', year: '', editorial: '', isbn: '', available: '' };
     this.modalService.open(this.bookModal, { ariaLabelledBy: 'modal-basic-title' });
   }
+
 
   saveBook(modal: any): void {
     if (this.selectedBook) {
@@ -123,13 +121,13 @@ export class HomeComponent implements OnInit {
             next: (bookResponse: any) => {
               this.loadBooks();
               modal.close();
-              this.selectedBook = { authors: [] }; // Reset selectedBook after saving
+              this.selectedBook = { authors: [] };
               this.isEditing = false;
             },
             error: (err: any) => {
               console.error('Error saving book:', err);
               modal.close();
-              this.selectedBook = { authors: [] }; // Reset selectedBook after error
+              this.selectedBook = { authors: [] };
               this.isEditing = false;
             }
           });
@@ -137,7 +135,7 @@ export class HomeComponent implements OnInit {
         error: (err: any) => {
           console.error('Error creating author:', err);
           modal.close();
-          this.selectedBook = { authors: [] }; // Reset selectedBook after error
+          this.selectedBook = { authors: [] };
           this.isEditing = false;
         }
       });

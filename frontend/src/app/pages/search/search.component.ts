@@ -33,6 +33,9 @@ export class SearchComponent implements OnInit {
   }
 
   searchBooks(): void {
+    if (this.searchTerm.trim() === '') {
+      return;
+    }
     this.bookService.getBooks(1, { searchTerm: this.searchTerm }).subscribe({
       next: (response: any) => {
         this.books = response.books;
