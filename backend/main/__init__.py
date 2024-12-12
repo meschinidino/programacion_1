@@ -25,7 +25,7 @@ def create_app():
     # inicio flask
     app = Flask(__name__)
 
-    CORS(app)
+    CORS(app, resources={r"/*": {"origins": "*"}})
 
     # importamos directorio de recursos
     import main.resources as resources

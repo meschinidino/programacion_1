@@ -17,6 +17,7 @@ export class AccountInfoComponent implements OnInit {
     if (userId) {
       this.authService.getCurrentUser(userId).subscribe(
         (userData: User) => {
+          console.log('Información del usuario:', userData);
           this.user = userData; // Almacena la información del usuario
         },
         error => {

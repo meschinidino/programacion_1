@@ -70,7 +70,9 @@ export class AuthService {
 
   // Obtener el ID del usuario actual
   public getUserId(): number {
-    return parseInt(localStorage.getItem('userId') || '0', 10);
+    const userId = parseInt(localStorage.getItem('userId') || '0', 10);
+    console.log('User ID recuperado:', userId);
+    return userId;
   }
 
   isAuthenticated(): boolean {
@@ -93,6 +95,7 @@ export class AuthService {
 
   // Obtener información del usuario actual
   getCurrentUser(userId: number): Observable<User> {
+    console.log('User ID para obtener información:', userId);
     return this.httpClient.get<User>(`${this.url}/user/${userId}`, { headers: this.getHeaders() });
   }
 
