@@ -18,7 +18,8 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { AuthService } from './services/auth.service';
 import { LoanComponent } from './components/loan/loan.component';
 import { LoanListComponent } from './pages/loan-list/loan-list.component';
-import { RatingComponent } from './components/rating/rating.component'; // Import AuthService
+import { RatingComponent } from './components/rating/rating.component';
+import { AccountInfoComponent } from './pages/account-info/account-info.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { RatingComponent } from './components/rating/rating.component'; // Impor
     SignupComponent,
     LoanComponent,
     LoanListComponent,
-    RatingComponent
+    RatingComponent,
+    AccountInfoComponent,
   ],
   imports: [
     BrowserModule,

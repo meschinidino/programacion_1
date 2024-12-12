@@ -18,3 +18,4 @@ export interface Loan {
     image?: string;
     title?: string;
 }
+

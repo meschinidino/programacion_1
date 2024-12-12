@@ -1,0 +1,16 @@
+<div class="container mt-5" *ngIf="user">
+    <h2>Información de la Cuenta</h2>
+    <p>Aquí puedes ver y editar la información de tu cuenta.</p>
+    <ul>
+        <li><strong>Name:</strong> {{ user.name }}</li>
+        <li><strong>Lastname:</strong> {{ user.last_name }}</li>
+        <li><strong>Email:</strong> {{ user.email }}</li>
+        <li><strong>Phone Number:</strong> {{ user.phone_number }}</li>
+        <li><strong>Address:</strong> {{ user.address }}</li>
+        <li><strong>Role:</strong> {{ user.role }}</li>
+    </ul>
+    <a routerLink="/edit-account" class="btn btn-primary">Editar Información</a>
+</div>
+<div *ngIf="!user">
+    <p>Cargando información del usuario...</p>
+</div>
