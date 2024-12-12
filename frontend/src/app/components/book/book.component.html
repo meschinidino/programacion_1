@@ -16,7 +16,7 @@
             <p class="card-text">ISBN: {{ book.isbn }}</p>
             <p class="card-text">Editorial: {{ book.editorial }}</p>
             <p class="card-text">Ratings: {{ book.ratings.length }}</p>
-            <button class="btn btn-primary" (click)="onBorrowClick($event)">Borrow</button>
+            <button class="btn btn-primary"  *ngIf="userRole === 'User'" (click)="onBorrowClick($event)">Borrow</button>
             <button 
                 class="btn btn-secondary" *ngIf="userRole === 'Librarian' || userRole === 'Admin'" (click)="deleteBook()">  Delete </button>
 
