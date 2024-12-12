@@ -12,6 +12,7 @@ import { UserLoansComponent } from './pages/user-loans/user-loans.component';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { LoanListComponent } from './pages/loan-list/loan-list.component';
+import { AccountInfoComponent } from './pages/account-info/account-info.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [authGuard] },
@@ -24,7 +25,8 @@ const routes: Routes = [
   { path: 'search', component: SearchComponent },
   { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
   { path: 'users', component: UsersComponent, canActivate: [roleGuard], data: { expectedRole: 'Admin' } },
-  { path: 'user-loans/:userId', component: UserLoansComponent, canActivate: [authGuard], data: { role: 'User' } }
+  { path: 'user-loans/:userId', component: UserLoansComponent, canActivate: [authGuard], data: { role: 'User' } },
+  { path: 'account-info', component: AccountInfoComponent },
 ];
 
 @NgModule({
