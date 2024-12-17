@@ -14,9 +14,14 @@ def login():
     user = db.session.query(UsersModel).filter(UsersModel.email == request.get_json().get("email")).first_or_404()
     #Valida la contraseña
     if user.validate_pass(request.get_json().get("password")):
-        #Genera un nuevo token
-        #Pasa el objeto Users como identidad
-        access_token = create_access_token(identity=user)
+        # Crear un diccionario con la información que queremos en el token
+        identity = {
+            'id': str(user.user_id),  # Convertimos el ID a string
+            'email': user.email,
+            'role': user.role
+        }
+        # Generar el token con el diccionario como identidad
+        access_token = create_access_token(identity=identity)
         #Devolver valores y token
         data = {
             'id': str(user.user_id),
