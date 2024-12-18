@@ -4,6 +4,8 @@ import { BookService } from '../../services/book.service';
 import { LoanService } from '../../services/loan.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeDetectorRef } from '@angular/core';
+import { Book } from '../../models/book-response.model';
+
 
 @Component({
   selector: 'app-home',
@@ -57,12 +59,17 @@ export class HomeComponent implements OnInit {
   }
 
   handlePageChange(response: any): void {
-    this.availableBooks = response.books;
+    this.availableBooks = response.books.sort((a: Book, b: Book) => {
+        const ratingA = this.calculateAverageRating(a);
+        const ratingB = this.calculateAverageRating(b);
+        return ratingB - ratingA;
+    });
+    
     this.extractAuthors(this.availableBooks);
     this.filteredBooks = this.availableBooks;
     this.totalPages = response.pages;
     this.currentPage = response.page;
-    this.paginatedBooks = response.books;
+    this.paginatedBooks = this.availableBooks;
   }
 
   extractAuthors(books: any[]): void {
@@ -152,5 +159,13 @@ export class HomeComponent implements OnInit {
 
   onBookClick(book: any): void {
     console.log('Book clicked:', book);
+  }
+
+  private calculateAverageRating(book: Book): number {
+    if (!book.ratings || book.ratings.length === 0) {
+      return 0;
+    }
+    const sum = book.ratings.reduce((acc, rating) => acc + rating.assessment, 0);
+    return sum / book.ratings.length;
   }
 }

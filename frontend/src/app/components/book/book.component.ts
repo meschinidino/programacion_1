@@ -93,4 +93,12 @@ export class BookComponent implements OnInit {
       });
     }
   }
+
+  getAverageRating(): number {
+    if (!this.book.ratings || this.book.ratings.length === 0) {
+        return 0;
+    }
+    const sum = this.book.ratings.reduce((acc, rating) => acc + rating.assessment, 0);
+    return sum / this.book.ratings.length;
+  }
 }
