@@ -16,8 +16,8 @@ import { AccountInfoComponent } from './pages/account-info/account-info.componen
 import { EditAccountComponent } from './pages/edit-account/edit-account.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent, canActivate: [authGuard] },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent},
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   { path: 'loans', component: LoansComponent, canActivate: [authGuard], data: { role: 'User' } },

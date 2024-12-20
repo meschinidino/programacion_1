@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-navigation',
@@ -9,4 +10,21 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule]
 })
-export class NavigationComponent {}
+export class NavigationComponent implements OnInit {
+  isAuthenticated: boolean = false;
+
+  constructor(private authService: AuthService, private router: Router) {
+    this.authService.authStateChanged.subscribe(() => {
+      this.isAuthenticated = this.authService.isAuthenticated();
+    });
+  }
+
+  ngOnInit() {
+    this.isAuthenticated = this.authService.isAuthenticated();
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+}

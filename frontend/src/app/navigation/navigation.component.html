@@ -38,8 +38,13 @@
             <img src="assets/images/user-avatar.png" alt="User Avatar" width="30" height="30" class="rounded-circle">
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
-            <li><a class="dropdown-item" routerLink="/settings">User Settings</a></li>
-            <li><a class="dropdown-item" routerLink="/login">Logout</a></li>
+            <ng-container *ngIf="isAuthenticated; else notAuthenticated">
+              <li><a class="dropdown-item" routerLink="/settings">User Settings</a></li>
+              <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+            </ng-container>
+            <ng-template #notAuthenticated>
+              <li><a class="dropdown-item" routerLink="/login">Login</a></li>
+            </ng-template>
           </ul>
         </li>
       </ul>

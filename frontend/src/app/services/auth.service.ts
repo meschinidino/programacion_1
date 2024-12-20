@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { take, tap, map } from 'rxjs/operators';
@@ -12,11 +12,14 @@ import { BookResponse } from '../models/book-response.model';
 })
 export class AuthService {
   private url = '/api';
+  authStateChanged = new EventEmitter<void>();
 
   constructor(
     private httpClient: HttpClient,
     private router: Router
-  ) { }
+  ) {
+    localStorage.removeItem('token');
+  }
 
   // Método para generar encabezados con el token
   private getHeaders(): HttpHeaders {
@@ -42,15 +45,15 @@ export class AuthService {
       tap(response => {
         this.saveToken(response.token);
         this.saveUserId(response.id);
+        this.authStateChanged.emit();
       })
     );
   }
 
   // Cerrar sesión
   logout(): void {
-    this.clearToken();
-    this.clearUserId();
-    this.router.navigateByUrl('home');
+    localStorage.removeItem('token');
+    this.authStateChanged.emit();
   }
 
   // Obtener el token almacenado
@@ -76,10 +79,8 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    // Cambia de 'access_token' al nombre correcto de tu token
-    const token = this.getToken(); // Usa tu método existente getToken()
-    console.log('Token actual:', token); // Depuración
-    return !!token; // Simplifica la verificación inicialmente
+    const token = localStorage.getItem('token');
+    return !!token; // Convierte a boolean y retorna true si existe token
   }
   
 
