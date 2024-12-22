@@ -44,6 +44,8 @@ class Loans(Resource):
                         'total': loans.total,
                         'pages': loans.pages,
                         'page': page})
+    
+    
 
     @jwt_required()
     def post(self):
@@ -141,6 +143,41 @@ class LoansByUser(Resource):
             'loans': [loan.to_json_short() for loan in loans],
             'total': loans.total,
             'pages': loans.pages,
+            'page': page
+        })
+
+
+class UserBorrowedBooks(Resource):
+    @jwt_required(optional=True)
+    def get(self, user_id):
+        page = 1
+        per_page = 10
+
+        if request.args.get("page"):
+            page = int(request.args.get("page"))
+        if request.args.get("per_page"):
+            per_page = int(request.args.get("per_page"))
+        
+        # Obtener los préstamos del usuario y sus libros asociados
+        loans_with_books = db.session.query(LoansModel)\
+            .filter(LoansModel.user_id == user_id)\
+            .paginate(page=page, per_page=per_page, error_out=True)
+        
+        borrowed_books = []
+        for loan in loans_with_books.items:
+            for book in loan.books:
+                book_data = book.to_json()
+                book_data.update({
+                    'loan_date': loan.loan_date,
+                    'finish_date': loan.finish_date,
+                    'loan_id': loan.loan_id
+                })
+                borrowed_books.append(book_data)
+        
+        return jsonify({
+            'borrowed_books': borrowed_books,
+            'total': loans_with_books.total,
+            'pages': loans_with_books.pages,
             'page': page
         })
 

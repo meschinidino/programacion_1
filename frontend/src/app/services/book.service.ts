@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, tap } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { BookResponse } from '../models/book-response.model';
 
@@ -10,6 +10,7 @@ import { BookResponse } from '../models/book-response.model';
 export class BookService {
     private apiUrl = 'http://127.0.0.1:5000/books';
     private deleteUrl = 'http://127.0.0.1:5000/book';
+    private usersUrl = 'http://127.0.0.1:5000/users';
 
     constructor(private http: HttpClient) {}
 
@@ -56,6 +57,15 @@ export class BookService {
 
     deleteBook(bookId: number): Observable<any> {
         return this.http.delete(`${this.deleteUrl}/${bookId}`, { headers: this.getHeaders() }).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    getBorrowedBooks(userId: number): Observable<any[]> {
+        const url = `${this.usersUrl}/${userId}/borrowed-books`;
+        console.log('Requesting borrowed books from:', url);
+        return this.http.get<any[]>(url, {}).pipe(
+            tap(response => console.log('Libros prestados:', response)),
             catchError(this.handleError)
         );
     }

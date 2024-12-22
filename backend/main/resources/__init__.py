@@ -14,3 +14,5 @@ from .ratings import Rating as RatingResource
 from .authors import Author as AuthorResource
 from .authors import Authors as AuthorsResource
 from .loans import LoansByUser as LoansByUserResource
+from .loans import UserBorrowedBooks as UserBorrowedBooksResource
+from .ratings import CanUserRate as CanUserRateResource

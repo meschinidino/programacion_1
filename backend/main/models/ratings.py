@@ -15,6 +15,9 @@ class Ratings(db.Model):
     # Add relationship with Users model to access name and last name
     user = db.relationship("Users", back_populates="ratings")
 
+    # Agregar restricción única para user_id y book_id
+    __table_args__ = (db.UniqueConstraint('user_id', 'book_id', name='unique_user_book_rating'),)
+
     def __repr__(self):
         return '<Ratings %r>' % self.rating_id
 
