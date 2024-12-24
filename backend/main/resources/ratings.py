@@ -67,25 +67,13 @@ class Ratings(Resource):
             rating_data = request.get_json()
             book_id = rating_data.get('book_id')
             
-            # Verificar si ya existe una reseña del usuario para este libro
-            existing_rating = db.session.query(RatingsModel).filter(
-                RatingsModel.user_id == current_user,
-                RatingsModel.book_id == book_id
-            ).first()
+            # Verificar si el usuario puede hacer la reseña
+            can_rate = CanUserRate().get(current_user, book_id)
             
-            if existing_rating:
-                return {'mensaje': 'Ya has realizado una reseña para este libro'}, 400
+            if not can_rate:
+                return {'mensaje': 'No puedes hacer una reseña de este libro'}, 400
             
-            # Verificar si el usuario ha tenido un préstamo de este libro
-            has_loan = db.session.query(LoansModel).filter(
-                LoansModel.user_id == current_user,
-                LoansModel.book_id == book_id
-            ).first()
-            
-            if not has_loan:
-                return {'mensaje': 'Solo puedes hacer reseñas de libros que hayas pedido prestados'}, 400
-            
-            # Si pasa las validaciones, crear la reseña
+            # Si puede hacer la reseña, crearla
             new_rating = RatingsModel.from_json(rating_data)
             new_rating.user_id = current_user
             
@@ -124,7 +112,7 @@ class Rating(Resource):
         db.session.commit()
         return rating.to_json_short(), 201
 
-    @role_required(roles = ["Librarian"])
+    @role_required(roles = ["Admin", "Librarian"])
     def delete(self, rating_id):
         rating_id = int(rating_id)
         rating = db.session.query(RatingsModel).get_or_404(rating_id)
@@ -133,7 +121,7 @@ class Rating(Resource):
         return 'Deleted', 204
 
 class CanUserRate(Resource):
-    @jwt_required()
+    @jwt_required(optional=True)
     def get(self, user_id, book_id):
         user_id = int(user_id)
         book_id = int(book_id)

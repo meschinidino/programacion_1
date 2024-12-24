@@ -1,11 +1,26 @@
 <div class="container mt-5">
     <h2 class="mb-4">Ratings</h2>
     
+    <div class="mb-4">
+        <button class="btn btn-primary" (click)="toggleReviewForm()">
+            {{ showReviewForm ? 'Hide Form' : 'Create Rating' }}
+        </button>
+        <button class="btn btn-secondary ml-2" (click)="toggleUserRatings()">
+            {{ showUserRatings ? 'Show All Ratings' : 'Show My Ratings' }}
+        </button>
+        <button class="btn btn-secondary ml-2" (click)="toggleFilterMenu()">
+            {{ showFilterMenu ? 'Hide Filters' : 'Show Filters' }}
+        </button>
+        <button class="btn btn-secondary ml-2" (click)="clearFilters()">
+            Clear Filters
+        </button>
+    </div>
+    
     <!-- Formulario para crear reseña -->
-    <div class="card mb-4 p-3">
-        <h4>Crear Nueva Reseña</h4>
+    <div class="card mb-4 p-3" *ngIf="showReviewForm">
+        <h4>Create Rating</h4>
         <div class="form-group">
-            <label>Libro:</label>
+            <label>Book:</label>
             <select [(ngModel)]="newRating.book_id" class="form-control">
                 <option value="" disabled selected>Selecciona un libro</option>
                 <option *ngFor="let book of books" [value]="book.id">
@@ -14,7 +29,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label>Calificación:</label>
+            <label>Assessment:</label>
             <div class="star-rating">
                 <button *ngFor="let star of [1, 2, 3, 4, 5]"
                         [ngClass]="{'selected': star <= newRating.assessment}"
@@ -24,23 +39,14 @@
             </div>
         </div>
         <div class="form-group">
-            <label>Comentario:</label>
+            <label>Comment:</label>
             <textarea [(ngModel)]="newRating.comment" class="form-control" rows="3"></textarea>
         </div>
-        <button class="btn btn-primary" (click)="crearResena(newRating.book_id, newRating)">
-            Enviar Reseña
+        <button class="btn btn-primary" (click)="handleSubmitRating()">
+            Send Rating
         </button>
     </div>
 
-    <button class="btn btn-secondary mb-4" (click)="toggleUserRatings()">
-        {{ showUserRatings ? 'Show All Ratings' : 'Show My Ratings' }}
-    </button>
-    <button class="btn btn-secondary mb-4 ml-2" (click)="toggleFilterMenu()">
-        {{ showFilterMenu ? 'Hide Filters' : 'Show Filters' }}
-    </button>
-    <button class="btn btn-secondary mb-4 ml-2" (click)="clearFilters()">
-        Clear Filters
-    </button>
     <div class="filters mb-4" *ngIf="showFilterMenu">
         <div class="star-rating">
             <button *ngFor="let star of [1, 2, 3, 4, 5]"

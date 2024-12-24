@@ -19,6 +19,7 @@ export class RatingsComponent implements OnInit {
   showFilterMenu: boolean = false;
   newRating: Rating = {} as Rating;
   books: any[] = [];
+  showReviewForm = false;
 
   constructor(private ratingService: RatingService, private authService: AuthService, private bookService: BookService) {}
 
@@ -87,14 +88,17 @@ export class RatingsComponent implements OnInit {
           this.ratingService.createRating(rating).subscribe(
             newRating => {
               console.log('Reseña creada exitosamente');
+              alert('Rating created successfully');
               this.loadRatings();
             },
             error => {
               console.error('Error al crear la reseña');
+              alert('Error creating rating');
             }
           );
         } else {
           console.log('No puedes hacer una reseña para este libro');
+          alert('You already rated this book');
         }
       }
     );
@@ -106,7 +110,7 @@ export class RatingsComponent implements OnInit {
         console.log('Estructura completa de la respuesta:', response);
         if (response && Array.isArray(response.borrowed_books)) {
           this.books = response.borrowed_books.map((book: any) => ({
-            id: book.id,
+            id: book.book_id,
             title: book.title
           }));
         } else {
@@ -120,4 +124,22 @@ export class RatingsComponent implements OnInit {
       }
     );
   }
+
+  handleSubmitRating(): void {
+    const ratingData = {
+        ...this.newRating,
+        user_id: this.userId,
+        valuation_date: new Date().toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        })
+    };
+    this.crearResena(this.newRating.book_id, ratingData);
+  }
+
+  toggleReviewForm(): void {
+    this.showReviewForm = !this.showReviewForm;
+  }
+
 }
