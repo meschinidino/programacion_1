@@ -36,7 +36,7 @@
                             class="card-img-top img-fluid"
                             [alt]="loan.title || 'Book Image'">
                         <div class="card-body text-center">
-                            <h6 class="card-title">{{ loan.title || 'A Game of Thrones' }}</h6>
+                            <h6 class="card-title">{{ loan.books?.[0]?.title || 'Sin título disponible' }}</h6>
                         </div>
                     </div>
                 </div>

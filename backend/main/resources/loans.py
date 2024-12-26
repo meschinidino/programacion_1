@@ -40,7 +40,7 @@ class Loans(Resource):
 
         loans = loans.paginate(page=page, per_page=per_page, error_out=True)
 
-        return jsonify({'loans': [loan.to_json_short() for loan in loans],
+        return jsonify({'loans': [loan.to_json() for loan in loans],
                         'total': loans.total,
                         'pages': loans.pages,
                         'page': page})
@@ -83,11 +83,18 @@ class Loans(Resource):
                 finish_date=loan_data['finish_date']
             )
             
-            # Verificar que los libros existan
+            # Verificar que los libros existan y tengan copias disponibles
             if book_ids:
                 books = BooksModel.query.filter(BooksModel.book_id.in_(book_ids)).all()
                 if len(books) != len(book_ids):
                     return {"error": "Uno o más libros no existen"}, 404
+                    
+                # Verificar y actualizar la disponibilidad de cada libro
+                for book in books:
+                    if book.available <= 0:
+                        return {"error": f"El libro '{book.title}' no está disponible"}, 400
+                    book.available -= 1
+                    
                 loan.books.extend(books)
                 
             db.session.add(loan)
@@ -120,6 +127,11 @@ class Loan(Resource):
     @role_required(roles = ["Librarian","Admin"])
     def delete(self, loan_id):
         loan = db.session.query(LoansModel).get_or_404(loan_id)
+    
+    # Aumentar la disponibilidad de los libros devueltos
+        for book in loan.books:
+            book.available += 1
+    
         db.session.delete(loan)
         db.session.commit()
         return 'Delete', 200
