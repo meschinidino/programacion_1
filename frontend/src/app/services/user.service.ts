@@ -19,9 +19,9 @@ export class UserService {
     });
   }
 
-  getUsers(): Observable<any> {
-    return this.httpClient.get(`${this.url}/users`, { headers: this.getHeaders() });
-    }
+  getUsers(page: number = 1): Observable<any> {
+    return this.httpClient.get(`${this.url}/users?page=${page}`, { headers: this.getHeaders() });
+  }
 
   // Método para obtener el perfil del usuario
   getUserProfile(userId:number): Observable<any> {
@@ -51,5 +51,10 @@ export class UserService {
 
   deleteUser(userId: number): Observable<any> {
     return this.httpClient.delete(`${this.url}/user/${userId}`, { headers: this.getHeaders() });
+  }
+
+  getAllUsers() {
+    // Endpoint que retorne todos los usuarios sin paginación
+    return this.httpClient.get(`${this.url}/users/all`, { headers: this.getHeaders() });
   }
 }

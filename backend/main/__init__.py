@@ -46,6 +46,7 @@ def create_app():
     import main.resources as resource
     # cargar a la API el recurso usuarios (users) y especificar la ruta
     api.add_resource(resources.UsersResource, '/users')
+    api.add_resource(resources.UsersAllResource, '/users/all', endpoint='users_all')
     # cargar a la API el recurso usuario (user) y especificar la ruta
     api.add_resource(resources.UserResource, '/user/<user_id>')
     api.add_resource(resources.BooksResource, '/books')

@@ -6,10 +6,12 @@
     <div class="filter-row mb-4">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <select class="form-select" aria-label="Filter by User Type">
-                    <option selected>All Users</option>
-                    <option value="1">Admins</option>
-                    <option value="2">Members</option>
+                <select class="form-select" [(ngModel)]="selectedRole" (change)="filterUsers()">
+                    <option value="">Todos los Usuarios</option>
+                    <option value="USER">User</option>
+                    <option value="ADMIN">Admin</option>
+                    <option value="LIBRARIAN">Librarian</option>
+                    <option value="GUEST">Guest</option>
                 </select>
             </div>
             <div class="col-md-6 text-end">
@@ -20,13 +22,26 @@
 
     <!-- User List -->
     <div class="row" id="userList">
-        <div class="col-12 mb-3" *ngFor="let user of users$ | async">
+        <div class="col-12 mb-3" *ngFor="let user of filteredUsers$ | async">
             <app-user [user]="user"></app-user>
             <p>{{ user.name }} {{ user.last_name }}</p>
             <button class="btn btn-secondary" (click)="open(content, user)">Edit</button>
             <button class="btn btn-danger" (click)="deleteUser(user)">Delete</button>
             <button class="btn btn-info" (click)="viewLoanHistory(user.user_id)">View Loan History</button>
         </div>
+    </div>
+
+    <!-- Después de tu lista de usuarios -->
+    <div class="d-flex justify-content-center">
+        <ngb-pagination
+            [collectionSize]="totalItems"
+            [(page)]="page"
+            [pageSize]="pageSize"
+            (pageChange)="onPageChange($event)"
+            [maxSize]="5"
+            [boundaryLinks]="true"
+            aria-label="Default pagination">
+        </ngb-pagination>
     </div>
 
     <!-- Edit/Add User Modal -->

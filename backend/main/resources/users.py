@@ -42,6 +42,14 @@ class Users(Resource):
             'page': page
         })
 
+class UsersAll(Resource):
+    @role_required(roles=["Admin", "Librarian"])
+    def get(self):
+        users = db.session.query(UsersModel).all()
+        return jsonify({
+            'users': [user.to_json_short() for user in users]
+        })
+
 
 
 class User(Resource):
