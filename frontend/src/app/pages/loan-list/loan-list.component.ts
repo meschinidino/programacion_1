@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Loan } from '../../models/loan.model';
 import { LoanService } from '../../services/loan.service';
+import { Loan } from '../../models/loan.model';
 
 @Component({
   selector: 'app-loan-list',
@@ -13,8 +13,31 @@ export class LoanListComponent implements OnInit {
   constructor(private loanService: LoanService) {}
 
   ngOnInit(): void {
-    this.loanService.getLoans().subscribe((data: { loans: Loan[] }) => {
-      this.loans = data.loans;
+    this.loadLoans();
+  }
+
+  loadLoans(): void {
+    this.loanService.getLoans().subscribe({
+      next: (loans: Loan[]) => {
+        this.loans = loans;
+      },
+      error: (error) => console.error('Error cargando préstamos:', error)
+    });
+  }
+
+  updateLoanStatus(loanId: string, status: string): void {
+    this.loanService.updateLoan(loanId, { status }).subscribe({
+      next: () => this.loadLoans(),
+      error: (error) => console.error('Error actualizando estado:', error)
+    });
+  }
+
+  extendLoanTime(loanId: string): void {
+    this.loanService.extendLoanTime(loanId).subscribe({
+      next: () => {
+        this.loadLoans();
+      },
+      error: (error) => console.error('Error extendiendo el préstamo:', error)
     });
   }
 }

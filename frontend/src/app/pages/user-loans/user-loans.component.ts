@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { LoanService } from '../../services/loan.service';
+import { Loan } from '../../models/loan.model';
 
 @Component({
   selector: 'app-user-loans',
@@ -6,21 +9,66 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-loans.component.css']
 })
 export class UserLoansComponent implements OnInit {
-  userId: string = '123'; // Example user ID
-  loans: any[] = [];
+  loans: Loan[] = [];
+  userId: number = 0;
+
+  constructor(
+    private loanService: LoanService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.loans = [
-      { id: '1', bookTitle: 'Book One', status: 'borrowed' },
-      { id: '2', bookTitle: 'Book Two', status: 'returned' },
-      { id: '3', bookTitle: 'Book Three', status: 'lost' }
-    ];
+    // Obtener el userId de los parámetros de la URL
+    this.route.params.subscribe(params => {
+      console.log('Parámetros de ruta:', params);
+      this.userId = +params['userId']; // El + convierte el string a número
+      console.log('ID de usuario a consultar:', this.userId);
+      
+      if (this.userId) {
+        this.loadLoans();
+      } else {
+        console.error('No se proporcionó un ID de usuario válido en la URL');
+      }
+    });
+  }
+
+  loadLoans(): void {
+    if (!this.userId) {
+      console.error('No se ha proporcionado un ID de usuario');
+      return;
+    }
+
+    console.log('Solicitando préstamos para el usuario:', this.userId);
+    
+    this.loanService.getLoansByUser(this.userId).subscribe({
+      next: (data) => {
+        console.log('Datos de préstamos recibidos:', data);
+        this.loans = data;
+      },
+      error: (error) => {
+        console.error('Error al cargar préstamos:', error);
+      }
+    });
   }
 
   updateLoanStatus(loanId: string, status: string): void {
-    const loan = this.loans.find(l => l.id === loanId);
-    if (loan) {
-      loan.status = status;
-    }
+    console.log('Actualizando estado del préstamo:', loanId, status);
+    this.loanService.updateLoan(loanId, { status }).subscribe({
+      next: () => {
+        console.log('Estado actualizado correctamente');
+        this.loadLoans();
+      },
+      error: (error) => console.error('Error actualizando estado:', error)
+    });
+  }
+
+  extendLoanTime(loanId: string): void {
+    this.loanService.extendLoanTime(loanId).subscribe({
+      next: () => {
+        console.log('Préstamo extendido correctamente');
+        this.loadLoans();
+      },
+      error: (error) => console.error('Error al extender el préstamo:', error)
+    });
   }
 }

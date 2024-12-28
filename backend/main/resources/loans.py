@@ -152,7 +152,7 @@ class LoansByUser(Resource):
         loans = loans.paginate(page=page, per_page=per_page, error_out=True)
 
         return jsonify({
-            'loans': [loan.to_json_short() for loan in loans],
+            'loans': [loan.to_json() for loan in loans],
             'total': loans.total,
             'pages': loans.pages,
             'page': page

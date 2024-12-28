@@ -20,45 +20,48 @@ export class LoanService {
         });
     }
 
-    getLoans(): Observable<any> {
-        return this.http.get<any>(this.apiUrl).pipe(
+    getLoans(): Observable<Loan[]> {
+        const headers = this.getAuthHeaders();
+        return this.http.get<any>(this.apiUrl, { headers }).pipe(
+            map((response: any): Loan[] => {
+                // Si la respuesta ya es un array, lo devolvemos
+                if (Array.isArray(response)) {
+                    return response;
+                }
+                // Si la respuesta tiene una propiedad 'loans' que es un array
+                if (response.loans && Array.isArray(response.loans)) {
+                    return response.loans;
+                }
+                // Si la respuesta es un objeto, convertimos sus valores en array
+                if (typeof response === 'object') {
+                    return Object.values(response);
+                }
+                // Si no podemos procesar la respuesta, devolvemos un array vacío
+                return [];
+            }),
             catchError(error => {
                 console.error('Error en la solicitud de préstamos:', error);
-                return throwError(error);
+                return throwError(() => error);
             })
         );
     }
 
     getLoansByUser(userId: number): Observable<Loan[]> {
         const headers = this.getAuthHeaders();
-        return this.http.get<any>(`${this.apiUrl}?user_id=${userId}`, { headers }).pipe(
-            map((response: any): Loan[] => {
-                let loans: Loan[] = [];
-                if (Array.isArray(response)) {
-                    loans = response.filter((item: unknown): item is Loan =>
-                        item != null &&
-                        typeof item === 'object' &&
-                        'user_id' in item
-                    );
-                } else if (response.loans && Array.isArray(response.loans)) {
-                    loans = response.loans.filter((item: unknown): item is Loan =>
-                        item != null &&
-                        typeof item === 'object' &&
-                        'user_id' in item
-                    );
-                } else if (typeof response === 'object') {
-                    loans = Object.values(response)
-                        .filter((item: unknown): item is Loan =>
-                            item != null &&
-                            typeof item === 'object' &&
-                            'user_id' in item
-                        );
+        return this.http.get<any>(`${this.apiUrl}/user/${userId}`, { headers }).pipe(
+            map((response: any) => {
+                if (response && response.loans) {
+                    // Asegúrate de que cada préstamo tenga la información necesaria
+                    return response.loans.map((loan: any) => ({
+                        ...loan,
+                        books: loan.books || [] // Si no hay books, usar array vacío
+                    }));
                 }
-                return loans.filter((loan: Loan) => loan.user_id === userId);
+                return [];
             }),
             catchError(error => {
-                console.error('Error completo al obtener préstamos:', error);
-                return throwError(error);
+                console.error('Error al obtener préstamos:', error);
+                return throwError(() => error);
             })
         );
     }
@@ -85,8 +88,20 @@ export class LoanService {
         return this.http.post(`${this.apiUrl}/loans/${loanId}/return`, {});
     }
 
-    requestMoreTime(loanId: number): Observable<any> {
-        return this.http.post(`${this.apiUrl}/loans/${loanId}/extend`, {});
+    extendLoanTime(loanId: string): Observable<any> {
+        const headers = this.getAuthHeaders();
+        // Calculamos la nueva fecha de devolución (por ejemplo, 15 días más)
+        const today = new Date();
+        const newDate = new Date(today.setDate(today.getDate() + 15));
+        
+        return this.http.put(`${this.apiUrl}/${loanId}`, {
+            finish_date: newDate.toISOString().split('T')[0] // Formato YYYY-MM-DD
+        }, { headers }).pipe(
+            catchError(error => {
+                console.error('Error al extender el préstamo:', error);
+                return throwError(() => error);
+            })
+        );
     }
 
     updateLoan(id: string, loan: Partial<Loan>): Observable<Loan> {

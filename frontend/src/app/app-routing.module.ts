@@ -26,7 +26,7 @@ const routes: Routes = [
   { path: 'search', component: SearchComponent },
   { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
   { path: 'users', component: UsersComponent, canActivate: [roleGuard], data: { expectedRole: 'Admin' } },
-  { path: 'user-loans/:userId', component: UserLoansComponent, canActivate: [authGuard], data: { role: 'User' } },
+  { path: 'user-loans/:userId', component: UserLoansComponent },
   { path: 'account-info', component: AccountInfoComponent },
   { path: 'edit-account', component: EditAccountComponent, canActivate: [authGuard] },
 ];
