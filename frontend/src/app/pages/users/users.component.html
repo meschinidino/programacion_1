@@ -5,16 +5,23 @@
     <!-- Filters Section -->
     <div class="filter-row mb-4">
         <div class="row align-items-center">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <select class="form-select" [(ngModel)]="selectedRole" (change)="filterUsers()">
-                    <option value="">All Users</option>
-                    <option value="USER">User</option>
-                    <option value="ADMIN">Admin</option>
-                    <option value="LIBRARIAN">Librarian</option>
-                    <option value="GUEST">Guest</option>
+                    <option value="">All Roles</option>
+                    <option *ngFor="let role of ['USER', 'ADMIN', 'LIBRARIAN', 'GUEST']" [value]="role">
+                        {{role}}
+                    </option>
                 </select>
             </div>
-            <div class="col-md-6 text-end">
+            <div class="col-md-4">
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    placeholder="Search by name..."
+                    [(ngModel)]="searchTerm"
+                    (input)="filterUsers()">
+            </div>
+            <div class="col-md-4 text-end">
                 <button class="btn btn-primary" (click)="open(content)">Add User</button>
             </div>
         </div>

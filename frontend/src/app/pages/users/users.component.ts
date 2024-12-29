@@ -26,6 +26,7 @@ export class UsersComponent implements OnInit {
   selectedUser: User | null = null;
   isEditing: boolean = false;
   selectedRole: string = '';
+  searchTerm: string = '';
   filteredUsers$: Observable<User[]> = new Observable<User[]>();
   page: number = 1;
   pageSize: number = 10;
@@ -97,12 +98,11 @@ export class UsersComponent implements OnInit {
     
     this.page = 1;
     
-    if (!this.selectedRole) {
+    if (!this.selectedRole && !this.searchTerm) {
         this.loadUsers(this.page);
         return;
     }
 
-    // Obtener todos los usuarios para filtrar
     this.userService.getAllUsers().pipe(
         map((response: any) => {
             const allUsers = response.users || response;
@@ -111,13 +111,16 @@ export class UsersComponent implements OnInit {
             const filtered = allUsers.filter((user: any) => {
                 const userRole = user.role.toUpperCase().trim();
                 const selectedRole = this.selectedRole.toUpperCase().trim();
-                return userRole === selectedRole;
+                const nameMatch = !this.searchTerm || 
+                    user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                    user.last_name.toLowerCase().includes(this.searchTerm.toLowerCase());
+                
+                return (!this.selectedRole || userRole === selectedRole) && nameMatch;
             });
             
             this.totalItems = filtered.length;
             console.log('Usuarios filtrados:', filtered.length);
             
-            // Aplicar paginación manual
             const startIndex = (this.page - 1) * this.pageSize;
             const endIndex = startIndex + this.pageSize;
             return filtered.slice(startIndex, endIndex);
