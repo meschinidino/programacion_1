@@ -37,12 +37,9 @@ export class UserService {
         delete filteredUserData.loans;
     }
 
-    // Crear un nuevo objeto sin la clave role
-    const { role, ...userDataWithoutRole } = filteredUserData;
-
-    console.log('userId:', userId, 'userData:', userDataWithoutRole, 'headers:', this.getHeaders(), 'url:', `${this.url}/user/${userId}`);
+    console.log('userId:', userId, 'userData:', filteredUserData, 'headers:', this.getHeaders(), 'url:', `${this.url}/user/${userId}`);
     
-    return this.httpClient.put(`${this.url}/user/${userId}`, userDataWithoutRole, { headers: this.getHeaders() });
+    return this.httpClient.put(`${this.url}/user/${userId}`, filteredUserData, { headers: this.getHeaders() });
   }
 
   createUser(userData: User): Observable<any> {

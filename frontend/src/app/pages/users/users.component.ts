@@ -31,6 +31,7 @@ export class UsersComponent implements OnInit {
   page: number = 1;
   pageSize: number = 10;
   totalItems: number = 0;
+  roles: string[] = ['User', 'Admin', 'Librarian', 'Guest'];
 
   constructor(
       private modalService: NgbModal,
