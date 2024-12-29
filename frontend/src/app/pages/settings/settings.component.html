@@ -12,9 +12,6 @@
                 <li class="list-group-item">
                     <a routerLink="/account-info" class="settings-link">Account Information</a>
                 </li>
-                <li class="list-group-item">
-                    <a href="#" class="settings-link">Change Password</a>
-                </li>
                 <li class="list-group-item" *ngIf="userRole === 'Librarian' || userRole === 'Admin'">
                     <a routerLink="/users" class="settings-link">User List</a>
                 </li>

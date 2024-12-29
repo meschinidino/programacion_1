@@ -76,8 +76,8 @@ class User(Resource):
         current_user = db.session.query(UsersModel).get_or_404(current_user_id)
 
         # Verificar si el usuario tiene permiso para cambiar el rol
-        if "role" in data and current_user.role.lower() != "admin":
-            return {"message": "Only admins can change user roles"}, 403
+        if "role" in data and current_user.role.lower() == "user":
+            return {"message": "Only admins and librarians can change user roles"}, 403
 
         # Actualizar los atributos del usuario
         try:

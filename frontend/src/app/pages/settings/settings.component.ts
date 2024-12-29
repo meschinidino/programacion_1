@@ -12,12 +12,9 @@ export class SettingsComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.authService.getCurrentUserRole().subscribe(role => {
+    this.authService.getCurrentUserRole().subscribe((role) => {
       this.userRole = role;
     });
   }
 
-  isAdminOrLibrarian(): boolean {
-    return this.userRole === 'Admin' || this.userRole === 'Librarian';
-  }
 }

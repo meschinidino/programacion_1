@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'ratings', component: RatingsComponent, canActivate: [authGuard], data: { role: 'User' } },
   { path: 'search', component: SearchComponent },
   { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
-  { path: 'users', component: UsersComponent, canActivate: [roleGuard], data: { expectedRole: 'Admin' } },
+  { path: 'users', component: UsersComponent, canActivate: [roleGuard], data: { expectedRole: ['Admin', 'Librarian'] } },
   { path: 'user-loans/:userId', component: UserLoansComponent },
   { path: 'account-info', component: AccountInfoComponent },
   { path: 'edit-account', component: EditAccountComponent, canActivate: [authGuard] },
