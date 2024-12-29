@@ -32,12 +32,14 @@ export class LoanListComponent implements OnInit {
     });
   }
 
-  extendLoanTime(loanId: string): void {
-    this.loanService.extendLoanTime(loanId).subscribe({
-      next: () => {
-        this.loadLoans();
+  extendLoanTime(loanId: string, newDate: string | null): void {
+    if (newDate) {
+      this.loanService.extendLoanTime(loanId, newDate).subscribe({
+        next: () => {
+          this.loadLoans();
       },
       error: (error) => console.error('Error extendiendo el préstamo:', error)
     });
   }
+}
 }

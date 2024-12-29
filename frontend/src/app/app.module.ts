@@ -21,6 +21,14 @@ import { LoanListComponent } from './pages/loan-list/loan-list.component';
 import { RatingComponent } from './components/rating/rating.component';
 import { AccountInfoComponent } from './pages/account-info/account-info.component';
 import { EditAccountComponent } from './pages/edit-account/edit-account.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { ExtendLoanDialogComponent } from './components/extend-loan-dialog/extend-loan-dialog.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -37,6 +45,7 @@ import { EditAccountComponent } from './pages/edit-account/edit-account.componen
     RatingComponent,
     AccountInfoComponent,
     EditAccountComponent,
+    ExtendLoanDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,7 +57,13 @@ import { EditAccountComponent } from './pages/edit-account/edit-account.componen
     NgbModule,
     HttpClientModule,
     ReactiveFormsModule,
-    // HttpClientModule is already imported
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    BrowserAnimationsModule
   ],
   providers: [AuthService], // Add AuthService to providers
   bootstrap: [AppComponent]

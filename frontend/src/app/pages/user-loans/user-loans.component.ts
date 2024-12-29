@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoanService } from '../../services/loan.service';
 import { Loan } from '../../models/loan.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ExtendLoanDialogComponent } from '../../components/extend-loan-dialog/extend-loan-dialog.component';
 
 @Component({
   selector: 'app-user-loans',
@@ -14,7 +16,8 @@ export class UserLoansComponent implements OnInit {
 
   constructor(
     private loanService: LoanService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -63,12 +66,21 @@ export class UserLoansComponent implements OnInit {
   }
 
   extendLoanTime(loanId: string): void {
-    this.loanService.extendLoanTime(loanId).subscribe({
-      next: () => {
-        console.log('Préstamo extendido correctamente');
-        this.loadLoans();
-      },
-      error: (error) => console.error('Error al extender el préstamo:', error)
+    const dialogRef = this.dialog.open(ExtendLoanDialogComponent, {
+      width: '300px',
+      data: { loanId }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loanService.extendLoanTime(loanId, result).subscribe({
+          next: () => {
+            console.log('Préstamo extendido correctamente');
+            this.loadLoans();
+          },
+          error: (error) => console.error('Error al extender el préstamo:', error)
+        });
+      }
     });
   }
 }

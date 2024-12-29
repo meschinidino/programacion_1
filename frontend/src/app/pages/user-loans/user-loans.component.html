@@ -26,8 +26,8 @@
                 {{ loan.title || 'Sin título' }}
               </div>
             </td>
-            <td>{{ loan.loan_date | date:'dd/MM/yyyy' }}</td>
-            <td>{{ loan.finish_date | date:'dd/MM/yyyy' }}</td>
+            <td>{{ loan.loan_date | date:'yyyy-MM-dd' }}</td>
+            <td>{{ loan.finish_date | date:'yyyy-MM-dd' }}</td>
             <td>
               <span 
                 class="badge"

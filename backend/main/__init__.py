@@ -65,6 +65,7 @@ def create_app():
     api.add_resource(resources.AuthorResource, '/author/<author_id>')
     api.add_resource(resources.UserBorrowedBooksResource, '/users/<int:user_id>/borrowed-books')
     api.add_resource(resources.CanUserRateResource, '/ratings/can-rate/<int:user_id>/<int:book_id>')
+    api.add_resource(resources.LoanExtendResource, '/loans/<int:loan_id>/extend')
     api.init_app(app)
 
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')

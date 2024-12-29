@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from main.auth.decorators import role_required
 from sqlalchemy import func, desc
 from .. import db
-from datetime import datetime, date as date_module
+from datetime import datetime, date as date_module, timedelta
 
 
 class Loans(Resource):
@@ -192,4 +192,25 @@ class UserBorrowedBooks(Resource):
             'pages': loans_with_books.pages,
             'page': page
         })
+
+
+class LoanExtend(Resource):
+    @role_required(roles=["Librarian","Admin"])
+    def put(self, loan_id):
+        loan = db.session.query(LoansModel).get_or_404(loan_id)
+        data = request.get_json()
+        
+        if 'finish_date' not in data:
+            return {'message': 'Debe proporcionar una nueva fecha de finalización (finish_date)'}, 400
+            
+        try:
+            # Validar que la nueva fecha tenga el formato correcto
+            new_finish_date = datetime.strptime(data['finish_date'], '%Y-%m-%d')
+            loan.finish_date = new_finish_date.strftime('%Y-%m-%d')
+            
+            db.session.add(loan)
+            db.session.commit()
+            return loan.to_json(), 200
+        except ValueError:
+            return {'message': 'El formato de fecha debe ser YYYY-MM-DD'}, 400
 

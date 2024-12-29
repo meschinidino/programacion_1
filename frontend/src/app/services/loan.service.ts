@@ -88,15 +88,15 @@ export class LoanService {
         return this.http.post(`${this.apiUrl}/loans/${loanId}/return`, {});
     }
 
-    extendLoanTime(loanId: string): Observable<any> {
+    extendLoanTime(loanId: string, newDueDate: string): Observable<any> {
         const headers = this.getAuthHeaders();
-        // Calculamos la nueva fecha de devolución (por ejemplo, 15 días más)
-        const today = new Date();
-        const newDate = new Date(today.setDate(today.getDate() + 15));
+        const payload = {
+            finish_date: newDueDate  // Cambiado de due_date a finish_date para coincidir con el backend
+        };
         
-        return this.http.put(`${this.apiUrl}/${loanId}`, {
-            finish_date: newDate.toISOString().split('T')[0] // Formato YYYY-MM-DD
-        }, { headers }).pipe(
+        console.log('Enviando payload:', payload); // Para debugging
+        
+        return this.http.put(`${this.apiUrl}/${loanId}/extend`, payload, { headers }).pipe(
             catchError(error => {
                 console.error('Error al extender el préstamo:', error);
                 return throwError(() => error);
