@@ -40,12 +40,18 @@
               </span>
             </td>
             <td>
-              <div class="d-flex justify-content-center">
+              <div class="d-flex justify-content-center gap-2">
                 <button 
                   class="btn btn-info btn-sm"
                   (click)="extendLoanTime(loan.loan_id.toString())"
                   *ngIf="!loan.status || loan.status === 'BORROWED'">
                   <i class="bi bi-clock-history me-1"></i> Extend
+                </button>
+                <button 
+                  class="btn btn-danger btn-sm"
+                  (click)="deleteLoan(loan.loan_id)"
+                  *ngIf="userRole === 'Admin'">
+                  <i class="bi bi-trash me-1"></i> Delete
                 </button>
               </div>
             </td>

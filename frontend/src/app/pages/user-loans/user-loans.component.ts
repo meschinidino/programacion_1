@@ -4,6 +4,7 @@ import { LoanService } from '../../services/loan.service';
 import { Loan } from '../../models/loan.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ExtendLoanDialogComponent } from '../../components/extend-loan-dialog/extend-loan-dialog.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-user-loans',
@@ -13,12 +14,18 @@ import { ExtendLoanDialogComponent } from '../../components/extend-loan-dialog/e
 export class UserLoansComponent implements OnInit {
   loans: Loan[] = [];
   userId: number = 0;
+  userRole: string = '';
 
   constructor(
     private loanService: LoanService,
     private route: ActivatedRoute,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    private authService: AuthService
+  ) {
+    this.authService.getCurrentUserRole().subscribe(role => {
+      this.userRole = role;
+    });
+  }
 
   ngOnInit(): void {
     // Obtener el userId de los parámetros de la URL
@@ -84,5 +91,19 @@ export class UserLoansComponent implements OnInit {
         });
       }
     });
+  }
+
+  deleteLoan(loanId: number) {
+    if (confirm('¿Are you sure you want to delete this loan?')) {
+      this.loanService.deleteLoan(loanId.toString()).subscribe({
+        next: () => {
+          alert('Loan deleted successfully');
+          this.loadLoans();
+        },
+        error: (error) => {
+          console.error('Error al eliminar el préstamo:', error);
+        }
+      });
+    }
   }
 }

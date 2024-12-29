@@ -114,7 +114,8 @@ export class LoanService {
     }
 
     deleteLoan(id: string): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+        const headers = this.getAuthHeaders();
+        return this.http.delete<void>(`${this.loanByIdUrl}/${id}`, { headers }).pipe(
             catchError(error => {
                 console.error('Error al eliminar préstamo:', error);
                 return throwError(error);
