@@ -59,6 +59,7 @@ export class UserLoansComponent implements OnInit {
     this.loanService.updateLoan(loanId, { status }).subscribe({
       next: () => {
         console.log('Estado actualizado correctamente');
+        alert('Loan status updated successfully');
         this.loadLoans();
       },
       error: (error) => console.error('Error actualizando estado:', error)
@@ -76,6 +77,7 @@ export class UserLoansComponent implements OnInit {
         this.loanService.extendLoanTime(loanId, result).subscribe({
           next: () => {
             console.log('Préstamo extendido correctamente');
+            alert('Loan extended successfully');
             this.loadLoans();
           },
           error: (error) => console.error('Error al extender el préstamo:', error)

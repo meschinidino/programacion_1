@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
     selector: 'app-extend-loan-dialog',
     templateUrl: './extend-loan-dialog.component.html',
-    styleUrls: ['./extend-loan-dialog.component.scss']
+    styleUrls: ['./extend-loan-dialog.component.css']
 })
 export class ExtendLoanDialogComponent {
     selectedDate: Date | null = null;
