@@ -31,7 +31,6 @@
     <div class="row" id="userList">
         <div class="col-12 mb-3" *ngFor="let user of filteredUsers$ | async">
             <app-user [user]="user"></app-user>
-            <p>{{ user.name }} {{ user.last_name }}</p>
             <button class="btn btn-secondary" (click)="open(content, user)">Edit</button>
             <button class="btn btn-danger" (click)="deleteUser(user)">Delete</button>
             <button class="btn btn-info" (click)="viewLoanHistory(user.user_id)">View Loan History</button>
