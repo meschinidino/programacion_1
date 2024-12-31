@@ -44,4 +44,28 @@
           </tr>
       </tbody>
   </table>
+
+  <!-- Paginación -->
+  <nav *ngIf="totalPages > 1" aria-label="Navegación de páginas">
+      <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" (click)="onPageChange(currentPage - 1)" style="cursor: pointer;">
+                  Anterior
+              </a>
+          </li>
+          
+          <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+              [class.active]="currentPage === i + 1">
+              <a class="page-link" (click)="onPageChange(i + 1)" style="cursor: pointer;">
+                  {{i + 1}}
+              </a>
+          </li>
+          
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" (click)="onPageChange(currentPage + 1)" style="cursor: pointer;">
+                  Siguiente
+              </a>
+          </li>
+      </ul>
+  </nav>
 </div>

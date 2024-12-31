@@ -10,6 +10,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class BooksComponent implements OnInit {
   bookLoans: any[] = [];
+  currentPage: number = 1;
+  totalPages: number = 0;
+  itemsPerPage: number = 10;
+  totalItems: number = 0;
   displayedColumns: string[] = ['id', 'bookTitle', 'userName', 'loanDate', 'returnDate', 'status', 'actions'];
 
   constructor(
@@ -22,7 +26,7 @@ export class BooksComponent implements OnInit {
   }
 
   loadBookLoans(): void {
-    this.bookService.getLoans().subscribe({
+    this.bookService.getLoans(this.currentPage, this.itemsPerPage).subscribe({
       next: (response: any) => {
         console.log('Respuesta del servidor:', response);
         if (response && response.loans) {
@@ -38,6 +42,8 @@ export class BooksComponent implements OnInit {
             returnDate: loan.finish_date,
             status: loan.status || 'prestado'
           }));
+          this.totalItems = response.total;
+          this.totalPages = response.pages;
         }
         console.log('Préstamos procesados:', this.bookLoans);
       },
@@ -48,6 +54,11 @@ export class BooksComponent implements OnInit {
         });
       }
     });
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.loadBookLoans();
   }
 
   updateLoanStatus(loanId: number, newStatus: string): void {
