@@ -11,6 +11,7 @@ export class BookService {
     private apiUrl = 'http://127.0.0.1:5000/books';
     private deleteUrl = 'http://127.0.0.1:5000/book';
     private usersUrl = 'http://127.0.0.1:5000/users';
+    private loansUrl = 'http://127.0.0.1:5000/loans';
 
     constructor(private http: HttpClient) {}
 
@@ -66,6 +67,36 @@ export class BookService {
         console.log('Requesting borrowed books from:', url);
         return this.http.get<any[]>(url, {}).pipe(
             tap(response => console.log('Libros prestados:', response)),
+            catchError(this.handleError)
+        );
+    }
+
+    getLoans(page: number = 1, perPage: number = 10): Observable<any> {
+        let params = new HttpParams()
+            .set('page', page.toString())
+            .set('per_page', perPage.toString());
+
+        return this.http.get<any>(this.loansUrl, { 
+            params,
+            headers: this.getHeaders() 
+        }).pipe(
+            tap(response => console.log('Préstamos recibidos:', response)),
+            catchError(this.handleError)
+        );
+    }
+
+    updateLoanStatus(loanId: number, status: string): Observable<any> {
+        return this.http.put<any>(`${this.loansUrl}/${loanId}`, { status }, {
+            headers: this.getHeaders()
+        }).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    deleteLoan(loanId: number): Observable<any> {
+        return this.http.delete<any>(`${this.loansUrl}/${loanId}`, {
+            headers: this.getHeaders()
+        }).pipe(
             catchError(this.handleError)
         );
     }

@@ -15,6 +15,9 @@
                 <li class="list-group-item" *ngIf="userRole === 'Librarian' || userRole === 'Admin'">
                     <a routerLink="/users" class="settings-link">User List</a>
                 </li>
+                <li class="list-group-item" *ngIf="userRole === 'Admin'">
+                    <a routerLink="/books" class="settings-link">Book List</a>
+                </li>
             </ul>
         </div>
     </div>

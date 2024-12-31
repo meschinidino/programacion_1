@@ -29,6 +29,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { ExtendLoanDialogComponent } from './components/extend-loan-dialog/extend-loan-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BooksComponent } from './pages/books/books.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -46,6 +50,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AccountInfoComponent,
     EditAccountComponent,
     ExtendLoanDialogComponent,
+    BooksComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,7 +68,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatIconModule,
+    MatTableModule,
+    MatSelectModule,
+    MatFormFieldModule
   ],
   providers: [AuthService], // Add AuthService to providers
   bootstrap: [AppComponent]

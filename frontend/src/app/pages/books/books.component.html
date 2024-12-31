@@ -1,0 +1,47 @@
+<div class="container mt-4">
+  <h2>Registro de Préstamos de Libros</h2>
+  
+  <div *ngIf="bookLoans.length === 0">No hay préstamos para mostrar</div>
+  
+  <table class="table table-striped" *ngIf="bookLoans.length > 0">
+      <thead>
+          <tr>
+              <th style="width: 50px;">ID</th>
+              <th style="width: 150px;">Libro</th>
+              <th style="width: 120px;">Usuario</th>
+              <th style="width: 110px;">Fecha Préstamo</th>
+              <th style="width: 110px;">Fecha Devolución</th>
+              <th style="width: 100px;">Estado</th>
+              <th style="width: 90px;">Acciones</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let loan of bookLoans">
+              <td class="text-center">{{loan.id}}</td>
+              <td class="text-truncate" style="max-width: 150px;" title="{{loan.book?.title}}">
+                  {{loan.book?.title || 'N/A'}}
+              </td>
+              <td class="text-truncate">{{loan.user?.name || 'N/A'}}</td>
+              <td>{{loan.loanDate | date:'dd/MM/yyyy' || 'N/A'}}</td>
+              <td>{{loan.returnDate | date:'dd/MM/yyyy' || 'N/A'}}</td>
+              <td>
+                  <select class="form-select form-select-sm" 
+                          [(ngModel)]="loan.status" 
+                          (change)="updateLoanStatus(loan.id, loan.status)">
+                      <option value="prestado">Prestado</option>
+                      <option value="devuelto">Devuelto</option>
+                      <option value="atrasado">Atrasado</option>
+                  </select>
+              </td>
+              <td>
+                  <button class="btn btn-sm btn-primary me-1" (click)="editLoan(loan)">
+                      <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-sm btn-danger" (click)="deleteLoan(loan.id)">
+                      <i class="fas fa-trash"></i>
+                  </button>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+</div>

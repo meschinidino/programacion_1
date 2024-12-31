@@ -14,6 +14,7 @@ import { roleGuard } from './guards/role.guard';
 import { LoanListComponent } from './pages/loan-list/loan-list.component';
 import { AccountInfoComponent } from './pages/account-info/account-info.component';
 import { EditAccountComponent } from './pages/edit-account/edit-account.component';
+import { BooksComponent } from './pages/books/books.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent},
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'user-loans/:userId', component: UserLoansComponent },
   { path: 'account-info', component: AccountInfoComponent },
   { path: 'edit-account', component: EditAccountComponent, canActivate: [authGuard] },
+  { path: 'books', component: BooksComponent, canActivate: [roleGuard], data: { expectedRole: 'Admin' } },
 ];
 
 @NgModule({
