@@ -51,6 +51,8 @@
     color: #007bff;
     background-color: #fff;
     border: 1px solid #dee2e6;
+    min-width: 38px;
+    text-align: center;
 }
 
 .page-item.active .page-link {

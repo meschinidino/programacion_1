@@ -28,24 +28,31 @@ export class BooksComponent implements OnInit {
   loadBookLoans(): void {
     this.bookService.getLoans(this.currentPage, this.itemsPerPage).subscribe({
       next: (response: any) => {
-        console.log('Respuesta del servidor:', response);
+        console.log('Respuesta completa del servidor:', response);
         if (response && response.loans) {
-          this.bookLoans = response.loans.map((loan: any) => ({
-            id: loan.loan_id,
-            book: {
-              title: loan.books?.[0]?.title || 'N/A'
-            },
-            user: {
-              name: loan.user?.name || 'N/A'
-            },
-            loanDate: loan.loan_date,
-            returnDate: loan.finish_date,
-            status: loan.status || 'prestado'
-          }));
+          this.bookLoans = response.loans.map((loan: any) => {
+            const userName = loan.user?.name || '';
+            const userLastName = loan.user?.last_name || '';
+            console.log('Datos de usuario:', { name: userName, last_name: userLastName });
+            
+            return {
+              id: loan.loan_id || loan.id,
+              book: {
+                title: loan.books?.[0]?.title || 'N/A'
+              },
+              user: {
+                name: [userName, userLastName].filter(Boolean).join(' ') || 'N/A'
+              },
+              loanDate: loan.loan_date || loan.loanDate,
+              returnDate: loan.finish_date || loan.returnDate,
+              status: loan.status || 'prestado'
+            };
+          });
+          
           this.totalItems = response.total;
           this.totalPages = response.pages;
+          console.log('Préstamos procesados:', this.bookLoans);
         }
-        console.log('Préstamos procesados:', this.bookLoans);
       },
       error: (error) => {
         console.error('Error al cargar préstamos:', error);

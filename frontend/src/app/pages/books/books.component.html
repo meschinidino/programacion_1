@@ -1,18 +1,18 @@
 <div class="container mt-4">
-  <h2>Registro de Préstamos de Libros</h2>
+  <h2>Loans register by books</h2>
   
-  <div *ngIf="bookLoans.length === 0">No hay préstamos para mostrar</div>
+  <div *ngIf="bookLoans.length === 0">There are no loans</div>
   
   <table class="table table-striped" *ngIf="bookLoans.length > 0">
       <thead>
           <tr>
               <th style="width: 50px;">ID</th>
-              <th style="width: 150px;">Libro</th>
-              <th style="width: 120px;">Usuario</th>
-              <th style="width: 110px;">Fecha Préstamo</th>
-              <th style="width: 110px;">Fecha Devolución</th>
-              <th style="width: 100px;">Estado</th>
-              <th style="width: 90px;">Acciones</th>
+              <th style="width: 150px;">Book</th>
+              <th style="width: 120px;">User</th>
+              <th style="width: 110px;">Loan Date</th>
+              <th style="width: 110px;">Return Date</th>
+              <th style="width: 100px;">Status</th>
+              <th style="width: 90px;">Actions</th>
           </tr>
       </thead>
       <tbody>
@@ -21,16 +21,16 @@
               <td class="text-truncate" style="max-width: 150px;" title="{{loan.book?.title}}">
                   {{loan.book?.title || 'N/A'}}
               </td>
-              <td class="text-truncate">{{loan.user?.name || 'N/A'}}</td>
+              <td class="text-truncate">{{loan.user?.name || loan.user?.lastname || 'N/A'}}</td>
               <td>{{loan.loanDate | date:'dd/MM/yyyy' || 'N/A'}}</td>
               <td>{{loan.returnDate | date:'dd/MM/yyyy' || 'N/A'}}</td>
               <td>
                   <select class="form-select form-select-sm" 
                           [(ngModel)]="loan.status" 
                           (change)="updateLoanStatus(loan.id, loan.status)">
-                      <option value="prestado">Prestado</option>
-                      <option value="devuelto">Devuelto</option>
-                      <option value="atrasado">Atrasado</option>
+                      <option value="prestado">Borrowed</option>
+                      <option value="devuelto">Returned</option>
+                      <option value="atrasado">Late</option>
                   </select>
               </td>
               <td>
@@ -45,27 +45,26 @@
       </tbody>
   </table>
 
-  <!-- Paginación -->
-  <nav *ngIf="totalPages > 1" aria-label="Navegación de páginas">
-      <ul class="pagination justify-content-center">
-          <li class="page-item" [class.disabled]="currentPage === 1">
-              <a class="page-link" (click)="onPageChange(currentPage - 1)" style="cursor: pointer;">
-                  Anterior
-              </a>
-          </li>
-          
-          <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
-              [class.active]="currentPage === i + 1">
-              <a class="page-link" (click)="onPageChange(i + 1)" style="cursor: pointer;">
-                  {{i + 1}}
-              </a>
-          </li>
-          
-          <li class="page-item" [class.disabled]="currentPage === totalPages">
-              <a class="page-link" (click)="onPageChange(currentPage + 1)" style="cursor: pointer;">
-                  Siguiente
-              </a>
-          </li>
-      </ul>
-  </nav>
-</div>
+  <!-- Paginación con flechas -->
+<nav *ngIf="totalPages > 1" aria-label="Navegación de páginas">
+  <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="onPageChange(currentPage - 1)" style="cursor: pointer;">
+              <i class="fas fa-chevron-left"></i>
+          </a>
+      </li>
+      
+      <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+          [class.active]="currentPage === i + 1">
+          <a class="page-link" (click)="onPageChange(i + 1)" style="cursor: pointer;">
+              {{i + 1}}
+          </a>
+      </li>
+      
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="onPageChange(currentPage + 1)" style="cursor: pointer;">
+              <i class="fas fa-chevron-right"></i>
+          </a>
+      </li>
+  </ul>
+</nav>
