@@ -33,6 +33,12 @@ class Loans(Resource):
             date = request.args.get('loan_date')
             loans = loans.filter(LoansModel.loan_date.like(f"%{date}"))
 
+        if request.args.get("book_title"):
+            book_title = request.args.get("book_title")
+            loans = loans.join(LoansModel.books).filter(
+                BooksModel.title.ilike(f"%{book_title}%")
+            )
+
         """if request.args.get("sorting_by_finish_date"): #####
             today = datetime.now()
             #loans = loans.filter(func.STRFTIME('%d/%m/%Y', LoansModel.finish_date) < today.strftime('%d/%m/%Y')

@@ -78,7 +78,7 @@ export class BookService {
             .set('per_page', perPage.toString());
 
         if (searchTerm) {
-            params = params.set('search', searchTerm);
+            params = params.set('book_title', searchTerm);
         }
 
         return this.http.get<any>(this.loansUrl, { 

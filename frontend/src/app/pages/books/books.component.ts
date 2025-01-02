@@ -23,7 +23,9 @@ export class BooksComponent implements OnInit {
     private bookService: BookService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.searchTerm = '';
+  }
 
   ngOnInit(): void {
     this.loadBookLoans();
@@ -123,7 +125,8 @@ export class BooksComponent implements OnInit {
   }
 
   onSearch(): void {
-    this.currentPage = 1; // Resetear a la primera página
+    console.log('Buscando:', this.searchTerm); // Para debugging
+    this.currentPage = 1;
     this.loadBookLoans(this.currentPage, this.searchTerm);
   }
 
