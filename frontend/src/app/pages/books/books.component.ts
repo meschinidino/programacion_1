@@ -17,6 +17,7 @@ export class BooksComponent implements OnInit {
   itemsPerPage: number = 10;
   totalItems: number = 0;
   displayedColumns: string[] = ['id', 'bookTitle', 'userName', 'loanDate', 'returnDate', 'status', 'actions'];
+  searchTerm: string = '';
 
   constructor(
     private bookService: BookService,
@@ -28,8 +29,8 @@ export class BooksComponent implements OnInit {
     this.loadBookLoans();
   }
 
-  loadBookLoans(): void {
-    this.bookService.getLoans(this.currentPage, this.itemsPerPage).subscribe({
+  loadBookLoans(page?: number, searchTerm?: string): void {
+    this.bookService.getLoans(page || this.currentPage, this.itemsPerPage, searchTerm).subscribe({
       next: (response: any) => {
         console.log('Respuesta completa del servidor:', response);
         if (response && response.loans) {
@@ -119,5 +120,18 @@ export class BooksComponent implements OnInit {
             });
         }
     });
+  }
+
+  onSearch(): void {
+    this.currentPage = 1; // Resetear a la primera página
+    this.loadBookLoans(this.currentPage, this.searchTerm);
+  }
+
+  getPages(): number[] {
+    const pages: number[] = [];
+    for (let i = 1; i <= this.totalPages; i++) {
+      pages.push(i);
+    }
+    return pages;
   }
 }

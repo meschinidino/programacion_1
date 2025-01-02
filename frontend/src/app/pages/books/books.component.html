@@ -1,6 +1,24 @@
 <div class="container mt-4">
   <h2>Loans register by books</h2>
   
+  <!-- Nueva barra de búsqueda -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="input-group">
+        <input 
+          type="text" 
+          class="form-control" 
+          [(ngModel)]="searchTerm"
+          (keyup)="onSearch()"
+          placeholder="Buscar por título de libro..."
+        >
+        <button class="btn btn-outline-secondary" type="button" (click)="onSearch()">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  
   <div *ngIf="bookLoans.length === 0">There are no loans</div>
   
   <table class="table table-striped" *ngIf="bookLoans.length > 0">
@@ -22,8 +40,8 @@
                   {{loan.book?.title || 'N/A'}}
               </td>
               <td class="text-truncate">{{loan.user?.name || loan.user?.lastname || 'N/A'}}</td>
-              <td>{{loan.loanDate | date:'dd/MM/yyyy' || 'N/A'}}</td>
-              <td>{{loan.returnDate | date:'dd/MM/yyyy' || 'N/A'}}</td>
+              <td>{{loan.loanDate | date:'yyyy-MM-dd' || 'N/A'}}</td>
+              <td>{{loan.returnDate | date:'yyyy-MM-dd' || 'N/A'}}</td>
               <td>
                   <select class="form-select form-select-sm" 
                           [(ngModel)]="loan.status" 
@@ -46,25 +64,22 @@
   </table>
 
   <!-- Paginación con flechas -->
-<nav *ngIf="totalPages > 1" aria-label="Navegación de páginas">
+<nav aria-label="Navegación de páginas">
   <ul class="pagination justify-content-center">
-      <li class="page-item" [class.disabled]="currentPage === 1">
-          <a class="page-link" (click)="onPageChange(currentPage - 1)" style="cursor: pointer;">
-              <i class="fas fa-chevron-left"></i>
-          </a>
-      </li>
-      
-      <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
-          [class.active]="currentPage === i + 1">
-          <a class="page-link" (click)="onPageChange(i + 1)" style="cursor: pointer;">
-              {{i + 1}}
-          </a>
-      </li>
-      
-      <li class="page-item" [class.disabled]="currentPage === totalPages">
-          <a class="page-link" (click)="onPageChange(currentPage + 1)" style="cursor: pointer;">
-              <i class="fas fa-chevron-right"></i>
-          </a>
-      </li>
+    <li class="page-item" [class.disabled]="currentPage === 1">
+      <a class="page-link" (click)="onPageChange(currentPage - 1)" href="javascript:void(0)">
+        <i class="fas fa-chevron-left"></i>
+      </a>
+    </li>
+    
+    <li class="page-item" *ngFor="let page of getPages()" [class.active]="page === currentPage">
+      <a class="page-link" (click)="onPageChange(page)" href="javascript:void(0)">{{page}}</a>
+    </li>
+
+    <li class="page-item" [class.disabled]="currentPage === totalPages">
+      <a class="page-link" (click)="onPageChange(currentPage + 1)" href="javascript:void(0)">
+        <i class="fas fa-chevron-right"></i>
+      </a>
+    </li>
   </ul>
 </nav>

@@ -72,10 +72,14 @@ export class BookService {
         );
     }
 
-    getLoans(page: number = 1, perPage: number = 10): Observable<any> {
+    getLoans(page: number = 1, perPage: number = 10, searchTerm?: string): Observable<any> {
         let params = new HttpParams()
             .set('page', page.toString())
             .set('per_page', perPage.toString());
+
+        if (searchTerm) {
+            params = params.set('search', searchTerm);
+        }
 
         return this.http.get<any>(this.loansUrl, { 
             params,
