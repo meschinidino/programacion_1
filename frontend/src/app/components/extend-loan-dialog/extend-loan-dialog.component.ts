@@ -8,7 +8,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class ExtendLoanDialogComponent {
     selectedDate: Date | null = null;
-    minDate = new Date(); // Fecha mínima es hoy
+    minDate = new Date();
 
     constructor(
         public dialogRef: MatDialogRef<ExtendLoanDialogComponent>,
@@ -19,8 +19,14 @@ export class ExtendLoanDialogComponent {
         this.dialogRef.close();
     }
 
+    onConfirm(): void {
+        if (this.selectedDate) {
+            this.dialogRef.close(this.formatDate(this.selectedDate));
+        }
+    }
+
     formatDate(date: Date | null): string | null {
         if (!date) return null;
-        return date.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+        return date.toISOString().split('T')[0];
     }
 }

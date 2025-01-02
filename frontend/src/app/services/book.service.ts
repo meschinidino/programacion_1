@@ -12,6 +12,7 @@ export class BookService {
     private deleteUrl = 'http://127.0.0.1:5000/book';
     private usersUrl = 'http://127.0.0.1:5000/users';
     private loansUrl = 'http://127.0.0.1:5000/loans';
+    private loanUrl = 'http://127.0.0.1:5000/loan';
 
     constructor(private http: HttpClient) {}
 
@@ -86,7 +87,7 @@ export class BookService {
     }
 
     updateLoanStatus(loanId: number, status: string): Observable<any> {
-        return this.http.put<any>(`${this.loansUrl}/${loanId}`, { status }, {
+        return this.http.put<any>(`${this.loanUrl}/${loanId}`, { status }, {
             headers: this.getHeaders()
         }).pipe(
             catchError(this.handleError)
@@ -94,9 +95,18 @@ export class BookService {
     }
 
     deleteLoan(loanId: number): Observable<any> {
-        return this.http.delete<any>(`${this.loansUrl}/${loanId}`, {
+        return this.http.delete<any>(`${this.loanUrl}/${loanId}`, {
             headers: this.getHeaders()
         }).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    extendLoan(loanId: number, newReturnDate: string): Observable<any> {
+        return this.http.put(`${this.loansUrl}/${loanId}/extend`, 
+            { finish_date: newReturnDate },
+            { headers: this.getHeaders() }
+        ).pipe(
             catchError(this.handleError)
         );
     }

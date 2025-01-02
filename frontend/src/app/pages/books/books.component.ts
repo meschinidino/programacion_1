@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { BookService } from '../../services/book.service';
 import { BookResponse } from '../../models/book-response.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { ExtendLoanDialogComponent } from '../../components/extend-loan-dialog/extend-loan-dialog.component';
 
 @Component({
   selector: 'app-books',
@@ -18,7 +20,8 @@ export class BooksComponent implements OnInit {
 
   constructor(
     private bookService: BookService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -71,15 +74,11 @@ export class BooksComponent implements OnInit {
   updateLoanStatus(loanId: number, newStatus: string): void {
     this.bookService.updateLoanStatus(loanId, newStatus).subscribe({
       next: () => {
-        this.snackBar.open('Estado actualizado correctamente', 'Cerrar', {
-          duration: 3000
-        });
+        alert('Status updated successfully');
       },
       error: (error) => {
         console.error('Error al actualizar el estado:', error);
-        this.snackBar.open('Error al actualizar el estado', 'Cerrar', {
-          duration: 3000
-        });
+        alert('Error al actualizar el estado');
       }
     });
   }
@@ -89,24 +88,36 @@ export class BooksComponent implements OnInit {
       this.bookService.deleteLoan(loanId).subscribe({
         next: () => {
           this.loadBookLoans(); // Recargar la lista
-          this.snackBar.open('Préstamo eliminado correctamente', 'Cerrar', {
-            duration: 3000
-          });
+          alert('Loan deleted successfully');
+
         },
         error: (error) => {
           console.error('Error al eliminar el préstamo:', error);
-          this.snackBar.open('Error al eliminar el préstamo', 'Cerrar', {
-            duration: 3000
-          });
+          alert('Error al eliminar el préstamo');
         }
       });
     }
   }
 
   editLoan(loan: any): void {
-    // Aquí puedes implementar la lógica para editar el préstamo
-    // Por ejemplo, abrir un diálogo de edición
-    console.log('Editando préstamo:', loan);
-    // Implementa aquí la lógica de edición que necesites
+    const dialogRef = this.dialog.open(ExtendLoanDialogComponent, {
+        width: '400px',
+        data: { loanId: loan.id }
+    });
+
+    dialogRef.afterClosed().subscribe(newDate => {
+        if (newDate) {
+            this.bookService.extendLoan(loan.id, newDate).subscribe({
+                next: () => {
+                    this.loadBookLoans();
+                    alert('Loan extended successfully');
+                },
+                error: (error) => {
+                    console.error('Error al extender el préstamo:', error);
+                    alert('Error al extender el préstamo');
+                }
+            });
+        }
+    });
   }
 }
