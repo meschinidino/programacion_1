@@ -127,7 +127,14 @@ export class BooksComponent implements OnInit {
   onSearch(): void {
     console.log('Buscando:', this.searchTerm); // Para debugging
     this.currentPage = 1;
-    this.loadBookLoans(this.currentPage, this.searchTerm);
+    
+    // Si searchTerm está vacío, cargar todos los préstamos
+    if (!this.searchTerm.trim()) {
+      this.loadBookLoans(1);
+      return;
+    }
+    
+    this.loadBookLoans(1, this.searchTerm);
   }
 
   getPages(): number[] {
