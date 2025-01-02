@@ -111,41 +111,61 @@ export class HomeComponent implements OnInit {
 
   saveBook(modal: any): void {
     if (this.selectedBook) {
+      console.log('ID antes de guardar:', this.selectedBook.book_id);
+
       const author = {
         name: this.selectedBook.authorName,
         last_name: this.selectedBook.authorLastName
       };
 
-      this.bookService.createAuthor(author).subscribe({
-        next: (authorResponse: any) => {
-          this.selectedBook.authors = [authorResponse];
-
-          const saveObservable = this.isEditing
-              ? this.bookService.updateBook(this.selectedBook.id, this.selectedBook)
-              : this.bookService.createBook(this.selectedBook);
-
-          saveObservable.subscribe({
-            next: (bookResponse: any) => {
-              this.loadBooks();
-              modal.close();
-              this.selectedBook = { authors: [] };
-              this.isEditing = false;
+      if (this.isEditing) {
+        this.bookService.updateBook(this.selectedBook.book_id, this.selectedBook)
+          .subscribe({
+            next: (response) => {
+              const index = this.availableBooks.findIndex(book => book.book_id === this.selectedBook.book_id);
+              if (index !== -1) {
+                this.availableBooks[index] = { ...this.selectedBook };
+                this.filteredBooks = [...this.availableBooks];
+                this.paginatedBooks = [...this.availableBooks];
+              }
+              modal.close('save');
+              alert('Book updated successfully');
             },
-            error: (err: any) => {
-              console.error('Error saving book:', err);
+            error: (err) => {
+              console.error('Error al actualizar:', err);
               modal.close();
-              this.selectedBook = { authors: [] };
-              this.isEditing = false;
             }
           });
-        },
-        error: (err: any) => {
-          console.error('Error creating author:', err);
-          modal.close();
-          this.selectedBook = { authors: [] };
-          this.isEditing = false;
-        }
-      });
+      } else {
+        this.bookService.createAuthor(author).subscribe({
+          next: (authorResponse: any) => {
+            this.selectedBook.authors = [authorResponse];
+
+            const saveObservable = this.bookService.createBook(this.selectedBook);
+
+            saveObservable.subscribe({
+              next: (bookResponse: any) => {
+                this.loadBooks();
+                modal.close();
+                this.selectedBook = { authors: [] };
+                this.isEditing = false;
+              },
+              error: (err: any) => {
+                console.error('Error saving book:', err);
+                modal.close();
+                this.selectedBook = { authors: [] };
+                this.isEditing = false;
+              }
+            });
+          },
+          error: (err: any) => {
+            console.error('Error creating author:', err);
+            modal.close();
+            this.selectedBook = { authors: [] };
+            this.isEditing = false;
+          }
+        });
+      }
     }
   }
 
@@ -167,5 +187,37 @@ export class HomeComponent implements OnInit {
     }
     const sum = book.ratings.reduce((acc, rating) => acc + rating.assessment, 0);
     return sum / book.ratings.length;
+  }
+
+  onBookAction(event: any): void {
+    if (event.action === 'edit') {
+      if (event.book.loans && event.book.loans.length > 0) {
+        alert('No se puede editar este libro porque tiene préstamos activos');
+        return;
+      }
+
+      console.log('Evento recibido:', event);
+      this.selectedBook = { ...event.book };
+      this.isEditing = true;
+      
+      this.modalService.open(this.bookModal).result.then(
+        (result) => {
+          if (result === 'save') {
+            console.log('ID del libro a actualizar:', this.selectedBook.book_id);
+            console.log('Datos completos a guardar:', this.selectedBook);
+            
+            this.bookService.updateBook(this.selectedBook.book_id, this.selectedBook)
+              .subscribe({
+                next: (response) => {
+                  this.loadBooks();
+                },
+                error: (error) => {
+                  console.error('Error detallado:', error);
+                }
+              });
+          }
+        }
+      );
+    }
   }
 }

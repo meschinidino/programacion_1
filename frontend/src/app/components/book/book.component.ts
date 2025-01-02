@@ -4,6 +4,7 @@ import { LoanService } from '../../services/loan.service';
 import { BookService } from '../../services/book.service';
 import { AuthService } from '../../services/auth.service';
 import { Book } from '../../models/book-response.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-book',
@@ -14,15 +15,17 @@ import { Book } from '../../models/book-response.model';
 })
 export class BookComponent implements OnInit {
   @Input() book!: Book;
+  @Input() userRole: string = '';
   @Output() bookDeleted = new EventEmitter<number>();
+  @Output() bookUpdated = new EventEmitter<any>();
   isFlipped = false;
-  userRole: string = '';
   userId: number = 0; // Add a property to store the user ID
 
   constructor(
       private loanService: LoanService,
       private bookService: BookService,
-      private authService: AuthService
+      private authService: AuthService,
+      private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -100,5 +103,18 @@ export class BookComponent implements OnInit {
     }
     const sum = this.book.ratings.reduce((acc, rating) => acc + rating.assessment, 0);
     return sum / this.book.ratings.length;
+  }
+
+  editBook(): void {
+    if (this.book.loans && this.book.loans.length > 0) {
+      alert('No se puede editar este libro porque tiene préstamos activos');
+      return;
+    }
+
+    this.bookUpdated.emit({
+      action: 'edit',
+      book: this.book,
+      bookId: this.book.book_id
+    });
   }
 }

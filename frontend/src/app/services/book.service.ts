@@ -9,7 +9,7 @@ import { BookResponse } from '../models/book-response.model';
 })
 export class BookService {
     private apiUrl = 'http://127.0.0.1:5000/books';
-    private deleteUrl = 'http://127.0.0.1:5000/book';
+    private bookUrl = 'http://127.0.0.1:5000/book';
     private usersUrl = 'http://127.0.0.1:5000/users';
     private loansUrl = 'http://127.0.0.1:5000/loans';
     private loanUrl = 'http://127.0.0.1:5000/loan';
@@ -44,8 +44,14 @@ export class BookService {
         );
     }
 
-    updateBook(id: number, book: BookResponse): Observable<BookResponse> {
-        return this.http.put<BookResponse>(`${this.apiUrl}/${id}`, book, { headers: this.getHeaders() }).pipe(
+    updateBook(id: number, book: any): Observable<any> {
+        if (!id) {
+            console.error('Book ID is undefined');
+            return throwError(() => new Error('Book ID is required'));
+        }
+        return this.http.put<any>(`${this.bookUrl}/${id}`, book, { 
+            headers: this.getHeaders() 
+        }).pipe(
             catchError(this.handleError)
         );
     }
@@ -58,7 +64,7 @@ export class BookService {
     }
 
     deleteBook(bookId: number): Observable<any> {
-        return this.http.delete(`${this.deleteUrl}/${bookId}`, { headers: this.getHeaders() }).pipe(
+        return this.http.delete(`${this.bookUrl}/${bookId}`, { headers: this.getHeaders() }).pipe(
             catchError(this.handleError)
         );
     }
@@ -76,11 +82,9 @@ export class BookService {
         let params = new HttpParams()
             .set('page', page.toString())
             .set('per_page', perPage.toString());
-
         if (searchTerm) {
             params = params.set('book_title', searchTerm);
         }
-
         return this.http.get<any>(this.loansUrl, { 
             params,
             headers: this.getHeaders() 

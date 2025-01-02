@@ -65,13 +65,27 @@ class Book(Resource):
     #Modificar el recurso libro
     @role_required(roles=["Librarian","Admin"])
     def put(self, book_id):
-        book = db.session.query(BooksModel).get_or_404(book_id)
-        data = request.get_json().items()
-        for key, value in data:
-            setattr(book, key, value)
-        db.session.add(book)
-        db.session.commit()
-        return book.to_json_short(), 201
+        try:
+            book = db.session.query(BooksModel).get_or_404(book_id)
+            data = request.get_json()
+            
+            # Lista de campos que no se deben actualizar
+            excluded_fields = ['book_id']
+            
+            # Actualizar solo los campos permitidos que vienen en la petición
+            for key, value in data.items():
+                if hasattr(book, key) and key not in excluded_fields:
+                    setattr(book, key, value)
+            
+            try:
+                db.session.commit()
+                return book.to_json(), 200
+            except Exception as e:
+                db.session.rollback()
+                return {'message': str(e)}, 500
+                
+        except Exception as e:
+            return {'message': str(e)}, 500
 
 
     #Eliminar recurso

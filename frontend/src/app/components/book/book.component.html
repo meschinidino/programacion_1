@@ -17,9 +17,8 @@
             <p class="card-text">Editorial: {{ book.editorial }}</p>
             <p class="card-text">Average Rating: {{ getAverageRating() | number:'1.1-1' }} ⭐</p>
             <button class="btn btn-primary"  *ngIf="userRole === 'User'" (click)="onBorrowClick($event)">Borrow</button>
-            <button 
-                class="btn btn-secondary" *ngIf="userRole === 'Librarian' || userRole === 'Admin'" (click)="deleteBook()">  Delete </button>
-
+            <button class="btn btn-secondary" *ngIf="userRole === 'Librarian' || userRole === 'Admin'" (click)="deleteBook()">  Delete </button>
+            <button class="btn btn-primary" *ngIf="userRole === 'Librarian' || userRole === 'Admin'" (click)="editBook()">  Edit </button>
         </div>
     </div>
 </div>
