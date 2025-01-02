@@ -11,7 +11,7 @@ class Users(db.Model):
     password = db.Column(db.String(80), nullable=False)
     phone_number = db.Column(db.Integer, nullable=False)
     address = db.Column(db.String(80), nullable=False)
-    role = db.Column(db.Enum('Admin', 'User', 'Librarian'), nullable=False)
+    role = db.Column(db.Enum('Admin', 'User', 'Librarian','Guest'), nullable=False)
 
     # Relationship with Loans
     loans = db.relationship('Loans', back_populates='users', cascade='all, delete-orphan')

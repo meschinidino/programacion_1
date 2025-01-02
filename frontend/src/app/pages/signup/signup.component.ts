@@ -28,7 +28,7 @@ export class SignupComponent {
       password: this.password,
       phone_number: this.phone_number,
       address: this.address,
-      role: 'User'
+      role: 'Guest'
     };
 
     this.authService.signup(signupData).subscribe({

@@ -1,0 +1,12 @@
+¡NUEVO USUARIO REGISTRADO!
+==========================
+
+Se ha registrado un nuevo usuario en el sistema:
+
+Nombre: {{ user.name }} {{ user.last_name }}
+Email: {{ user.email }}
+Rol: {{ user.role }}
+Fecha de registro: {{ user.created_at.strftime('%d/%m/%Y %H:%M') if user.created_at else 'N/A' }}
+
+---
+Este es un mensaje automático, por favor no responda directamente a este correo.
