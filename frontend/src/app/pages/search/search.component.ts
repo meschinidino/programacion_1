@@ -9,6 +9,7 @@ import { BookService } from '../../services/book.service';
 })
 export class SearchComponent implements OnInit {
   searchTerm: string = '';
+  authorSearchTerm: string = '';
   books: any[] = [];
   genres: any[] = [
     { name: 'Fiction', image: 'fiction.png' },
@@ -17,7 +18,9 @@ export class SearchComponent implements OnInit {
     { name: 'Horror', image: 'horror.png' },
     { name: 'Romance', image: 'romance.png' },
     { name: 'Fantasy', image: 'fantasy.png' },
-    { name: 'Religion', image: 'religion.png' }
+    { name: 'Religion', image: 'religion.png'},
+    { name: 'Sci-fi', image: 'scifi.png'},
+    { name: 'Self-help', image: 'selfhelp.png'}
   ];
   selectedGenre: string | null = null;
 
@@ -26,23 +29,41 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: any) => {
       const genre = params['genre'];
+      const search = params['search'];
+      
       if (genre) {
-        this.filterByGenre({ name: genre });
+        this.selectedGenre = genre;
+      }
+      
+      if (search) {
+        this.searchTerm = search;
+        this.searchBooks();
       }
     });
   }
 
   searchBooks(): void {
-    if (this.searchTerm.trim() === '') {
-      return;
-    }
-    this.bookService.getBooks(1, { searchTerm: this.searchTerm }).subscribe({
-      next: (response: any) => {
-        this.books = response.books;
-      },
-      error: (err: any) => {
-        console.error('Error searching books:', err);
-      }
+    const filters = {
+        searchTerm: this.searchTerm?.trim(),
+        author: this.authorSearchTerm?.trim(),
+        genre: this.selectedGenre
+    };
+
+    this.bookService.getBooks(1, filters).subscribe({
+        next: (response: any) => {
+            this.books = response.books;
+            this.router.navigate(['/search'], { 
+                queryParams: { 
+                    search: this.searchTerm?.trim(),
+                    author: this.authorSearchTerm?.trim(),
+                    genre: this.selectedGenre 
+                },
+                queryParamsHandling: 'merge'
+            });
+        },
+        error: (err: any) => {
+            console.error('Error buscando libros:', err);
+        }
     });
   }
 

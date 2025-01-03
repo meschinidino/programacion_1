@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, throwError, tap } from 'rxjs';
+import { Observable, throwError, tap, map } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { BookResponse } from '../models/book-response.model';
 
@@ -28,12 +28,41 @@ export class BookService {
     }
 
     getBooks(page: number, filters: any = {}, perPage: number = 10): Observable<any> {
-        let params = new HttpParams().set('page', page.toString()).set('per_page', perPage.toString());
-        Object.keys(filters).forEach(key => {
-            params = params.set(key, filters[key]);
-        });
+        let params = new HttpParams()
+            .set('page', page.toString())
+            .set('per_page', perPage.toString());
+        
+        if (filters.searchTerm) {
+            params = params.set('exact_title', filters.searchTerm);
+        }
+        
+        if (filters.author) {
+            params = params.set('author', filters.author);
+        }
+        
+        if (filters.genre) {
+            params = params.set('genre', filters.genre);
+        }
 
         return this.http.get<any>(this.apiUrl, { params }).pipe(
+            map(response => {
+                if (filters.searchTerm || filters.author) {
+                    const searchTerm = filters.searchTerm?.toLowerCase() || '';
+                    const authorTerm = filters.author?.toLowerCase() || '';
+                    
+                    response.books = response.books.filter((book: any) => {
+                        const titleMatch = searchTerm ? 
+                            book.title.toLowerCase().includes(searchTerm) : true;
+                        const authorMatch = authorTerm ? 
+                            (book.author.name + ' ' + book.author.last_name)
+                                .toLowerCase()
+                                .includes(authorTerm) : true;
+                        
+                        return titleMatch && authorMatch;
+                    });
+                }
+                return response;
+            }),
             catchError(this.handleError)
         );
     }
