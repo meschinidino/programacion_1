@@ -107,11 +107,22 @@ export class LoansComponent implements OnInit {
 
   // Abrir modal para crear o editar un préstamo
   open(content: any, loan: Loan | null = null): void {
-    this.selectedLoan = loan
-      ? { ...loan } // Copia para evitar mutaciones directas
-      : { loan_id: 0, user_id: 0, loan_date: '', finish_date: '' }; // Nuevo préstamo
-    this.isEditing = !!loan;
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+    const userId = this.authService.getUserId();
+    
+    this.authService.getCurrentUser(userId).subscribe(
+      (user) => {
+        if (user.is_suspended) {
+          alert('We are sorry, but you are suspended.');
+          return;
+        }
+        
+        this.selectedLoan = loan
+          ? { ...loan }
+          : { loan_id: 0, user_id: 0, loan_date: '', finish_date: '' };
+        this.isEditing = !!loan;
+        this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+      }
+    );
   }
 
   // Guardar préstamo (crear o actualizar)

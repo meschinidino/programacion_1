@@ -32,6 +32,7 @@ export class UsersComponent implements OnInit {
   pageSize: number = 10;
   totalItems: number = 0;
   roles: string[] = ['User', 'Admin', 'Librarian', 'Guest'];
+  suspensionFilter: string = 'all';  // Agregar esta propiedad
 
   constructor(
       private modalService: NgbModal,
@@ -99,7 +100,7 @@ export class UsersComponent implements OnInit {
     
     this.page = 1;
     
-    if (!this.selectedRole && !this.searchTerm) {
+    if (!this.selectedRole && !this.searchTerm && this.suspensionFilter === 'all') {
         this.loadUsers(this.page);
         return;
     }
@@ -115,8 +116,12 @@ export class UsersComponent implements OnInit {
                 const nameMatch = !this.searchTerm || 
                     user.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
                     user.last_name.toLowerCase().includes(this.searchTerm.toLowerCase());
+                const suspensionMatch = this.suspensionFilter === 'all' || 
+                    (this.suspensionFilter === 'suspended' ? user.is_suspended : !user.is_suspended);
                 
-                return (!this.selectedRole || userRole === selectedRole) && nameMatch;
+                return (!this.selectedRole || userRole === selectedRole) && 
+                       nameMatch && 
+                       suspensionMatch;
             });
             
             this.totalItems = filtered.length;
@@ -131,17 +136,23 @@ export class UsersComponent implements OnInit {
     });
   }
 
+  suspendUser(user: User): void {
+    if (confirm('¿Está seguro que desea suspender a este usuario?')) {
+      this.userService.suspendUser(user.user_id).subscribe(() => {
+        this.loadUsers(this.page);
+      });
+    }
+  }
+
   toggleUserSuspension(user: User): void {
     const action = user.is_suspended ? 'reactivar' : 'suspender';
-    if (confirm(`¿Está seguro que desea ${action} a este usuario?`)) {
+    if (confirm(`Are you sure you want to ${action} this user?`)) {
       if (user.is_suspended) {
         this.userService.unsuspendUser(user.user_id).subscribe(() => {
-          user.is_suspended = false;
           this.loadUsers(this.page);
         });
       } else {
         this.userService.suspendUser(user.user_id).subscribe(() => {
-          user.is_suspended = true;
           this.loadUsers(this.page);
         });
       }

@@ -55,6 +55,15 @@ class Loans(Resource):
     @jwt_required()
     @role_required(roles=["User", "Admin", "Librarian", "Guest"])
     def post(self):
+        # Verificar si el usuario está suspendido
+        current_user_id = get_jwt_identity()
+        user = db.session.query(UsersModel).get_or_404(current_user_id)
+        
+        if user.is_suspended:
+            return {
+                "message": "Your account is suspended. You cannot make loans."
+            }, 403
+            
         try:
             # Obtener el usuario actual
             current_user_id = get_jwt_identity()
