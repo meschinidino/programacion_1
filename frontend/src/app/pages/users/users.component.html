@@ -33,6 +33,11 @@
             <app-user [user]="user"></app-user>
             <button class="btn btn-secondary" (click)="open(content, user)">Edit</button>
             <button class="btn btn-danger" (click)="deleteUser(user)">Delete</button>
+            <button class="btn" 
+                    [ngClass]="user.is_suspended ? 'btn-success' : 'btn-warning'"
+                    (click)="toggleUserSuspension(user)">
+                {{ user.is_suspended ? 'Reactivate' : 'Suspend' }}
+            </button>
             <button class="btn btn-info" (click)="viewLoanHistory(user.user_id)">View Loan History</button>
         </div>
     </div>

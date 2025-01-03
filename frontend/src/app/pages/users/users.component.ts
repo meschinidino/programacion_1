@@ -130,4 +130,21 @@ export class UsersComponent implements OnInit {
         this.filteredUsers$ = of(filteredUsers);
     });
   }
+
+  toggleUserSuspension(user: User): void {
+    const action = user.is_suspended ? 'reactivar' : 'suspender';
+    if (confirm(`¿Está seguro que desea ${action} a este usuario?`)) {
+      if (user.is_suspended) {
+        this.userService.unsuspendUser(user.user_id).subscribe(() => {
+          user.is_suspended = false;
+          this.loadUsers(this.page);
+        });
+      } else {
+        this.userService.suspendUser(user.user_id).subscribe(() => {
+          user.is_suspended = true;
+          this.loadUsers(this.page);
+        });
+      }
+    }
+  }
 }

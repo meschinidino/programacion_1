@@ -12,6 +12,7 @@ class Users(db.Model):
     phone_number = db.Column(db.Integer, nullable=False)
     address = db.Column(db.String(80), nullable=False)
     role = db.Column(db.Enum('Admin', 'User', 'Librarian','Guest'), nullable=False)
+    is_suspended = db.Column(db.Boolean, default=False, nullable=False)
 
     # Relationship with Loans
     loans = db.relationship('Loans', back_populates='users', cascade='all, delete-orphan')
@@ -43,6 +44,7 @@ class Users(db.Model):
             "phone_number": self.phone_number,
             "address": self.address,
             "role": self.role,
+            "is_suspended": self.is_suspended,
             "loans": loan
         }
         return user_json
@@ -55,7 +57,8 @@ class Users(db.Model):
             "email": self.email,
             "phone_number": self.phone_number,
             "address": self.address,
-            "role": self.role
+            "role": self.role,
+            "is_suspended": self.is_suspended
         }
         return user_json
 
@@ -69,6 +72,7 @@ class Users(db.Model):
         phone_number = user_json.get("phone_number")
         address = user_json.get("address")
         role = user_json.get("role")
+        is_suspended = user_json.get("is_suspended", False)
 
         return Users(
             user_id=user_id,
@@ -78,5 +82,6 @@ class Users(db.Model):
             plain_password=password,
             phone_number=phone_number,
             address=address,
-            role=role
+            role=role,
+            is_suspended=is_suspended
         )

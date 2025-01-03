@@ -51,10 +51,7 @@ class UsersAll(Resource):
             'users': [user.to_json_short() for user in users]
         })
 
-
-
 class User(Resource):
-
     #obtener usuario
     @role_required(roles = ["User", "Admin", "Librarian","Guest"])
     def get(self, user_id):
@@ -76,9 +73,13 @@ class User(Resource):
         current_user_id = get_jwt_identity()
         current_user = db.session.query(UsersModel).get_or_404(current_user_id)
 
+        # Verificar permisos para suspender usuarios
+        if "is_suspended" in data and current_user.role.lower() == "user":
+            return {"message": "Solo administradores y bibliotecarios pueden suspender usuarios"}, 403
+
         # Verificar si el usuario tiene permiso para cambiar el rol
         if "role" in data and current_user.role.lower() == "user":
-            return {"message": "Only admins and librarians can change user roles"}, 403
+            return {"message": "Solo administradores y bibliotecarios pueden cambiar roles de usuario"}, 403
 
         # Guardar el rol anterior
         old_role = user.role
@@ -88,11 +89,10 @@ class User(Resource):
             for key, value in data.items():
                 setattr(user, key, value)
             
-            db.session.commit()  # Guardar los cambios en la base de datos
+            db.session.commit()
 
             # Verificar si el rol ha cambiado
             if "role" in data and old_role != user.role:
-                # Enviar correo de notificación
                 result = sendMail(
                     to=user.email,
                     subject="Tu rol ha sido actualizado",
@@ -112,7 +112,7 @@ class User(Resource):
             return user.to_json_short(), 200
 
         except Exception as e:
-            db.session.rollback()  # Revertir cambios en caso de error
+            db.session.rollback()
             return {"message": str(e)}, 500
 
     # Eliminar usuario
@@ -123,3 +123,69 @@ class User(Resource):
         db.session.delete(user)
         db.session.commit()
         return 'Deleted', 204
+
+class UserSuspend(Resource):
+    @role_required(roles=["Admin", "Librarian"])
+    def put(self, user_id):
+        user = db.session.query(UsersModel).get_or_404(user_id)
+        try:
+            # Cambiar el estado de suspensión
+            user.is_suspended = True
+            
+            # Guardar los cambios
+            db.session.commit()
+
+            # Enviar correo de notificación
+            result = sendMail(
+                to=user.email,
+                subject="Tu cuenta ha sido suspendida",
+                template='account_status_notification',
+                user={
+                    'user_id': user.user_id,
+                    'name': user.name,
+                    'last_name': user.last_name,
+                    'is_suspended': user.is_suspended
+                }
+            )
+            
+            if isinstance(result, str) and "error" in result.lower():
+                print(f"Error al enviar correo de notificación: {result}")
+
+            return {'message': 'Usuario suspendido exitosamente'}, 200
+
+        except Exception as e:
+            db.session.rollback()
+            return {'message': str(e)}, 500
+
+class UserUnsuspend(Resource):
+    @role_required(roles=["Admin", "Librarian"])
+    def put(self, user_id):
+        user = db.session.query(UsersModel).get_or_404(user_id)
+        try:
+            # Cambiar el estado de suspensión
+            user.is_suspended = False
+            
+            # Guardar los cambios
+            db.session.commit()
+
+            # Enviar correo de notificación
+            result = sendMail(
+                to=user.email,
+                subject="Tu cuenta ha sido reactivada",
+                template='account_status_notification',
+                user={
+                    'user_id': user.user_id,
+                    'name': user.name,
+                    'last_name': user.last_name,
+                    'is_suspended': user.is_suspended
+                }
+            )
+            
+            if isinstance(result, str) and "error" in result.lower():
+                print(f"Error al enviar correo de notificación: {result}")
+
+            return {'message': 'Usuario reactivado exitosamente'}, 200
+
+        except Exception as e:
+            db.session.rollback()
+            return {'message': str(e)}, 500

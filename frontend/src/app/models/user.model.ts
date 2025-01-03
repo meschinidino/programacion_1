@@ -6,4 +6,5 @@ export interface User {
     role: string;
     phone_number: number;
     address: string;
+    is_suspended?: boolean;
 }

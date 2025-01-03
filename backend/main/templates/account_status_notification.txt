@@ -1,0 +1,21 @@
+Actualización del Estado de tu Cuenta
+
+Estimado/a [nombre] [apellido],
+
+{% if suspendido %}
+Te informamos que tu cuenta ha sido SUSPENDIDA temporalmente.
+Si consideras que esto es un error o necesitas más información, por favor contacta al equipo de soporte.
+
+{% else %}
+Nos complace informarte que tu cuenta ha sido REACTIVADA.
+Ya puedes volver a utilizar todos nuestros servicios con normalidad.
+
+{% endif %}
+
+Detalles de la cuenta:
+- ID de Usuario: [ID]
+- Estado: {% if suspendido %}Suspendida{% else %}Activa{% endif %}
+
+-------------------
+Este es un mensaje automático, por favor no responder.
+© 2024 Sistema de Biblioteca. Todos los derechos reservados.

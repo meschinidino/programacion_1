@@ -54,4 +54,12 @@ export class UserService {
     // Endpoint que retorne todos los usuarios sin paginación
     return this.httpClient.get(`${this.url}/users/all`, { headers: this.getHeaders() });
   }
+
+  suspendUser(userId: number): Observable<any> {
+    return this.httpClient.put(`${this.url}/user/${userId}/suspend`, {}, { headers: this.getHeaders() });
+}
+
+unsuspendUser(userId: number): Observable<any> {
+    return this.httpClient.put(`${this.url}/user/${userId}/unsuspend`, {}, { headers: this.getHeaders() });
+}
 }

@@ -18,3 +18,5 @@ from .loans import UserBorrowedBooks as UserBorrowedBooksResource
 from .ratings import CanUserRate as CanUserRateResource
 from .users import UsersAll as UsersAllResource
 from .loans import LoanExtend as LoanExtendResource
+from .users import UserSuspend as UserSuspendResource
+from .users import UserUnsuspend as UserUnsuspendResource
