@@ -1,11 +1,12 @@
 from flask_restful import Resource
-from flask import request, jsonify
-from main.models import LoansModel, BooksModel
+from flask import request, jsonify, current_app
+from main.models import LoansModel, BooksModel, UsersModel
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from main.auth.decorators import role_required
 from sqlalchemy import func, desc
 from .. import db
 from datetime import datetime, date as date_module, timedelta
+from ..mail.functions import sendMail
 
 
 class Loans(Resource):
@@ -51,36 +52,80 @@ class Loans(Resource):
                         'pages': loans.pages,
                         'page': page})
     
-    
-
     @jwt_required()
+    @role_required(roles=["User", "Admin", "Librarian", "Guest"])
     def post(self):
         try:
-            # Log para ver los datos recibidos
-            print("Request Headers:", dict(request.headers))
-            print("Request Data:", request.get_data(as_text=True))
-            print("Request JSON:", request.get_json())
+            # Obtener el usuario actual
+            current_user_id = get_jwt_identity()
+            user = db.session.query(UsersModel).get(current_user_id)
+
+            if user.role == 'Guest':
+                try:
+                    print("=== INICIO SOLICITUD DE PRÉSTAMO GUEST ===")
+                    
+                    # Obtener email del administrador
+                    admin_email = current_app.config.get('FLASKY_MAIL_SENDER')
+                    print(f"Email del administrador: {admin_email}")
+                    
+                    if not admin_email:
+                        print("ERROR: No se encontró email del administrador")
+                        return {
+                            'message': 'Configuration error: administrator email not found'
+                        }, 500
+
+                    print(f"Datos del usuario: {user.name}, {user.last_name}, {user.email}, {user.role}")
+
+                    # Enviar correo con los datos relevantes del usuario
+                    result = sendMail(
+                        to=admin_email,
+                        subject="Solicitud de Actualización de Rol de Usuario para Préstamos",
+                        template='loan_role_request',  
+                        user={
+                            'email': user.email,
+                            'name': user.name,
+                            'last_name': user.last_name,
+                            'role': user.role,
+                            'request_type': 'loan_permission'  
+                        }
+                    )
+                    
+                    if isinstance(result, str) and "error" in result.lower():
+                        print(f"Error al enviar correo: {result}")
+                        return {
+                            'message': 'The request could not be processed. Please try again later.'
+                        }, 500
+
+                    return {
+                        'message': 'To make loans you need to be a registered user. '
+                                'An administrator has been notified to update your role. '
+                                'You will receive a confirmation when your role is updated.'
+                    }, 403
+                    
+                except Exception as e:
+                    print(f"Error en proceso de solicitud Guest: {str(e)}")
+                    return {
+                        'message': 'An error occurred while processing the request'
+                    }, 500
+
+            # Si el usuario tiene el rol correcto, continuar con el préstamo
+            loan_data = request.get_json()
             
             # Validar que se recibió un JSON válido
             if not request.is_json:
-                return {"error": "El contenido debe ser JSON"}, 400
-            
-            loan_data = request.get_json()
-            
-            # Log para ver los datos procesados
-            print("Loan Data procesada:", loan_data)
+                return {"error": "The content must be JSON"}, 400
             
             # Validar que existan los campos requeridos
             required_fields = ['user_id', 'loan_date', 'finish_date', 'book_id']
             for field in required_fields:
                 if field not in loan_data:
-                    return {"error": f"El campo {field} es requerido"}, 400
+                    return {"error": f"The field {field} is required"}, 400
             
             book_ids = loan_data.get('book_id')
             
             # Validar que book_ids sea una lista
             if not isinstance(book_ids, list):
-                return {"error": "book_id debe ser una lista"}, 400
+                return {"error": "book_id must be a list"}, 400
             
             # Crear el préstamo
             loan = LoansModel(
@@ -93,12 +138,12 @@ class Loans(Resource):
             if book_ids:
                 books = BooksModel.query.filter(BooksModel.book_id.in_(book_ids)).all()
                 if len(books) != len(book_ids):
-                    return {"error": "Uno o más libros no existen"}, 404
+                    return {"error": "One or more books do not exist"}, 404
                     
                 # Verificar y actualizar la disponibilidad de cada libro
                 for book in books:
                     if book.available <= 0:
-                        return {"error": f"El libro '{book.title}' no está disponible"}, 400
+                        return {"error": f"The book '{book.title}' is not available"}, 400
                     book.available -= 1
                     
                 loan.books.extend(books)
@@ -164,7 +209,6 @@ class LoansByUser(Resource):
             'page': page
         })
 
-
 class UserBorrowedBooks(Resource):
     @jwt_required(optional=True)
     def get(self, user_id):
@@ -198,7 +242,6 @@ class UserBorrowedBooks(Resource):
             'pages': loans_with_books.pages,
             'page': page
         })
-
 
 class LoanExtend(Resource):
     @role_required(roles=["Librarian","Admin"])

@@ -55,7 +55,7 @@ class UsersAll(Resource):
 class User(Resource):
 
     #obtener usuario
-    @role_required(roles = ["User", "Admin", "Librarian"])
+    @role_required(roles = ["User", "Admin", "Librarian","Guest"])
     def get(self, user_id):
         user = db.session.query(UsersModel).get_or_404(user_id)
 

@@ -1,0 +1,13 @@
+🔔 SOLICITUD DE ACTUALIZACIÓN DE ROL PARA PRÉSTAMOS
+═══════════════════════════════════════════════════
+
+Un usuario ha intentado realizar un préstamo pero necesita actualización de rol.
+
+📋 DETALLES DEL USUARIO
+─────────────────────
+- Nombre: {{ user.name }}
+- Apellido: {{ user.last_name }}
+- Email: {{ user.email }}
+- Rol actual: {{ user.role }}
+
+Por favor, revisa y actualiza el rol del usuario según corresponda.

@@ -41,8 +41,15 @@ export class BookComponent implements OnInit {
 
   onBorrowClick(event: Event): void {
     event.stopPropagation();
+    
+    // Si el usuario no está autenticado
+    if (!this.userId) {
+      alert('Necesitas iniciar sesión para realizar préstamos');
+      return;
+    }
+
     const loanRequest = {
-      user_id: this.userId, // Use the retrieved user ID
+      user_id: this.userId,
       loan_date: new Date().toISOString().split('T')[0],
       finish_date: this.calculateFinishDate(14),
       book_id: [Number(this.book.book_id)],
@@ -51,14 +58,20 @@ export class BookComponent implements OnInit {
     this.loanService.createLoan(loanRequest).subscribe({
       next: (response) => {
         console.log('Loan created successfully:', response);
-        alert(`Loan for "${this.book.title}" created successfully!`);
+        alert(`Préstamo para "${this.book.title}" creado exitosamente!`);
       },
       error: (error) => {
-        if (error.message.includes('token')) {
+        if (error.status === 403) {
+          // Manejo específico para usuarios Guest
+          alert(error.error.message || 'To borrow a book you need to be a registered user. An administrator has been notified.');
+        } else if (error.status === 401) {
           alert('You need to log in to perform this action');
+        } else if (error.error?.message) {
+          // Mostrar mensaje específico del servidor
+          alert(error.error.message);
         } else {
           console.error('Error creating loan:', error);
-          alert('Could not create the loan. Please try again.');
+          alert('No se pudo crear el préstamo. Por favor intenta nuevamente.');
         }
       },
     });
