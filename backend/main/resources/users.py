@@ -5,6 +5,7 @@ from main.models import UsersModel
 from main.auth.decorators import role_required
 from sqlalchemy import or_
 from .. import db
+from ..mail.functions import sendMail
 
 
 class Users(Resource):
@@ -79,15 +80,40 @@ class User(Resource):
         if "role" in data and current_user.role.lower() == "user":
             return {"message": "Only admins and librarians can change user roles"}, 403
 
+        # Guardar el rol anterior
+        old_role = user.role
+
         # Actualizar los atributos del usuario
         try:
             for key, value in data.items():
                 setattr(user, key, value)
+            
             db.session.commit()  # Guardar los cambios en la base de datos
-            return user.to_json_short(), 200  # Cambiar el código de estado a 200
+
+            # Verificar si el rol ha cambiado
+            if "role" in data and old_role != user.role:
+                # Enviar correo de notificación
+                result = sendMail(
+                    to=user.email,
+                    subject="Tu rol ha sido actualizado",
+                    template='role_update_notification',
+                    user={
+                        'user_id': user.user_id,
+                        'name': user.name,
+                        'last_name': user.last_name,
+                        'old_role': old_role,
+                        'new_role': user.role
+                    }
+                )
+                
+                if isinstance(result, str) and "error" in result.lower():
+                    print(f"Error al enviar correo de notificación: {result}")
+
+            return user.to_json_short(), 200
+
         except Exception as e:
             db.session.rollback()  # Revertir cambios en caso de error
-            return {"message": str(e)}, 500  # Retornar el error
+            return {"message": str(e)}, 500
 
     # Eliminar usuario
     @role_required(roles = ["Librarian", "Admin"])
