@@ -81,9 +81,12 @@ export class UsersComponent implements OnInit {
   }
 
   deleteUser(user: User): void {
-    this.userService.deleteUser(user.user_id).subscribe(() => {
-      this.loadUsers(this.page);
-    });
+    if (confirm('Are you sure you want to delete this user?')) {
+        this.userService.deleteUser(user.user_id).subscribe(() => {
+            alert('User deleted successfully');
+            this.loadUsers(this.page);
+        });
+    }
   }
 
   viewLoanHistory(userId: number): void {
