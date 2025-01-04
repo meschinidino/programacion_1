@@ -15,7 +15,9 @@
             </div>
             <p class="card-text">Average Rating: {{ getAverageRating() | number:'1.1-1' }} ⭐</p>
             <div class="btn-group">
-                <button class="btn btn-info btn-sm" (click)="showInfo()">Info</button>
+                <button (click)="showInfo()" class="btn btn-info">
+                    Info
+                </button>
                 <button class="btn btn-sm" 
                         *ngIf="userRole === 'Librarian' || userRole === 'Admin'"
                         [ngClass]="book.is_suspended ? 'btn-success' : 'btn-warning'"

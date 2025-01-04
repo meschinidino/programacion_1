@@ -15,6 +15,7 @@ import { LoanListComponent } from './pages/loan-list/loan-list.component';
 import { AccountInfoComponent } from './pages/account-info/account-info.component';
 import { EditAccountComponent } from './pages/edit-account/edit-account.component';
 import { BooksComponent } from './pages/books/books.component';
+import { BookInfoComponent } from './pages/book-info/book-info.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent},
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'account-info', component: AccountInfoComponent },
   { path: 'edit-account', component: EditAccountComponent, canActivate: [authGuard] },
   { path: 'books', component: BooksComponent, canActivate: [roleGuard], data: { expectedRole: 'Admin' } },
+  { path: 'book/:id', component: BookInfoComponent },
 ];
 
 @NgModule({

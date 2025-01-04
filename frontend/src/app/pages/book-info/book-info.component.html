@@ -1,1 +1,74 @@
-<p>book-info works!</p>
+<div class="container mt-4" *ngIf="book">
+  <div class="row">
+    <!-- Columna de la imagen -->
+    <div class="col-md-4">
+      <div class="book-image-container">
+        <img src="assets/images/got.png" 
+             class="img-fluid rounded" 
+             [alt]="book.title">
+      </div>
+    </div>
+    
+    <!-- Columna de la información -->
+    <div class="col-md-8">
+      <h2>{{book.title}}</h2>
+      
+      <div class="book-details mt-3">
+        <p><strong>Género:</strong> {{book.genre}}</p>
+        <p><strong>Año:</strong> {{book.year}}</p>
+        <p><strong>Editorial:</strong> {{book.editorial}}</p>
+        <p><strong>ISBN:</strong> {{book.isbn}}</p>
+        <p><strong>Estado:</strong> 
+          <span class="badge" [ngClass]="{'bg-success': book.available && !book.is_suspended, 
+                                         'bg-danger': !book.available || book.is_suspended}">
+            {{getBookStatus()}}
+          </span>
+        </p>
+        
+        <!-- Autores -->
+        <div class="authors mt-3">
+          <h5>Autores:</h5>
+          <ul class="list-unstyled">
+            <li *ngFor="let author of book.authors">
+              {{author.name}} {{author.last_name}}
+            </li>
+          </ul>
+        </div>
+
+        <!-- Calificaciones - solo se muestra si hay ratings -->
+        <div class="ratings mt-3" *ngIf="book.ratings && book.ratings.length > 0">
+          <h4>Calificación:</h4>
+          <div class="stars-container">
+            <div class="stars">
+              <i *ngFor="let star of [1,2,3,4,5]" 
+                 class="fa fa-star" 
+                 [class.fa-star-fill]="star <= averageRating"
+                 [class.fa-star]="star > averageRating">
+              </i>
+            </div>
+            <span class="rating-text">
+              {{averageRating | number:'1.1-1'}} / 5 
+              ({{book.ratings.length}} calificaciones)
+            </span>
+          </div>
+        </div>
+
+        <!-- Mensaje cuando no hay calificaciones -->
+        <div class="ratings mt-3" *ngIf="!book.ratings || book.ratings.length === 0">
+          <h4>Calificación:</h4>
+          <p>Este libro aún no tiene calificaciones</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Mostrar loading o error -->
+<div class="container mt-4" *ngIf="loading">
+  <p>Cargando información del libro...</p>
+</div>
+
+<div class="container mt-4" *ngIf="error">
+  <p class="text-danger">{{error}}</p>
+</div>
+

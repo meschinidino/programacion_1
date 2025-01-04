@@ -5,6 +5,7 @@ import { BookService } from '../../services/book.service';
 import { AuthService } from '../../services/auth.service';
 import { Book } from '../../models/book-response.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-book',
@@ -25,7 +26,8 @@ export class BookComponent implements OnInit {
       private loanService: LoanService,
       private bookService: BookService,
       private authService: AuthService,
-      private modalService: NgbModal
+      private modalService: NgbModal,
+      private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -136,9 +138,9 @@ export class BookComponent implements OnInit {
     });
   }
 
-  showInfo() {
-    // Implementa la lógica para mostrar la información del libro
-    console.log('Mostrar información del libro:', this.book);
+  showInfo(): void {
+    console.log('Navegando a libro:', this.book.book_id); // Debug
+    this.router.navigate(['/book', this.book.book_id]);
   }
 
   toggleBookSuspension(book: any) {

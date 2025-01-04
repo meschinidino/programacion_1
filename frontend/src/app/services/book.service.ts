@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError, tap, map } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { BookResponse } from '../models/book-response.model';
+import { Book } from '../models/book-response.model';
 
 @Injectable({
     providedIn: 'root'
@@ -132,6 +133,10 @@ export class BookService {
     }
     unsuspendBook(bookId: number) {
         return this.http.put(`${this.bookUrl}/${bookId}/unsuspend`, {}, { headers: this.getHeaders() });
+    }
+
+    getBookById(bookId: number): Observable<Book> {
+        return this.http.get<Book>(`${this.bookUrl}/${bookId}`);
     }
 
     private handleError(error: any): Observable<never> {

@@ -68,7 +68,7 @@ class Books(Resource):
 
 class Book(Resource):
     #obtener recurso
-    @jwt_required()
+    @jwt_required(optional=True)
     def get(self, book_id):
         book = db.session.query(BooksModel).get_or_404(book_id)
         return book.to_json()
