@@ -117,6 +117,12 @@ export class HomeComponent implements OnInit {
         name: this.selectedBook.authorName,
         last_name: this.selectedBook.authorLastName
       };
+      
+      console.log('🔍 Datos del autor a crear:', {
+        nombreAutor: author.name,
+        apellidoAutor: author.last_name,
+        datosCompletos: author
+      });
 
       if (this.isEditing) {
         this.bookService.updateBook(this.selectedBook.book_id, this.selectedBook)
@@ -139,19 +145,41 @@ export class HomeComponent implements OnInit {
       } else {
         this.bookService.createAuthor(author).subscribe({
           next: (authorResponse: any) => {
-            this.selectedBook.authors = [authorResponse];
+            console.log('✅ Autor creado exitosamente:', {
+              respuestaCompleta: authorResponse,
+              id: authorResponse.author_id,
+              datos: authorResponse
+            });
+
+            this.selectedBook.author_id = [authorResponse.author_id];
+            
+            console.log('📚 Datos del libro antes de crear:', {
+              libroCompleto: this.selectedBook,
+              autorAsignado: this.selectedBook.author_id,
+              títuloLibro: this.selectedBook.title
+            });
 
             const saveObservable = this.bookService.createBook(this.selectedBook);
 
             saveObservable.subscribe({
               next: (bookResponse: any) => {
+                console.log('✅ Libro creado exitosamente:', {
+                  respuestaCompleta: bookResponse,
+                  idLibro: bookResponse.book_id,
+                  títuloCreado: bookResponse.title,
+                  autoresAsociados: bookResponse.authors
+                });
                 this.loadBooks();
                 modal.close();
                 this.selectedBook = { authors: [] };
                 this.isEditing = false;
               },
               error: (err: any) => {
-                console.error('Error saving book:', err);
+                console.error('❌ Error al crear el libro:', {
+                  error: err,
+                  mensaje: err.message,
+                  detalles: err.error
+                });
                 modal.close();
                 this.selectedBook = { authors: [] };
                 this.isEditing = false;
@@ -159,7 +187,11 @@ export class HomeComponent implements OnInit {
             });
           },
           error: (err: any) => {
-            console.error('Error creating author:', err);
+            console.error('❌ Error al crear el autor:', {
+              error: err,
+              mensaje: err.message,
+              detalles: err.error
+            });
             modal.close();
             this.selectedBook = { authors: [] };
             this.isEditing = false;

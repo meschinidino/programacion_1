@@ -63,7 +63,7 @@ class Books(Resource):
 
         db.session.add(book)
         db.session.commit()
-        return book.to_json_short(), 201
+        return book.to_json(), 201
 
 
 class Book(Resource):
