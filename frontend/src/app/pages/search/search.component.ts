@@ -9,7 +9,6 @@ import { BookService } from '../../services/book.service';
 })
 export class SearchComponent implements OnInit {
   searchTerm: string = '';
-  authorSearchTerm: string = '';
   books: any[] = [];
   genres: any[] = [
     { name: 'Fiction', image: 'fiction.png' },
@@ -43,41 +42,31 @@ export class SearchComponent implements OnInit {
   }
 
   searchBooks(): void {
-    const filters = {
-        searchTerm: this.searchTerm?.trim(),
-        author: this.authorSearchTerm?.trim(),
-        genre: this.selectedGenre
+    const searchParams = {
+      searchTerm: this.searchTerm.trim(),
+      genre: this.selectedGenre
     };
 
-    this.bookService.getBooks(1, filters).subscribe({
-        next: (response: any) => {
-            this.books = response.books;
-            this.router.navigate(['/search'], { 
-                queryParams: { 
-                    search: this.searchTerm?.trim(),
-                    author: this.authorSearchTerm?.trim(),
-                    genre: this.selectedGenre 
-                },
-                queryParamsHandling: 'merge'
-            });
-        },
-        error: (err: any) => {
-            console.error('Error buscando libros:', err);
-        }
+    this.bookService.getBooks(1, searchParams, 10).subscribe({
+      next: (response: any) => {
+        this.books = response.books;
+        this.router.navigate(['/search'], { 
+          queryParams: { 
+            search: this.searchTerm.trim(),
+            genre: this.selectedGenre 
+          },
+          queryParamsHandling: 'merge'
+        });
+      },
+      error: (err: any) => {
+        console.error('Error buscando libros:', err);
+      }
     });
   }
 
   filterByGenre(genre: any): void {
     this.selectedGenre = genre.name;
-    this.router.navigate(['/search'], { queryParams: { genre: genre.name } });
-    this.bookService.getBooks(1, { genre: genre.name }).subscribe({
-      next: (response: any) => {
-        this.books = response.books;
-      },
-      error: (err: any) => {
-        console.error('Error filtering books by genre:', err);
-      }
-    });
+    this.searchBooks();
   }
 
   clearFilters(): void {

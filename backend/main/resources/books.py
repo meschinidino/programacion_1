@@ -8,34 +8,45 @@ from sqlalchemy import func, desc, or_, asc
 from .. import db
 
 class Books(Resource):
-    @jwt_required(optional=True)
     def get(self):
-        page = request.args.get('page', 1, type=int)
-        per_page = request.args.get('per_page', 10, type=int)
+        try:
+            # Verificar si se solicitan todos los resultados
+            show_all = request.args.get('all', '').lower() == 'true'
+            
+            if not show_all:
+                page = request.args.get('page', 1, type=int)
+                per_page = request.args.get('per_page', 10, type=int)
 
-        books = db.session.query(BooksModel)
+            books = db.session.query(BooksModel)
 
-        if request.args.get('genre'):
-            books = books.filter(BooksModel.genre.like("%"+request.args.get('genre')+"%"))
-        if request.args.get('title'):
-            books = books.filter(BooksModel.title.like("%"+request.args.get('title')+"%"))
-        if request.args.get('sortby_rating'):
-            if request.args.get('sortby_rating') == 'd':
-                books = books.outerjoin(BooksModel.ratings).group_by(BooksModel.book_id).order_by(func.avg(RatingsModel.assessment).desc())
-            if request.args.get('sortby_rating') == 'a':
-                books = books.outerjoin(BooksModel.ratings).group_by(BooksModel.book_id).order_by(func.avg(RatingsModel.assessment).asc())
-        if request.args.get('author'):
-            author_name = request.args.get('author')
-            books = books.filter(BooksModel.authors.any(or_(AuthorsModel.name.like(f"%{author_name}%"), AuthorsModel.last_name.like(f"%{author_name}%"))))
+            if request.args.get('genre'):
+                books = books.filter(BooksModel.genre.like("%"+request.args.get('genre')+"%"))
+            if request.args.get('title'):
+                books = books.filter(BooksModel.title.like("%"+request.args.get('title')+"%"))
+            if request.args.get('sortby_rating'):
+                if request.args.get('sortby_rating') == 'd':
+                    books = books.outerjoin(BooksModel.ratings).group_by(BooksModel.book_id).order_by(func.avg(RatingsModel.assessment).desc())
+                if request.args.get('sortby_rating') == 'a':
+                    books = books.outerjoin(BooksModel.ratings).group_by(BooksModel.book_id).order_by(func.avg(RatingsModel.assessment).asc())
+            if request.args.get('author'):
+                author_name = request.args.get('author')
+                books = books.filter(BooksModel.authors.any(or_(AuthorsModel.name.like(f"%{author_name}%"), AuthorsModel.last_name.like(f"%{author_name}%"))))
 
-        paginated_books = books.paginate(page=page, per_page=per_page, error_out=True, max_per_page=30)
-
-        return jsonify({
-            'books': [book.to_json() for book in paginated_books.items],
-            'total': paginated_books.total,
-            'pages': paginated_books.pages,
-            'page': page
-        })
+            if show_all:
+                return jsonify({
+                    'books': [book.to_json() for book in books.all()],
+                    'total': books.count()
+                })
+            else:
+                paginated_books = books.paginate(page=page, per_page=per_page, error_out=True, max_per_page=30)
+                return jsonify({
+                    'books': [book.to_json() for book in paginated_books.items],
+                    'total': paginated_books.total,
+                    'pages': paginated_books.pages,
+                    'page': page
+                })
+        except Exception as e:
+            return {'message': str(e)}, 500
 
     #insertar recurso
     @role_required(roles=["Librarian","Admin"])
