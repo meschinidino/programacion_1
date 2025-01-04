@@ -10,6 +10,7 @@ class Books(db.Model):
     editorial = db.Column(db.String(50), nullable=False)
     isbn = db.Column(db.Integer, nullable=False)
     available = db.Column(db.Integer, nullable=False)
+    is_suspended = db.Column(db.Boolean, nullable=False, default=False)
     ratings = db.relationship("Ratings", back_populates="book", cascade="all, delete-orphan")
 
     def __repr__(self):
@@ -25,6 +26,7 @@ class Books(db.Model):
             'editorial': str(self.editorial),
             'isbn': self.isbn,
             'available': self.available,
+            'is_suspended': self.is_suspended,
             'ratings': ratings,
             'loans': [loan.to_json_short() for loan in self.loans],
             'authors': [author.to_json_short() for author in self.authors]
@@ -48,6 +50,7 @@ class Books(db.Model):
         editorial = book_json.get('editorial')
         isbn = book_json.get('isbn')
         available = book_json.get('available')
+        is_suspended = book_json.get('is_suspended')
         return Books(
             book_id = book_id,
             title = title,
@@ -56,5 +59,6 @@ class Books(db.Model):
             editorial = editorial,
             isbn = isbn,
             available = available,
+            is_suspended = is_suspended
         )
 

@@ -107,5 +107,31 @@ class Book(Resource):
         db.session.delete(book)
         db.session.commit()
         return 'Deleted', 204
+    
+class BookSuspension(Resource):
+    @role_required(roles=["Librarian", "Admin"])
+    def put(self, book_id):
+        try:
+            book = db.session.query(BooksModel).get_or_404(book_id)
+            action = request.path.split('/')[-1]  # Obtiene 'suspend' o 'unsuspend'
+            
+            if action == 'suspend':
+                book.is_suspended = True
+                message = "Libro suspendido exitosamente"
+            elif action == 'unsuspend':
+                book.is_suspended = False
+                message = "Libro activado exitosamente"
+            
+            db.session.commit()
+            return {'message': message, 'book': book.to_json()}, 200
+            
+        except Exception as e:
+            db.session.rollback()
+            return {'message': str(e)}, 500
+        
+class BookUnsuspension(Resource):
+    @role_required(roles=["Librarian", "Admin"])
+    def put(self, book_id):
+        return BookSuspension.put(self, book_id)
 
 

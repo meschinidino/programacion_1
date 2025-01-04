@@ -33,6 +33,7 @@ import { BooksComponent } from './pages/books/books.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
+import { BookInfoComponent } from './pages/book-info/book-info.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { MatSelectModule } from '@angular/material/select';
     EditAccountComponent,
     ExtendLoanDialogComponent,
     BooksComponent,
+    BookInfoComponent,
   ],
   imports: [
     BrowserModule,

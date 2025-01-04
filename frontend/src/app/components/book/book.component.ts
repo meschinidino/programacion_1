@@ -42,10 +42,15 @@ export class BookComponent implements OnInit {
   onBorrowClick(event: Event): void {
     event.stopPropagation();
     
-    // Si el usuario no está autenticado
+    if (this.book.is_suspended) {
+        alert('This book is not available because it is suspended');
+        return;
+    }
+    
+    // If the user is not authenticated
     if (!this.userId) {
-      alert('Necesitas iniciar sesión para realizar préstamos');
-      return;
+        alert('You need to log in to perform this action');
+        return;
     }
 
     const loanRequest = {
@@ -129,5 +134,38 @@ export class BookComponent implements OnInit {
       book: this.book,
       bookId: this.book.book_id
     });
+  }
+
+  showInfo() {
+    // Implementa la lógica para mostrar la información del libro
+    console.log('Mostrar información del libro:', this.book);
+  }
+
+  toggleBookSuspension(book: any) {
+    if (book.is_suspended) {
+        if (confirm('Are you sure you want to reactivate this book?')) {
+            this.bookService.unsuspendBook(book.book_id).subscribe({
+                next: (response) => {
+                    book.is_suspended = false;
+                    alert('Book reactivated successfully');
+                },
+                error: (error) => {
+                    console.error('Error reactivating book:', error);
+                }
+            });
+        }
+    } else {
+        if (confirm('Are you sure you want to suspend this book?')) {
+            this.bookService.suspendBook(book.book_id).subscribe({
+                next: (response) => {
+                    book.is_suspended = true;
+                    alert('Book suspended successfully');
+                },
+                error: (error) => {
+                    console.error('Error suspending book:', error);
+                }
+            });
+        }
+    }
   }
 }

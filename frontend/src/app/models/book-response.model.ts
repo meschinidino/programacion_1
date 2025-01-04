@@ -33,6 +33,7 @@ export interface Book {
     ratings: Rating[];
     title: string;
     year: number;
+    is_suspended?: boolean;
 }
 
 export interface BookResponse {

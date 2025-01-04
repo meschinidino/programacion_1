@@ -91,3 +91,42 @@
 .book-card .card-back .btn-secondary {
   margin-top: 15px;
 }
+
+.btn-group {
+    margin: 3px;
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+}
+
+.btn-group .btn {
+    padding: 0.25rem 0.5rem;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    margin: 0;
+    border: 1px solid;
+}
+
+.btn-group .btn i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+.card-back .btn {
+    height: 30px;
+    margin: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+}

@@ -127,6 +127,13 @@ export class BookService {
         );
     }
 
+    suspendBook(bookId: number) {
+        return this.http.put(`${this.bookUrl}/${bookId}/suspend`, {}, { headers: this.getHeaders() });  
+    }
+    unsuspendBook(bookId: number) {
+        return this.http.put(`${this.bookUrl}/${bookId}/unsuspend`, {}, { headers: this.getHeaders() });
+    }
+
     private handleError(error: any): Observable<never> {
         console.error('An error occurred:', error);
         return throwError(() => new Error('Request error, please try again.'));

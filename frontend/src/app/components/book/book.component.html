@@ -13,12 +13,27 @@
             <div class="card-image-small">
                 <img src="assets/images/got.png" class="img-fluid" [alt]="book.title">
             </div>
-            <p class="card-text">ISBN: {{ book.isbn }}</p>
-            <p class="card-text">Editorial: {{ book.editorial }}</p>
             <p class="card-text">Average Rating: {{ getAverageRating() | number:'1.1-1' }} ⭐</p>
-            <button class="btn btn-primary"  *ngIf="userRole === 'User' || userRole === 'Guest'" (click)="onBorrowClick($event)">Borrow</button>
-            <button class="btn btn-secondary" *ngIf="userRole === 'Librarian' || userRole === 'Admin'" (click)="deleteBook()">  Delete </button>
-            <button class="btn btn-primary" *ngIf="userRole === 'Librarian' || userRole === 'Admin'" (click)="editBook()">  Edit </button>
+            <div class="btn-group">
+                <button class="btn btn-info btn-sm" (click)="showInfo()">Info</button>
+                <button class="btn btn-sm" 
+                        *ngIf="userRole === 'Librarian' || userRole === 'Admin'"
+                        [ngClass]="book.is_suspended ? 'btn-success' : 'btn-warning'"
+                        (click)="toggleBookSuspension(book)">
+                    {{ book.is_suspended ? 'Reactivate' : 'Suspend' }}
+                </button>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-sm" 
+                        *ngIf="userRole === 'User' || userRole === 'Guest'" 
+                        [ngClass]="book.is_suspended ? 'btn-secondary' : 'btn-primary'"
+                        [disabled]="book.is_suspended"
+                        (click)="onBorrowClick($event)">
+                    Borrow
+                </button>
+                <button class="btn btn-primary btn-sm" *ngIf="userRole === 'Librarian' || userRole === 'Admin'" (click)="editBook()"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger btn-sm" *ngIf="userRole === 'Librarian' || userRole === 'Admin'" (click)="deleteBook()"><i class="fas fa-trash"></i></button>
+            </div>
         </div>
     </div>
 </div>
