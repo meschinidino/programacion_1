@@ -58,14 +58,12 @@ export class BookService {
             console.error('Book ID is undefined');
             return throwError(() => new Error('Book ID is required'));
         }
-
         console.log('📤 Enviando al servidor:', {
             url: `${this.bookUrl}/${id}`,
             method: 'PUT',
             datos: book,
             headers: this.getHeaders()
         });
-
         return this.http.put<any>(`${this.bookUrl}/${id}`, book, { 
             headers: this.getHeaders() 
         }).pipe(
@@ -150,7 +148,7 @@ export class BookService {
     suspendBook(bookId: number) {
         return this.http.put(`${this.bookUrl}/${bookId}/suspend`, {}, { headers: this.getHeaders() });  
     }
-    
+
     unsuspendBook(bookId: number) {
         return this.http.put(`${this.bookUrl}/${bookId}/unsuspend`, {}, { headers: this.getHeaders() });
     }
