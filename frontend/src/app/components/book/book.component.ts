@@ -127,7 +127,7 @@ export class BookComponent implements OnInit {
 
   editBook(): void {
     if (this.book.loans && this.book.loans.length > 0) {
-      alert('No se puede editar este libro porque tiene préstamos activos');
+      alert('This book cannot be edited because it has active loans');
       return;
     }
 

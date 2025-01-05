@@ -80,10 +80,19 @@ class Book(Resource):
             book = db.session.query(BooksModel).get_or_404(book_id)
             data = request.get_json()
             
+            # Manejar la actualización de autores
+            if 'author_id' in data:
+                # Limpiar autores existentes
+                book.authors = []
+                # Obtener los nuevos autores
+                author_ids = data['author_id']
+                authors = AuthorsModel.query.filter(AuthorsModel.author_id.in_(author_ids)).all()
+                book.authors.extend(authors)
+                
             # Lista de campos que no se deben actualizar
-            excluded_fields = ['book_id']
+            excluded_fields = ['book_id', 'author_id', 'authors']
             
-            # Actualizar solo los campos permitidos que vienen en la petición
+            # Actualizar el resto de campos
             for key, value in data.items():
                 if hasattr(book, key) and key not in excluded_fields:
                     setattr(book, key, value)

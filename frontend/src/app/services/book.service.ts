@@ -58,10 +58,29 @@ export class BookService {
             console.error('Book ID is undefined');
             return throwError(() => new Error('Book ID is required'));
         }
+
+        console.log('📤 Enviando al servidor:', {
+            url: `${this.bookUrl}/${id}`,
+            method: 'PUT',
+            datos: book,
+            headers: this.getHeaders()
+        });
+
         return this.http.put<any>(`${this.bookUrl}/${id}`, book, { 
             headers: this.getHeaders() 
         }).pipe(
-            catchError(this.handleError)
+            tap(response => {
+                console.log('✅ Respuesta exitosa del servidor:', response);
+            }),
+            catchError(error => {
+                console.error('❌ Error del servidor:', {
+                    status: error.status,
+                    mensaje: error.message,
+                    error: error.error,
+                    datos_enviados: book
+                });
+                return this.handleError(error);
+            })
         );
     }
 
@@ -140,7 +159,12 @@ export class BookService {
     }
 
     private handleError(error: any): Observable<never> {
-        console.error('An error occurred:', error);
+        console.error('Error detallado:', {
+            status: error.status,
+            statusText: error.statusText,
+            message: error.message,
+            error: error.error
+        });
         return throwError(() => new Error('Request error, please try again.'));
     }
 }

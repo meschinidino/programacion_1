@@ -125,23 +125,42 @@ export class HomeComponent implements OnInit {
       });
 
       if (this.isEditing) {
-        this.bookService.updateBook(this.selectedBook.book_id, this.selectedBook)
-          .subscribe({
-            next: (response) => {
-              const index = this.availableBooks.findIndex(book => book.book_id === this.selectedBook.book_id);
-              if (index !== -1) {
-                this.availableBooks[index] = { ...this.selectedBook };
-                this.filteredBooks = [...this.availableBooks];
-                this.paginatedBooks = [...this.availableBooks];
-              }
-              modal.close('save');
-              alert('Book updated successfully');
-            },
-            error: (err) => {
-              console.error('Error al actualizar:', err);
-              modal.close();
-            }
-          });
+        this.bookService.createAuthor(author).subscribe({
+          next: (authorResponse: any) => {
+            console.log('✅ Autor creado exitosamente en modo edición:', authorResponse);
+
+            const updatedBook = {
+              book_id: this.selectedBook.book_id,
+              author_id: [authorResponse.author_id],
+              title: this.selectedBook.title,
+              genre: this.selectedBook.genre,
+              year: this.selectedBook.year,
+              editorial: this.selectedBook.editorial,
+              isbn: this.selectedBook.isbn,
+              available: this.selectedBook.available
+            };
+            
+            console.log('📝 Objeto final a enviar:', updatedBook);
+            
+            this.bookService.updateBook(this.selectedBook.book_id, updatedBook)
+              .subscribe({
+                next: (response) => {
+                  console.log('✅ Actualización exitosa:', response);
+                  this.loadBooks();
+                  modal.close('save');
+                  alert('Book updated successfully');
+                },
+                error: (err) => {
+                  console.error('❌ Error completo:', err);
+                  modal.close();
+                }
+              });
+          },
+          error: (err) => {
+            console.error('Error al crear el autor en modo edición:', err);
+            modal.close();
+          }
+        });
       } else {
         this.bookService.createAuthor(author).subscribe({
           next: (authorResponse: any) => {
@@ -224,21 +243,38 @@ export class HomeComponent implements OnInit {
   onBookAction(event: any): void {
     if (event.action === 'edit') {
       if (event.book.loans && event.book.loans.length > 0) {
-        alert('No se puede editar este libro porque tiene préstamos activos');
+        alert('This book cannot be edited because it has active loans');
         return;
       }
 
       console.log('Evento recibido:', event);
-      this.selectedBook = { ...event.book };
+      const currentAuthor = event.book.authors[0];
+      this.selectedBook = { 
+        ...event.book,
+        authorName: currentAuthor?.name || '',
+        authorLastName: currentAuthor?.last_name || ''
+      };
       this.isEditing = true;
       
       this.modalService.open(this.bookModal).result.then(
         (result) => {
           if (result === 'save') {
             console.log('ID del libro a actualizar:', this.selectedBook.book_id);
-            console.log('Datos completos a guardar:', this.selectedBook);
             
-            this.bookService.updateBook(this.selectedBook.book_id, this.selectedBook)
+            const updatedBook = {
+              ...this.selectedBook,
+              author_id: this.selectedBook.author_id,
+              title: this.selectedBook.title,
+              genre: this.selectedBook.genre,
+              year: this.selectedBook.year,
+              editorial: this.selectedBook.editorial,
+              isbn: this.selectedBook.isbn,
+              available: this.selectedBook.available
+            };
+
+            console.log('Datos completos a guardar:', updatedBook);
+            
+            this.bookService.updateBook(this.selectedBook.book_id, updatedBook)
               .subscribe({
                 next: (response) => {
                   this.loadBooks();

@@ -50,15 +50,51 @@ class Books(db.Model):
         editorial = book_json.get('editorial')
         isbn = book_json.get('isbn')
         available = book_json.get('available')
-        is_suspended = book_json.get('is_suspended')
-        return Books(
-            book_id = book_id,
-            title = title,
-            genre = genre,
-            year = year,
-            editorial = editorial,
-            isbn = isbn,
-            available = available,
-            is_suspended = is_suspended
+        
+        # Si existe book_id, buscar el libro existente
+        if book_id:
+            book = Books.query.get(book_id)
+            if book:
+                # Actualizar los campos del libro existente
+                book.title = title
+                book.genre = genre
+                book.year = year
+                book.editorial = editorial
+                book.isbn = isbn
+                book.available = available
+                
+                # Limpiar la lista actual de autores
+                book.authors = []
+                
+                # Agregar los nuevos autores
+                author_ids = book_json.get('author_id', [])
+                if author_ids:
+                    from .authors import Authors
+                    for author_id in author_ids:
+                        author = Authors.query.get(author_id)
+                        if author:
+                            book.authors.append(author)
+                
+                return book
+        
+        # Si no existe, crear nuevo libro
+        book = Books(
+            title=title,
+            genre=genre,
+            year=year,
+            editorial=editorial,
+            isbn=isbn,
+            available=available
         )
+        
+        # Agregar autores al nuevo libro
+        author_ids = book_json.get('author_id', [])
+        if author_ids:
+            from .authors import Authors
+            for author_id in author_ids:
+                author = Authors.query.get(author_id)
+                if author:
+                    book.authors.append(author)
+        
+        return book
 
