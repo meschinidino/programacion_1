@@ -150,6 +150,7 @@ export class BookService {
     suspendBook(bookId: number) {
         return this.http.put(`${this.bookUrl}/${bookId}/suspend`, {}, { headers: this.getHeaders() });  
     }
+    
     unsuspendBook(bookId: number) {
         return this.http.put(`${this.bookUrl}/${bookId}/unsuspend`, {}, { headers: this.getHeaders() });
     }
