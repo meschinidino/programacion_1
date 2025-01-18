@@ -189,3 +189,34 @@ class UserUnsuspend(Resource):
         except Exception as e:
             db.session.rollback()
             return {'message': str(e)}, 500
+
+
+
+class DeleteUser(Resource):
+    @role_required(roles=["Admin", "Librarian"])
+    def delete(self, user_id):
+        try:
+            user_id = int(user_id)
+            user = db.session.query(UsersModel).get_or_404(user_id)
+            db.session.delete(user)
+            db.session.commit()
+
+            result = sendMail(
+                to=user.email,
+                subject="Tu cuenta ha sido eliminada",
+                template='account_deletion_notification',
+                user={
+                    'user_id': user.user_id,
+                    'name': user.name,
+                    'last_name': user.last_name
+                }
+            )
+            if isinstance(result, str) and "error" in result.lower():
+                print(f"Error al enviar correo de notificación: {result}")
+
+            return {'message': 'Usuario eliminado exitosamente'}, 200
+
+        except Exception as e:  # Correctly indented
+            db.session.rollback()
+            return {'message': str(e)}, 500
+
