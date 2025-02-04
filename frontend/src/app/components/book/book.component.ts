@@ -20,7 +20,17 @@ export class BookComponent implements OnInit {
   @Output() bookDeleted = new EventEmitter<number>();
   @Output() bookUpdated = new EventEmitter<any>();
   isFlipped = false;
-  userId: number = 0; // Add a property to store the user ID
+    userId: number = 0; // Add a property to store the user ID
+    randomImage: string = '';
+
+    private images: string[] = [
+        'assets/images/got.png',
+        'assets/images/hobbit.png',
+        'assets/images/hailmary.jpeg',
+        'assets/images/martian.jpeg'
+        // Add more image paths here
+    ];
+
 
   constructor(
       private loanService: LoanService,
@@ -30,12 +40,18 @@ export class BookComponent implements OnInit {
       private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.authService.getCurrentUserRole().subscribe((role) => {
-      this.userRole = role;
-    });
-    this.userId = parseInt(localStorage.getItem('userId') || '0', 10); // Retrieve the user ID
-  }
+    ngOnInit(): void {
+        this.authService.getCurrentUserRole().subscribe((role) => {
+            this.userRole = role;
+        });
+        this.userId = parseInt(localStorage.getItem('userId') || '0', 10); // Retrieve the user ID
+        this.randomImage = this.getRandomImage();
+    }
+
+    private getRandomImage(): string {
+        const randomIndex = Math.floor(Math.random() * this.images.length);
+        return this.images[randomIndex];
+    }
 
   onBookClick(): void {
     this.isFlipped = !this.isFlipped;
