@@ -1,0 +1,28 @@
+.rating-card {
+    margin: 10px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.rating-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.stars {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.stars .fa {
+    font-size: 20px;
+    color: #ffd700; /* Gold color for selected stars */
+    margin-right: 5px;
+}
+
+.stars .fa-star-o {
+    color: #ccc; /* Gray color for unselected stars */
+}

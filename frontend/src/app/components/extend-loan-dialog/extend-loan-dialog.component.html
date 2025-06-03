@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Extend Loan Time</h2>
+<div mat-dialog-content>
+    <mat-form-field appearance="fill">
+        <mat-label>New Due Date</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" [min]="minDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button [mat-dialog-close]="formatDate(selectedDate)" [disabled]="!selectedDate">
+        Confirm
+    </button>
+</div>

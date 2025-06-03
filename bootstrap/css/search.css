@@ -1,0 +1,205 @@
+/* Estilos generales */
+body {
+    font-family: Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+/* Encabezado */
+.header {
+    background: linear-gradient(to right, #673ab7, #512da8);
+    color: white;
+    padding: 20px;
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.header .profile-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border: 2px solid white;
+    background-color: #d3d3d3;
+}
+
+.header div {
+    margin: 3px 0;
+    font-size: 16px;
+}
+
+/* Barra de búsqueda */
+.search-bar {
+    padding: 12px;
+    border-radius: 25px; /* Bordes redondeados más suaves */
+    border: 1px solid #ddd; /* Borde suave */
+    font-size: 18px; /* Texto más grande */
+    width: 80%; /* Aumento del ancho */
+    max-width: 600px; /* Ancho máximo para pantallas grandes */
+    margin: 20px auto; /* Centrando horizontalmente */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    background-color: #fff; /* Fondo blanco */
+}
+
+.search-bar input {
+    width: 100%; /* Asegura que el input use todo el espacio */
+    border: none; /* Quita el borde por defecto del input */
+    outline: none; /* Quita el contorno al hacer foco */
+    font-size: 18px; /* Tamaño de fuente del texto */
+    padding: 0; /* Quita el padding por defecto */
+}
+
+/* Categorías */
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+}
+
+.category {
+    background-color: #673ab7;
+    color: white;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+    flex: 1 1 calc(33.333% - 20px); /* 3 columnas con espacio entre */
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.category img {
+    width: 100%;
+    height: auto;
+    max-height: 100px; /* Limita la altura de la imagen */
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px; /* Espacio entre la imagen y el texto */
+}
+
+.category span {
+    display: block;
+    font-size: 18px;
+}
+
+/* Estilos para el footer en pantallas pequeñas */
+.footer {
+    background-color: #673ab7;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+.footer a {
+    color: white;
+    font-size: 24px;
+    text-decoration: none;
+}
+
+.material-icons {
+    font-size: 32px;
+}
+
+/* Barra superior para pantallas grandes */
+.top-bar {
+    display: none;
+}
+
+/* Ajustes para vista móvil */
+@media (max-width: 1023px) {
+    .top-bar {
+        display: none;
+    }
+}
+
+/* Estilos para pantallas grandes */
+@media (min-width: 1024px) {
+    /* Ocultar el footer en pantallas grandes */
+    .footer {
+        display: none;
+    }
+
+    .header {
+        display: none;
+    }
+
+    /* Barra superior de navegación */
+    .top-bar {
+        width: 100%;
+        background-color: #673ab7;
+        display: flex;
+        align-items: center;
+        padding: 10px 30px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        justify-content: space-between;
+    }
+
+    .top-bar > * {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .center-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+        gap: 10px;
+    }
+
+    .top-bar .logo img {
+        height: 40px;
+        cursor: pointer;
+    }
+
+    .search-bar {
+        padding: 15px;
+        border-radius: 20px;
+        border: 1px solid #ddd;
+        font-size: 18px;
+        width: 60%; /* Ajustar el ancho en pantallas grandes */
+        max-width: 800px; /* Ancho máximo para pantallas grandes */
+        margin: 0 auto; /* Centrando horizontalmente */
+    }
+
+    .top-link {
+        color: white;
+        text-decoration: none;
+        font-size: 18px;
+        margin-left: 30px;
+    }
+
+    .top-link:hover {
+        text-decoration: underline;
+    }
+
+    .profile-pic-top {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid white;
+        background-color: #d3d3d3;
+        object-fit: cover;
+        aspect-ratio: 1/1;
+    }
+
+    body {
+        padding-top: 80px;
+    }
+}

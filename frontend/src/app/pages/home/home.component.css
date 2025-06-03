@@ -1,0 +1,28 @@
+#bookGallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; /* Add gap between the cards */
+    margin-top: 20px; /* Add margin to the top of the gallery */
+}
+
+#bookGallery .col-6 {
+    display: flex;
+    justify-content: center;
+}
+
+.book-container {
+    width: 100%;
+    max-width: 200px; /* Adjust as needed */
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 16px; /* Add margin to prevent overlap */
+}
+
+.book-container app-book {
+    padding-top: 10px; /* Add top padding */
+    padding-bottom: 10px; /* Add bottom padding */
+}
+
+.pagination-controls {
+    margin-top: 20px; /* Ensure margin between gallery and pagination */
+}

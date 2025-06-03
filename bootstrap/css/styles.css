@@ -1,0 +1,367 @@
+/* Gradient background for desktop and mobile navbar */
+.navbar {
+    background: linear-gradient(to right, #226372, #3813C2);
+    color: white;
+}
+/* Profile avatar styles */
+.navbar .navbar-nav .nav-link img {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+}
+
+/* Dropdown customization */
+.navbar .dropdown-menu {
+    background-color: #f9f9f9; /* Slightly different background */
+}
+
+.navbar .dropdown-menu a {
+    color: #333;
+}
+
+.navbar .dropdown-menu a:hover {
+    background-color: #f0f0f0;
+    color: #226372;
+}
+
+/* Mobile top navbar */
+@media (max-width: 992px) {
+    .navbar.fixed-top {
+        background: linear-gradient(to right, #226372, #3813C2);
+        color: white;
+        z-index: 1030; /* Ensure it's on top of the rest of the page */
+        padding: 0.5rem 1rem;
+    }
+
+    /* Adjust body padding to prevent content from being hidden behind the navbar */
+    body {
+        padding-top: 56px; /* Height of the mobile navbar */
+    }
+
+    /* Center the logo in the mobile navbar */
+    .navbar-brand.mx-auto {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Ensure back arrow and avatar are on opposite sides */
+    .navbar-icon {
+        width: 30px; /* Icon size */
+    }
+
+    .navbar-icon img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    .navbar .container-fluid {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+/* Ensure the text color is appropriate for the gradient background */
+.navbar .nav-link {
+    color: white !important;
+}
+
+.navbar .nav-link:hover {
+    color: #f0f0f0 !important;
+}
+
+/* Gradient background for the mobile navbar */
+.navbar.fixed-bottom {
+    background: linear-gradient(to right, #226372, #3813C2);
+}
+
+/* Limit content width and center */
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Add some spacing to the loan cards */
+.loan-card {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.loan-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Improve the loan info layout */
+.loan-info p {
+    margin-bottom: 5px;
+}
+
+/* Make the book images a bit larger and styled */
+.book-card img {
+    border-radius: 10px;
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+}
+
+/* Adjust mobile responsiveness */
+@media (max-width: 576px) {
+    .loan-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    .loan-info {
+        margin-top: 10px;
+    }
+}
+/* Space between search bar and categories */
+#searchForm {
+    margin-bottom: 20px;
+}
+
+/* Set a fixed size for all category cards */
+.category-card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out;
+    width: 100%; /* Ensures responsiveness */
+    height: 250px; /* Fixed height for all cards */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none; /* Remove border */
+}
+
+/* Consistent image size and alignment */
+.category-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the card without distortion */
+    border-radius: 15px;
+}
+
+/* Category hover effect */
+.category-card:hover {
+    transform: translateY(-5px); /* Pop-up effect on hover */
+}
+
+/* Category text overlay (centered text with no background) */
+.category-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    width: 80%;
+}
+
+.category-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+    background: none; /* No background */
+    padding: 0; /* Remove padding */
+    border-radius: 0; /* Remove rounded corners */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); /* Subtle shadow for readability */
+}
+
+/* Adjust responsiveness */
+@media (max-width: 576px) {
+    .category-title {
+        font-size: 0.85rem;
+    }
+    .category-overlay {
+        width: 90%;
+    }
+    .category-card {
+        height: 200px; /* Smaller cards on mobile */
+    }
+}
+
+/* General gallery item spacing */
+#categoryGallery {
+    margin-top: 20px;
+}
+/* Card Styles */
+.settings-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* General link styling */
+.settings-link {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.settings-link:hover {
+    color: #0056b3;
+}
+
+/* Log Out button styling */
+.btn-logout {
+    display: inline-block;
+    background-color: #dc3545;
+    border: none;
+    font-size: 1rem;
+    border-radius: 50px;
+    padding: 10px 20px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.btn-logout:hover {
+    transform: translateY(-3px);
+}
+
+/* Toggle Switch styling */
+.form-check-input {
+    width: 50px;
+    height: 25px;
+}
+
+.form-check-label {
+    font-size: 1rem;
+    margin-left: 10px;
+}
+
+/* Responsive settings */
+@media (max-width: 576px) {
+    .btn-logout {
+        width: 100%;
+    }
+}
+
+/* Container for each user */
+.user-card {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for user cards */
+.user-card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Profile image styling */
+.user-card img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+
+/* User name and info */
+.user-info h6 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.user-info p {
+    font-size: 1rem;
+    margin: 5px 0;
+}
+
+/* Data alignment */
+.user-info {
+    margin-left: 20px;
+}
+
+.user-stats {
+    display: flex;
+    justify-content: space-between;
+}
+
+.user-stat-item {
+    text-align: center;
+}
+
+.user-stat-item h6 {
+    margin: 0;
+}
+
+.user-stat-item p {
+    margin: 0;
+}
+/* Modal Styling */
+.modal-content {
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background-color: #fdfdfd; /* Subtle background color */
+    border: none; /* Remove default border */
+}
+
+.modal-header {
+    border-bottom: none; /* Remove bottom border */
+    padding: 20px;
+}
+
+.modal-header .modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.modal-header .btn-close {
+    background-color: transparent;
+    border: none;
+}
+
+.modal-body {
+    padding: 20px;
+    font-size: 1rem;
+    color: #555;
+}
+
+.modal-body img {
+    max-width: 100%; /* Ensure the image never exceeds the modal width */
+    max-height: 400px; /* Limit the height to a reasonable size */
+    width: auto;
+    height: auto;
+    object-fit: contain; /* Keep the image aspect ratio */
+    margin: 0 auto 15px auto; /* Center the image and add margin below */
+    display: block;
+}
+
+
+.modal-body p {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+.modal-footer {
+    border-top: none; /* Remove top border */
+    padding: 15px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.modal-footer .btn-primary {
+    background-color: #5a67d8; /* Modern blue color */
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-footer .btn-primary:hover {
+    background-color: #4c51bf; /* Darker on hover */
+}
+
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.7); /* Dark backdrop */
+}

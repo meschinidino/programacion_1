@@ -1,0 +1,50 @@
+<div class="container mt-5">
+    <!-- Account Section -->
+    <div class="card mb-4 settings-card">
+        <div class="card-header">
+            <h5>Account</h5>
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <a routerLink="/edit-account" class="settings-link">Edit Profile</a>
+                </li>
+                <li class="list-group-item">
+                    <a routerLink="/account-info" class="settings-link">Account Information</a>
+                </li>
+                <li class="list-group-item" *ngIf="userRole === 'Librarian' || userRole === 'Admin'">
+                    <a routerLink="/users" class="settings-link">User List</a>
+                </li>
+                <li class="list-group-item" *ngIf="userRole === 'Admin'">
+                    <a routerLink="/books" class="settings-link">Book List</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Notifications Section -->
+    <div class="card mb-4 settings-card">
+        <div class="card-header">
+            <h5>Notifications</h5>
+        </div>
+        <div class="card-body">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="notificationToggle">
+                <label class="form-check-label" for="notificationToggle">Notifications On/Off</label>
+            </div>
+            <div class="form-check form-switch mt-3">
+                <input class="form-check-input" type="checkbox" id="updatesToggle">
+                <label class="form-check-label" for="updatesToggle">Updates On/Off</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Log Out Section -->
+    <div class="card mb-4 settings-card">
+        <div class="card-body text-center">
+            <a href="#" class="btn btn-danger btn-logout">
+                <i class="bi bi-box-arrow-right"></i> Log Out
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+<!-- Main Content -->
+<div class="container mt-5">
+    <!-- Title -->
+    <h2 class="mb-4">Your Loan History</h2>
+
+    <!-- Filters Section -->
+    <div class="filter-row mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <select
+                    id="loanStatusFilter"
+                    class="form-select"
+                    aria-label="Filter by Status"
+                    [(ngModel)]="selectedStatus"
+                    (change)="filterLoans(selectedStatus)">
+                    <option value="all" selected>All Status</option>
+                    <option value="returned">Returned</option>
+                    <option value="overdue">Overdue</option>
+                    <option value="borrowed">Borrowed</option>
+                </select>
+            </div>
+            <div class="col-md-6 text-end">
+                <button class="btn btn-primary" (click)="clearFilters()">Clear Filters</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loan List -->
+    <div class="row" *ngFor="let loan of filteredLoans">
+        <div class="col-12 mb-3 loan-card" [attr.data-status]="loan.status">
+            <div class="d-flex align-items-center">
+                <div class="col-4 col-md-2">
+                    <div class="card book-card">
+                        <img
+                            [src]="loan.image || 'assets/images/got.png'"
+                            class="card-img-top img-fluid"
+                            [alt]="loan.title || 'Book Image'">
+                        <div class="card-body text-center">
+                            <h6 class="card-title">{{ loan.books?.[0]?.title || 'Sin título disponible' }}</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="loan-info ms-3">
+                    <p><strong>Borrowed:</strong> {{ loan.loan_date }}</p>
+                    <p><strong>Return By:</strong> {{ loan.finish_date }}</p>
+                    <button *ngIf="loan.status === 'borrowed'" class="btn btn-success">Return</button>
+                    <button *ngIf="loan.status === 'returned'" class="btn btn-secondary" disabled>Returned</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

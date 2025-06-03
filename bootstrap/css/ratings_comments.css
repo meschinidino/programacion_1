@@ -1,0 +1,96 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: linear-gradient(90deg, rgba(34, 99, 114, 0.87) 0%, rgba(56, 19, 194, 0.87) 100%);
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: auto;
+}
+
+.top-bar {
+    display: none;
+    align-items: center;
+    padding: 10px;
+    background-color: #f8f9fa;
+}
+
+.top-bar .logo {
+    width: 50px;
+    margin-right: 20px;
+}
+
+/* Centrar el logo del libro */
+.logo-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%)
+}
+
+.logo-container img {
+    width: 50px;
+    text-align: center;
+}
+
+
+.btn.btn-light {
+    color: white;
+    border-radius: 44px;
+    border: 2px solid var(--Colors-Black, #18191F);
+    opacity: var(--sds-size-stroke-border);
+    background: var(--Colors-White, #FFF);
+    background-color: #4A90E2;
+}
+
+.btn-light.active-btn {
+    border-radius: 44px;
+    border: 2px solid #223272;
+    opacity: var(--sds-size-stroke-border);
+    color: white;
+    background-color: #4A90E2;
+}
+
+.custom img {
+    width: 100px;
+    height: 140px;
+    flex-shrink: 0;
+}
+
+.custom-body {
+    color: #707070;
+    font-size: 15px;
+    font-family: Roboto;
+}
+
+.stars {
+    color: #223272;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background: linear-gradient(90deg, rgba(34, 99, 114, 0.87) 0%, rgba(56, 19, 194, 0.87) 100%);
+    color: #fff;
+    padding: 10px;
+}
+
+.footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}

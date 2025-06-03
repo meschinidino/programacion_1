@@ -10,6 +10,7 @@ class Books(db.Model):
     editorial = db.Column(db.String(50), nullable=False)
     isbn = db.Column(db.Integer, nullable=False)
     available = db.Column(db.Integer, nullable=False)
+    is_suspended = db.Column(db.Boolean, nullable=False, default=False)
     ratings = db.relationship("Ratings", back_populates="book", cascade="all, delete-orphan")
 
     def __repr__(self):
@@ -25,6 +26,7 @@ class Books(db.Model):
             'editorial': str(self.editorial),
             'isbn': self.isbn,
             'available': self.available,
+            'is_suspended': self.is_suspended,
             'ratings': ratings,
             'loans': [loan.to_json_short() for loan in self.loans],
             'authors': [author.to_json_short() for author in self.authors]
@@ -33,13 +35,9 @@ class Books(db.Model):
 
     def to_json_short(self):
         book_json = {
-            'book_id': self.book_id,
             'title': str(self.title),
-            'genre': str(self.genre),
-            'year': self.year,
             'editorial': str(self.editorial),
             'isbn': self.isbn,
-            'available': self.available
         }
         return book_json
 
@@ -52,13 +50,51 @@ class Books(db.Model):
         editorial = book_json.get('editorial')
         isbn = book_json.get('isbn')
         available = book_json.get('available')
-        return Books(
-            book_id = book_id,
-            title = title,
-            genre = genre,
-            year = year,
-            editorial = editorial,
-            isbn = isbn,
-            available = available,
+        
+        # Si existe book_id, buscar el libro existente
+        if book_id:
+            book = Books.query.get(book_id)
+            if book:
+                # Actualizar los campos del libro existente
+                book.title = title
+                book.genre = genre
+                book.year = year
+                book.editorial = editorial
+                book.isbn = isbn
+                book.available = available
+                
+                # Limpiar la lista actual de autores
+                book.authors = []
+                
+                # Agregar los nuevos autores
+                author_ids = book_json.get('author_id', [])
+                if author_ids:
+                    from .authors import Authors
+                    for author_id in author_ids:
+                        author = Authors.query.get(author_id)
+                        if author:
+                            book.authors.append(author)
+                
+                return book
+        
+        # Si no existe, crear nuevo libro
+        book = Books(
+            title=title,
+            genre=genre,
+            year=year,
+            editorial=editorial,
+            isbn=isbn,
+            available=available
         )
+        
+        # Agregar autores al nuevo libro
+        author_ids = book_json.get('author_id', [])
+        if author_ids:
+            from .authors import Authors
+            for author_id in author_ids:
+                author = Authors.query.get(author_id)
+                if author:
+                    book.authors.append(author)
+        
+        return book
 

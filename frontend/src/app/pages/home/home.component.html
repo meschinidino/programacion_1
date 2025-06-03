@@ -1,0 +1,82 @@
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <input type="text" class="form-control" placeholder="Search books..." [(ngModel)]="searchTerm" (input)="filterBooks()">
+        </div>
+    </div>
+
+    <div class="row mb-4" *ngIf="userRole === 'Librarian' || userRole === 'Admin'">
+        <div class="col-12">
+            <button class="btn btn-primary" (click)="onAddBook()">
+                <i class="fas fa-plus"></i> Add Book
+            </button>
+        </div>
+    </div>
+
+    <ng-template #bookModal let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">{{ isEditing ? 'Edit' : 'Add' }} Book</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        </div>
+        <div class="modal-body">
+            <form (ngSubmit)="saveBook(modal)">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" [(ngModel)]="selectedBook.title" name="title" required>
+                </div>
+                <div class="mb-3">
+                    <label for="authorName" class="form-label">Author Name</label>
+                    <input type="text" class="form-control" id="authorName" [(ngModel)]="selectedBook.authorName" name="authorName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="authorLastName" class="form-label">Author Last Name</label>
+                    <input type="text" class="form-control" id="authorLastName" [(ngModel)]="selectedBook.authorLastName" name="authorLastName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="genre" class="form-label">Genre</label>
+                    <input type="text" class="form-control" id="genre" [(ngModel)]="selectedBook.genre" name="genre" required>
+                </div>
+                <div class="mb-3">
+                    <label for="year" class="form-label">Year</label>
+                    <input type="number" class="form-control" id="year" [(ngModel)]="selectedBook.year" name="year" required>
+                </div>
+                <div class="mb-3">
+                    <label for="editorial" class="form-label">Editorial</label>
+                    <input type="text" class="form-control" id="editorial" [(ngModel)]="selectedBook.editorial" name="editorial" required>
+                </div>
+                <div class="mb-3">
+                    <label for="isbn" class="form-label">ISBN</label>
+                    <input type="text" class="form-control" id="isbn" [(ngModel)]="selectedBook.isbn" name="isbn">
+                </div>
+                <div class="mb-3">
+                    <label for="available" class="form-label">Available</label>
+                    <input type="text" class="form-control" id="available" [(ngModel)]="selectedBook.available" name="available">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </ng-template>
+
+    <div class="row" id="bookGallery">
+        <div class="col-6 col-md-4 col-lg-3 mb-4" *ngFor="let book of paginatedBooks">
+            <div class="book-container">
+                <app-book 
+                    [book]="book" 
+                    [userRole]="userRole" 
+                    (bookUpdated)="onBookAction($event)">
+                </app-book>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12 d-flex justify-content-between align-items-center pagination-controls">
+            <button class="btn btn-primary" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+            <button class="btn btn-primary" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+        </div>
+    </div>
+</div>

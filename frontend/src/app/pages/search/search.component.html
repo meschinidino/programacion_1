@@ -1,0 +1,40 @@
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <form (ngSubmit)="searchBooks()">
+                <div class="input-group">
+                    <input type="text" class="form-control" [(ngModel)]="searchTerm" name="searchTerm" placeholder="Book, Author, ISBN, Publisher..." aria-label="Search">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row mb-4" id="categoryGallery" *ngIf="!selectedGenre">
+        <div class="col-6 col-md-4 col-lg-2 mb-4" *ngFor="let genre of genres">
+            <div class="card category-card" (click)="filterByGenre(genre)">
+                <img [src]="'assets/images/' + genre.image" class="card-img-top img-fluid" [alt]="genre.name">
+                <div class="category-overlay">
+                    <h6 class="category-title">{{ genre.name }}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4" *ngIf="selectedGenre">
+        <div class="col-12">
+            <button class="btn btn-secondary" (click)="clearFilters()">Clear Filters</button>
+        </div>
+    </div>
+
+    <div class="row" id="searchResults">
+        <div class="col-12" *ngIf="books.length === 0">
+            <p>No books found. Try searching for a book.</p>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 mb-4" *ngFor="let book of books">
+            <div class="book-container">
+                <app-book [book]="book"></app-book>
+            </div>
+        </div>
+    </div>
+</div>

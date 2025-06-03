@@ -1,60 +1,138 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-      <meta charset="UTF-8">
-  </head>
-  <style>
-      .main{
-        border:1px solid black;
-        padding:30px;
-        background-color:white;
-        margin:20px;
-      }
-      body{
-        background-color: lightgray;
-      }
-      .services{
-        background-color:#94beff;
-        box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-        padding:10px;
-        border:1px solid black;
-        width:250px;
-      }
-      h1{
-        font-weight: bold;
-        font-size:25px;
-        color:#001d62;
-      }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido - Biblioteca</title>
+    <style>
+        body {
+            font-family: 'Helvetica', Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
 
-      .button {
-        background-color:#3680f2;
-      	border-radius:2px;
-      	border:1px solid black;
-      	display:inline-block;
-      	color:#ffffff;
-      	font-size:13px;
-      	padding:6px 24px;
-      	text-decoration:none;
-        margin-right:3px;
+        .main {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
 
-      }
+        h1 {
+            color: #001d62;
+            font-size: 28px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #001d62;
+            padding-bottom: 10px;
+        }
 
-  </style>
-  <body style="background-color: lightgray;">
-  <br/>
-  <div class="main" style="border: 1px solid black;padding: 30px;background-color: white;margin: 50px;">
-    <h1 style="font-weight: bold;font-size: 25px;color: #001d62;">Bienvenido {{user.name}} {{user.last_name}}! </h1>
-    <p>Gracias por registrarte en nuestro sistema.</p>
-    <div class="services" style="background-color: #94beff;box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);padding: 10px;border: 1px solid black;width: 250px;">
-      <p>Con nuestro servicio podras:</p>
-        <ul>
-             <li><a>Ver tus préstamos, libros y reseñas</a></li>
-        </ul>
+        .welcome-message {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .services {
+            background: linear-gradient(135deg, #94beff 0%, #7da8f0 100%);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            border: none;
+            width: auto;
+            max-width: 600px;
+        }
+
+        .services h2 {
+            color: #001d62;
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .services ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .services li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            color: #001d62;
+            display: flex;
+            align-items: center;
+        }
+
+        .services li:last-child {
+            border-bottom: none;
+        }
+
+        .services li:before {
+            content: "✓";
+            margin-right: 10px;
+            color: #001d62;
+            font-weight: bold;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #001d62;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #003399;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 600px) {
+            .main {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .services {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <h1>¡Bienvenido {{user.name}} {{user.last_name}}!</h1>
+        
+        <div class="welcome-message">
+            Gracias por registrarte en nuestro sistema de biblioteca. Estamos encantados de tenerte como parte de nuestra comunidad.
+        </div>
+
+        <div class="services">
+            <h2>Con tu cuenta podrás:</h2>
+            <ul>
+                <li>Ver y gestionar tus préstamos activos</li>
+                <li>Explorar nuestro catálogo completo de libros</li>
+                <li>Escribir y compartir reseñas de libros</li>
+                <li>Recibir notificaciones sobre tus préstamos</li>
+                <li>Reservar libros de tu interés</li>
+            </ul>
+        </div>
+
     </div>
-    <br>
-  
-</div>
-
 </body>
 </html>
 

@@ -1,0 +1,76 @@
+<div class="container mt-5">
+    <h2 class="mb-4">Ratings</h2>
+    
+    <div class="mb-4">
+        <button class="btn btn-primary" (click)="toggleReviewForm()">
+            {{ showReviewForm ? 'Hide Form' : 'Create Rating' }}
+        </button>
+        <button class="btn btn-secondary ml-2" (click)="toggleUserRatings()">
+            {{ showUserRatings ? 'Show All Ratings' : 'Show My Ratings' }}
+        </button>
+        <button class="btn btn-secondary ml-2" (click)="toggleFilterMenu()">
+            {{ showFilterMenu ? 'Hide Filters' : 'Show Filters' }}
+        </button>
+        <button class="btn btn-secondary ml-2" (click)="clearFilters()">
+            Clear Filters
+        </button>
+    </div>
+    
+    <!-- Formulario para crear reseña -->
+    <div class="card mb-4 p-3" *ngIf="showReviewForm">
+        <h4>Create Rating</h4>
+        <div class="form-group">
+            <label>Book:</label>
+            <select [(ngModel)]="newRating.book_id" class="form-control">
+                <option value="" disabled selected>Selecciona un libro</option>
+                <option *ngFor="let book of books" [value]="book.id">
+                    {{book.title}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Assessment:</label>
+            <div class="star-rating">
+                <button *ngFor="let star of [1, 2, 3, 4, 5]"
+                        [ngClass]="{'selected': star <= newRating.assessment}"
+                        (click)="newRating.assessment = star">
+                    &#9733;
+                </button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Comment:</label>
+            <textarea [(ngModel)]="newRating.comment" class="form-control" rows="3"></textarea>
+        </div>
+        <button class="btn btn-primary" (click)="handleSubmitRating()">
+            Send Rating
+        </button>
+    </div>
+
+    <div class="filters mb-4" *ngIf="showFilterMenu">
+        <div class="star-rating">
+            <button *ngFor="let star of [1, 2, 3, 4, 5]"
+                    [ngClass]="{'selected': star <= filters.assessment}"
+                    (click)="setAssessment(star)">
+                &#9733;
+            </button>
+        </div>
+        <select [(ngModel)]="filters.sort_by" class="form-control">
+            <option value="" disabled selected>Sort By</option>
+            <option value="a">Ascending</option>
+            <option value="d">Descending</option>
+        </select>
+        <input type="text" [(ngModel)]="filters.valuation_date" placeholder="Valuation Date" class="form-control" />
+        <input type="text" [(ngModel)]="filters.name" placeholder="Reviewer Name" class="form-control" />
+        <input type="text" [(ngModel)]="filters.book_title" placeholder="Book Title" class="form-control" />
+        <button (click)="applyFilters()" class="btn btn-primary">Apply Filters</button>
+    </div>
+    <div class="row">
+        <app-rating *ngFor="let rating of ratings" [rating]="rating"></app-rating>
+    </div>
+    <div class="pagination-controls">
+        <button (click)="previousPage()" [disabled]="page === 1" class="btn btn-primary rounded">Previous</button>
+        <span>Page {{ page }} of {{ pages }}</span>
+        <button (click)="nextPage()" [disabled]="page === pages" class="btn btn-primary rounded">Next</button>
+    </div>
+</div>

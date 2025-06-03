@@ -1,0 +1,52 @@
+/* Center the login form vertically and apply custom styles */
+.container {
+    margin-top: 100px;
+}
+
+/* Adjust form input and button styling */
+form input, form button {
+    font-size: 1.1em;
+}
+
+h2 {
+    margin-bottom: 30px;
+}
+
+/* Navbar avatar styling */
+.navbar .dropdown-toggle img {
+    border: 2px solid #ddd;
+}
+
+/* Navbar icons for mobile */
+.nav-link i {
+    font-size: 1.5em;
+}
+
+/* Mobile navbar text */
+.nav-link {
+    font-size: 0.75em;
+}
+input{
+    border-radius: 40px !important;
+    background: #FFF !important;
+    box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.10) !important;
+}
+/* Style for the login button */
+.btn-signup {
+    border-radius: 17px;
+    background: linear-gradient(135deg, #13EED4 0%, #623AA2 100%);
+    color: #fff; /* Ensure text color is visible against the gradient */
+    font-size: 1rem; /* Adjust font size if needed */
+    padding: 8px 20px; /* Add some padding to make the button slightly bigger */
+    border: none; /* Remove default border */
+    text-align: center;
+}
+
+/* Ensure button is aligned to the right */
+.d-flex {
+    display: flex;
+}
+
+.justify-content-end {
+    justify-content: flex-end;
+}

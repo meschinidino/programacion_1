@@ -1,0 +1,13 @@
+<div class="rating-card card">
+    <div class="card-body">
+        <h5 class="card-title">{{ rating.book.title }}</h5>
+        <div class="stars">
+            <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
+                <i class="fa" [ngClass]="{'fa-star': i < rating.assessment, 'fa-star-o': i >= rating.assessment}"></i>
+            </ng-container>
+        </div>
+        <p class="card-text">Comment: {{ rating.comment }}</p>
+        <p class="card-text">Valuation Date: {{ rating.valuation_date }}</p>
+        <p class="card-text">Reviewed by: {{ rating.user_name }} {{ rating.user_last_name }}</p>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Loans</h2>
+    
+    <div class="table-responsive">
+    <table class="table table-striped table-hover align-middle text-center">
+        <thead class="table-dark">
+        <tr>
+            <th class="text-center">ID</th>
+            <th class="text-center">Book(s)</th>
+            <th class="text-center">Loan Date</th>
+            <th class="text-center">Finish Date</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let loan of loans">
+            <td>{{ loan.loan_id }}</td>
+            <td>
+              <div *ngIf="loan.books && loan.books.length > 0">
+                <div *ngFor="let book of loan.books">
+                  {{ book.title }}
+                </div>
+              </div>
+              <div *ngIf="!loan.books || loan.books.length === 0">
+                {{ loan.title || 'Sin título' }}
+              </div>
+            </td>
+            <td>{{ loan.loan_date | date:'yyyy-MM-dd' }}</td>
+            <td>{{ loan.finish_date | date:'yyyy-MM-dd' }}</td>
+            <td>
+              <span 
+                class="badge"
+                [ngClass]="{
+                'bg-success': loan.status === 'RETURNED',
+                'bg-danger': loan.status === 'LOST',
+                'bg-warning text-dark': loan.status === 'BORROWED' || !loan.status
+                }">
+                {{ loan.status || 'BORROWED' }}
+              </span>
+            </td>
+            <td>
+              <div class="d-flex justify-content-center gap-2">
+                <button 
+                  class="btn btn-info btn-sm"
+                  (click)="extendLoanTime(loan.loan_id.toString())"
+                  *ngIf="!loan.status || loan.status === 'BORROWED'">
+                  <i class="bi bi-clock-history me-1"></i> Extend
+                </button>
+                <button 
+                  class="btn btn-danger btn-sm"
+                  (click)="deleteLoan(loan.loan_id)"
+                  *ngIf="userRole === 'Admin'">
+                  <i class="bi bi-trash me-1"></i> Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+    </table>
+    </div>
+
+    <div *ngIf="loans.length === 0" class="alert alert-info text-center">
+        There are no loans to show
+    </div>
+</div>

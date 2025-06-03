@@ -1,0 +1,71 @@
+/* Contenedor principal */
+.container {
+  max-width: 900px; /* Limita el ancho máximo para centrarse mejor */
+  margin: 0 auto;   /* Centrado horizontal */
+}
+
+/* Título */
+h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #343a40;
+}
+
+/* Tabla */
+.table {
+    border-radius: 8px; /* Esquinas redondeadas */
+    overflow: hidden;   /* Asegura que los bordes se mantengan dentro */
+    border: 1px solid #dee2e6;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa; /* Color suave para el hover */
+}
+
+/* Encabezado de la tabla */
+.table-dark th {
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    font-size: 0.85rem;
+}
+
+/* Badges */
+.badge {
+    font-size: 0.9rem;
+    padding: 0.5em 0.75em;
+    border-radius: 5px;
+}
+
+/* Botones */
+.btn-sm {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+}
+
+.btn-sm i {
+  vertical-align: middle; /* Alinea los iconos con el texto */
+}
+
+.me-2 {
+    margin-right: 0.5rem;
+}
+
+/* Responsividad adicional */
+@media (max-width: 576px) {
+h2 {
+    font-size: 1.5rem;
+}
+
+.table {
+    font-size: 0.9rem;
+}
+
+.badge {
+    font-size: 0.8rem;
+}
+
+.btn-sm {
+    font-size: 0.75rem;
+    }
+}

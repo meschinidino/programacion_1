@@ -13,3 +13,12 @@ from .ratings import Ratings as RatingsResource
 from .ratings import Rating as RatingResource
 from .authors import Author as AuthorResource
 from .authors import Authors as AuthorsResource
+from .loans import LoansByUser as LoansByUserResource
+from .loans import UserBorrowedBooks as UserBorrowedBooksResource
+from .ratings import CanUserRate as CanUserRateResource
+from .users import UsersAll as UsersAllResource
+from .loans import LoanExtend as LoanExtendResource
+from .users import UserSuspend as UserSuspendResource
+from .users import UserUnsuspend as UserUnsuspendResource
+from .books import BookSuspension as BookSuspensionResource
+from .books import BookUnsuspension as BookUnsuspensionResource

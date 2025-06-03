@@ -1,4 +1,4 @@
-from flask import request, jsonify, Blueprint
+from flask import request, jsonify, Blueprint, current_app
 from .. import db
 from main.models import UsersModel
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
@@ -14,9 +14,14 @@ def login():
     user = db.session.query(UsersModel).filter(UsersModel.email == request.get_json().get("email")).first_or_404()
     #Valida la contraseña
     if user.validate_pass(request.get_json().get("password")):
-        #Genera un nuevo token
-        #Pasa el objeto Users como identidad
-        access_token = create_access_token(identity=user)
+        # Crear un diccionario con la información que queremos en el token
+        identity = {
+            'id': str(user.user_id),  # Convertimos el ID a string
+            'email': user.email,
+            'role': user.role
+        }
+        # Generar el token con el diccionario como identidad
+        access_token = create_access_token(identity=identity)
         #Devolver valores y token
         data = {
             'id': str(user.user_id),
@@ -33,16 +38,29 @@ def login():
 def register():
     #Obtener user
     user = UsersModel.from_json(request.get_json())
-    #Verificar si el mail ya existe en la db, scalar() para saber la cantidad de ese email
+    #Verificar si el mail ya existe en la db
     exists = db.session.query(UsersModel).filter(UsersModel.email == user.email).scalar() is not None
     if exists:
         return 'Duplicated mail', 409
     else:
         try:
-            #Agregar user a la basex
+            #Agregar user a la base
             db.session.add(user)
             db.session.commit()
+            
+            # Enviar email de bienvenida al usuario
             send = sendMail([user.email], "Welcome", 'register', user=user)
+            
+            # Enviar email de notificación al admin
+            admin_email = current_app.config.get('FLASKY_MAIL_SENDER')
+            if admin_email:
+                sendMail(
+                    [admin_email],
+                    "Nuevo Usuario Registrado",
+                    'new_user_notification',
+                    user=user
+                )
+                
         except Exception as error:
             db.session.rollback()
             print(error)

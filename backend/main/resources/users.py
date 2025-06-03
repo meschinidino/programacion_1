@@ -5,6 +5,7 @@ from main.models import UsersModel
 from main.auth.decorators import role_required
 from sqlalchemy import or_
 from .. import db
+from ..mail.functions import sendMail
 
 
 class Users(Resource):
@@ -42,12 +43,17 @@ class Users(Resource):
             'page': page
         })
 
-
+class UsersAll(Resource):
+    @role_required(roles=["Admin", "Librarian"])
+    def get(self):
+        users = db.session.query(UsersModel).all()
+        return jsonify({
+            'users': [user.to_json_short() for user in users]
+        })
 
 class User(Resource):
-
     #obtener usuario
-    @role_required(roles = ["User", "Admin", "Librarian"])
+    @role_required(roles = ["User", "Admin", "Librarian","Guest"])
     def get(self, user_id):
         user = db.session.query(UsersModel).get_or_404(user_id)
 
@@ -58,27 +64,56 @@ class User(Resource):
             return user.to_json_short()
 
     # Modificar el recurso usuario
-    @role_required(roles = ["User", "Admin", "Librarian"])
+    @role_required(roles=["User", "Admin", "Librarian"])
     def put(self, user_id):
         user_id = int(user_id)
         user = db.session.query(UsersModel).get_or_404(user_id)
-        data = request.get_json().items()
+        data = request.get_json()
 
         current_user_id = get_jwt_identity()
         current_user = db.session.query(UsersModel).get_or_404(current_user_id)
 
-        for key, value in data:
-            if key == "role":
-                if current_user.role.lower() != "Admin":
-                    return "Only admins can change user roles", 403
+        # Verificar permisos para suspender usuarios
+        if "is_suspended" in data and current_user.role.lower() == "user":
+            return {"message": "Solo administradores y bibliotecarios pueden suspender usuarios"}, 403
+
+        # Verificar si el usuario tiene permiso para cambiar el rol
+        if "role" in data and current_user.role.lower() == "user":
+            return {"message": "Solo administradores y bibliotecarios pueden cambiar roles de usuario"}, 403
+
+        # Guardar el rol anterior
+        old_role = user.role
+
+        # Actualizar los atributos del usuario
+        try:
+            for key, value in data.items():
+                setattr(user, key, value)
             
+            db.session.commit()
 
-        for key, value in data:
-            setattr(user, key, value)
-        db.session.add(user)
-        db.session.commit()
+            # Verificar si el rol ha cambiado
+            if "role" in data and old_role != user.role:
+                result = sendMail(
+                    to=user.email,
+                    subject="Tu rol ha sido actualizado",
+                    template='role_update_notification',
+                    user={
+                        'user_id': user.user_id,
+                        'name': user.name,
+                        'last_name': user.last_name,
+                        'old_role': old_role,
+                        'new_role': user.role
+                    }
+                )
+                
+                if isinstance(result, str) and "error" in result.lower():
+                    print(f"Error al enviar correo de notificación: {result}")
 
-        return user.to_json_short(), 201
+            return user.to_json_short(), 200
+
+        except Exception as e:
+            db.session.rollback()
+            return {"message": str(e)}, 500
 
     # Eliminar usuario
     @role_required(roles = ["Librarian", "Admin"])
@@ -88,3 +123,69 @@ class User(Resource):
         db.session.delete(user)
         db.session.commit()
         return 'Deleted', 204
+
+class UserSuspend(Resource):
+    @role_required(roles=["Admin", "Librarian"])
+    def put(self, user_id):
+        user = db.session.query(UsersModel).get_or_404(user_id)
+        try:
+            # Cambiar el estado de suspensión
+            user.is_suspended = True
+            
+            # Guardar los cambios
+            db.session.commit()
+
+            # Enviar correo de notificación
+            result = sendMail(
+                to=user.email,
+                subject="Tu cuenta ha sido suspendida",
+                template='account_status_notification',
+                user={
+                    'user_id': user.user_id,
+                    'name': user.name,
+                    'last_name': user.last_name,
+                    'is_suspended': user.is_suspended
+                }
+            )
+            
+            if isinstance(result, str) and "error" in result.lower():
+                print(f"Error al enviar correo de notificación: {result}")
+
+            return {'message': 'Usuario suspendido exitosamente'}, 200
+
+        except Exception as e:
+            db.session.rollback()
+            return {'message': str(e)}, 500
+
+class UserUnsuspend(Resource):
+    @role_required(roles=["Admin", "Librarian"])
+    def put(self, user_id):
+        user = db.session.query(UsersModel).get_or_404(user_id)
+        try:
+            # Cambiar el estado de suspensión
+            user.is_suspended = False
+            
+            # Guardar los cambios
+            db.session.commit()
+
+            # Enviar correo de notificación
+            result = sendMail(
+                to=user.email,
+                subject="Tu cuenta ha sido reactivada",
+                template='account_status_notification',
+                user={
+                    'user_id': user.user_id,
+                    'name': user.name,
+                    'last_name': user.last_name,
+                    'is_suspended': user.is_suspended
+                }
+            )
+            
+            if isinstance(result, str) and "error" in result.lower():
+                print(f"Error al enviar correo de notificación: {result}")
+
+            return {'message': 'Usuario reactivado exitosamente'}, 200
+
+        except Exception as e:
+            db.session.rollback()
+            return {'message': str(e)}, 500

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/index-style.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Mobile Navbar (Top) -->
+<nav class="navbar navbar-light bg-light fixed-top d-flex d-lg-none">
+  <div class="container-fluid justify-content-between align-items-center">
+    <!-- Back Arrow Placeholder -->
+    <a href="index.html" class="navbar-icon">
+
+    </a>
+
+    <!-- Centered Logo -->
+    <a class="navbar-brand mx-auto" href="index.html">
+      <img src="images/logo.png" alt="Library" width="30" height="30" class="d-inline-block align-text-top">
+    </a>
+
+    <!-- Placeholder Avatar Icon -->
+    <a href="user-settings.html" class="navbar-icon">
+      <img src="images/user-avatar.png" alt="Avatar" width="30" height="30" class="rounded-circle">
+    </a>
+  </div>
+</nav>
+
+<!-- Desktop Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light d-none d-lg-flex">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html">
+      <img src="images/logo.png" alt="Library" width="30" height="30" class="d-inline-block align-text-top">
+    </a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="search.html">Search</a></li>
+        <li class="nav-item"><a class="nav-link" href="ratings.html">Ratings</a></li>
+        <li class="nav-item"><a class="nav-link" href="loans.html">Loans</a></li>
+      </ul>
+      <ul class="navbar-nav ms-auto">
+        <!-- Profile Avatar for Desktop -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="images/user-avatar.png" alt="User Avatar" width="30" height="30" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+            <li><a class="dropdown-item" href="user-settings.html">User Settings</a></li>
+            <li><a class="dropdown-item" href="login.html">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Navbar (Bottom) -->
+<nav class="navbar navbar-light bg-light fixed-bottom d-flex d-lg-none">
+  <div class="container-fluid justify-content-around">
+    <a class="nav-link text-center" href="index.html"><i class="fas fa-home"></i><br></a>
+    <a class="nav-link text-center" href="search.html"><i class="fas fa-search"></i><br></a>
+    <a class="nav-link text-center" href="ratings.html"><i class="fas fa-star"></i><br></a>
+    <a class="nav-link text-center" href="loans.html"><i class="fas fa-book"></i><br></a>
+    <a class="nav-link text-center" href="user-settings.html"><i class="fas fa-user-cog"></i><br></a>
+  </div>
+</nav>
+<!-- Book Gallery and Filters -->
+<div class="container mt-5">
+  <div class="row mb-3 filter-row">
+    <div class="col-md-8">
+      <button class="btn btn-outline-primary filter-btn" data-filter="Popular">Popular</button>
+      <button class="btn btn-outline-primary filter-btn" data-filter="History">History</button>
+      <button class="btn btn-outline-primary filter-btn" data-filter="Science">Science</button>
+      <button class="btn btn-outline-primary filter-btn" data-filter="Action">Action</button>
+      <button class="btn btn-outline-secondary" id="moreFiltersBtn"><i class="fas fa-sliders-h"></i> More Filters</button>
+    </div>
+    <div class="col-md-4 text-end">
+      <button class="btn btn-danger" id="clearFiltersBtn">Clear Filters</button>
+    </div>
+  </div>
+
+  <!-- More Filters Modal -->
+  <div id="moreFiltersModal" class="modal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">More Filters</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h6>Sort by Category</h6>
+              <div class="accordion" id="filterAccordion">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="genreHeading">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGenre" aria-expanded="true" aria-controls="collapseGenre">
+                      Genre
+                    </button>
+                  </h2>
+                  <div id="collapseGenre" class="accordion-collapse collapse show" aria-labelledby="genreHeading" data-bs-parent="#filterAccordion">
+                    <div class="accordion-body">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="horrorCheckbox">
+                        <label class="form-check-label" for="horrorCheckbox">Horror</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="scifiCheckbox">
+                        <label class="form-check-label" for="scifiCheckbox">Sci-Fi</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="romanceCheckbox">
+                        <label class="form-check-label" for="romanceCheckbox">Romance</label>
+                      </div>
+                      <!-- Additional genres -->
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="ageHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAge" aria-expanded="false" aria-controls="collapseAge">
+                      Age
+                    </button>
+                  </h2>
+                  <div id="collapseAge" class="accordion-collapse collapse" aria-labelledby="ageHeading" data-bs-parent="#filterAccordion">
+                    <div class="accordion-body">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="childrenCheckbox">
+                        <label class="form-check-label" for="childrenCheckbox">Children</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="adultCheckbox">
+                        <label class="form-check-label" for="adultCheckbox">Adult</label>
+                      </div>
+                      <!-- Additional age categories -->
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="languageHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLanguage" aria-expanded="false" aria-controls="collapseLanguage">
+                      Language
+                    </button>
+                  </h2>
+                  <div id="collapseLanguage" class="accordion-collapse collapse" aria-labelledby="languageHeading" data-bs-parent="#filterAccordion">
+                    <div class="accordion-body">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="englishCheckbox">
+                        <label class="form-check-label" for="englishCheckbox">English</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="spanishCheckbox">
+                        <label class="form-check-label" for="spanishCheckbox">Spanish</label>
+                      </div>
+                      <!-- Additional languages -->
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="formatHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFormat" aria-expanded="false" aria-controls="collapseFormat">
+                      Format
+                    </button>
+                  </h2>
+                  <div id="collapseFormat" class="accordion-collapse collapse" aria-labelledby="formatHeading" data-bs-parent="#filterAccordion">
+                    <div class="accordion-body">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="ebookCheckbox">
+                        <label class="form-check-label" for="ebookCheckbox">E-Book</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="hardcoverCheckbox">
+                        <label class="form-check-label" for="hardcoverCheckbox">Hardcover</label>
+                      </div>
+                      <!-- Additional formats -->
+                    </div>
+                  </div>
+                </div>
+              </div> <!-- Accordion -->
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Apply Filters</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Book Gallery -->
+  <div class="container mt-5">
+    <div class="row" id="bookGallery">
+      <!-- Sample Book Card -->
+      <div class="col-6 col-md-4 col-lg-2 mb-4">
+        <div class="card book-card" data-bs-toggle="modal" data-bs-target="#bookModal1">
+          <img src="images/got.png" class="card-img-top img-fluid" alt="Game of Thrones">
+          <div class="card-body text-center">
+            <h6 class="card-title">Game of Thrones</h6>
+            <p class="card-text">Author: George R.R Martin</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2 mb-4">
+        <div class="card book-card" data-bs-toggle="modal" data-bs-target="#bookModal2">
+          <img src="images/hobbit.png" class="card-img-top img-fluid" alt="The Hobbit">
+          <div class="card-body text-center">
+            <h6 class="card-title">The Hobbit</h6>
+            <p class="card-text">Author: J.R.R Tolkien</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2 mb-4">
+        <div class="card book-card" data-bs-toggle="modal" data-bs-target="#bookModal2">
+          <img src="images/hobbit.png" class="card-img-top img-fluid" alt="The Hobbit">
+          <div class="card-body text-center">
+            <h6 class="card-title">The Hobbit</h6>
+            <p class="card-text">Author: J.R.R Tolkien</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2 mb-4">
+        <div class="card book-card" data-bs-toggle="modal" data-bs-target="#bookModal2">
+          <img src="images/hobbit.png" class="card-img-top img-fluid" alt="The Hobbit">
+          <div class="card-body text-center">
+            <h6 class="card-title">The Hobbit</h6>
+            <p class="card-text">Author: J.R.R Tolkien</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2 mb-4">
+        <div class="card book-card" data-bs-toggle="modal" data-bs-target="#bookModal2">
+          <img src="images/hobbit.png" class="card-img-top img-fluid" alt="The Hobbit">
+          <div class="card-body text-center">
+            <h6 class="card-title">The Hobbit</h6>
+            <p class="card-text">Author: J.R.R Tolkien</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2 mb-4">
+        <div class="card book-card" data-bs-toggle="modal" data-bs-target="#bookModal2">
+          <img src="images/hobbit.png" class="card-img-top img-fluid" alt="The Hobbit">
+          <div class="card-body text-center">
+            <h6 class="card-title">The Hobbit</h6>
+            <p class="card-text">Author: J.R.R Tolkien</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2 mb-4">
+        <div class="card book-card" data-bs-toggle="modal" data-bs-target="#bookModal2">
+          <img src="images/hobbit.png" class="card-img-top img-fluid" alt="The Hobbit">
+          <div class="card-body text-center">
+            <h6 class="card-title">The Hobbit</h6>
+            <p class="card-text">Author: J.R.R Tolkien</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2 mb-4">
+        <div class="card book-card" data-bs-toggle="modal" data-bs-target="#bookModal2">
+          <img src="images/hobbit.png" class="card-img-top img-fluid" alt="The Hobbit">
+          <div class="card-body text-center">
+            <h6 class="card-title">The Hobbit</h6>
+            <p class="card-text">Author: J.R.R Tolkien</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2 mb-4">
+        <div class="card book-card" data-bs-toggle="modal" data-bs-target="#bookModal2">
+          <img src="images/hobbit.png" class="card-img-top img-fluid" alt="The Hobbit">
+          <div class="card-body text-center">
+            <h6 class="card-title">The Hobbit</h6>
+            <p class="card-text">Author: J.R.R Tolkien</p>
+          </div>
+        </div>
+      </div>
+      <!-- Add more book cards similarly -->
+
+    </div>
+  </div>
+
+  <!-- Modal for Game of Thrones -->
+  <div class="modal fade" id="bookModal1" tabindex="-1" aria-labelledby="bookModal1Label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bookModal1Label">Game of Thrones</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="images/got.png" class="img-fluid" alt="Game of Thrones">
+          <p>Long ago, in a time forgotten, a preternatural event threw the seasons out of balance. In a land where
+            summers can last decades and winters a lifetime, trouble is brewing. The cold is returning, and in the frozen
+            wastes to the north of Winterfell, sinister forces are massing beyond the kingdom's protective Wall. To the
+            south, the king's powers are failing—his most trusted advisor dead under mysterious circumstances and his
+            enemies emerging from the shadows of the throne. At the center of the conflict lie the Starks of Winterfell,
+            a family as harsh and unyielding as the frozen land they were born to. Now Lord Eddard Stark is reluctantly
+            summoned to serve as the king's new Hand, an appointment that threatens to sunder not only his family but the
+            kingdom itself.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Take as Loan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal for The Hobbit -->
+  <div class="modal fade" id="bookModal2" tabindex="-1" aria-labelledby="bookModal2Label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bookModal2Label">The Hobbit</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="images/hobbit.png" class="img-fluid mb-3" alt="The Hobbit">
+          <p>The Hobbit follows the adventure of Bilbo Baggins, a peaceful hobbit who is reluctantly drawn
+            into an epic quest to help a group of dwarves reclaim their lost kingdom and treasure from the dragon Smaug.
+            Along the way, Bilbo encounters trolls, elves, goblins, and the mysterious Gollum, from
+            whom he acquires the powerful One Ring. The novel serves as a prelude to Tolkien's famous
+            The Lord of the Rings trilogy and is celebrated for its rich world-building, memorable
+            characters, and themes of courage and personal growth.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Take as Loan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JavaScript -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+</html>
+

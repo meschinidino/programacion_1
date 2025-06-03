@@ -1,0 +1,16 @@
+¡ACTUALIZACIÓN DE ROL!
+═══════════════════════
+
+Estimado/a {{ user.name }} {{ user.last_name }},
+
+Te informamos que tu rol en el sistema ha sido actualizado:
+
+- Rol anterior: {{ user.old_role }}
+- Nuevo rol: {{ user.new_role }}
+
+Con este nuevo rol, ahora tienes acceso a funcionalidades adicionales en el sistema.
+
+Si tienes alguna pregunta, no dudes en contactar al administrador.
+
+Saludos cordiales,
+El equipo de la biblioteca 
